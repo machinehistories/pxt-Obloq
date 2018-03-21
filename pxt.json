@@ -1,0 +1,21 @@
+{
+    "name": "Obloq",
+    "version": "0.0.0",
+    "description": "This is the obloq wifi module library.",
+    "license": "MIT",
+    "dependencies": {
+        "core": "*",
+        "radio": "*"
+    },
+    "files": [
+        "README.md",
+        "Obloq.ts",
+        "Obloq.cpp",
+        "_locales/zh/Obloq-strings.json"
+    ],
+    "testFiles": [
+        "example/ObloqHttp.ts",
+        "example/ObloqMqtt.ts"
+    ],
+    "public": false
+}
