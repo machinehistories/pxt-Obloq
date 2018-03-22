@@ -38,13 +38,13 @@ Board firmware upgrade switch, easy to upgrade the firmware.
 get code ```https://github.com/DFRobot/pxt-Obloq/blob/master/example/ObloqHttp.ts```
 
 #### steps:
-[Download server](http://docs.dfrobot.com.cn/Myweather1.3.1.rar)
-1.Install more than 2.7 versions of python on your computer.
-2.Install the flask: `pip install Flask`.
-3.Initialize server:`python webapp.py`.
-4.Start Server: `python webapp.py`.
-5.Set the WIFI ID and password in the program and set the server's IP address and port number.
-6.Connect the serial port of the microbit with the Obloq (tx to rx, rx to tx).
+[Download server](http://docs.dfrobot.com.cn/Myweather1.3.1.rar)<br>
+1.Install more than 2.7 versions of python on your computer.<br>
+2.Install the flask: `pip install Flask`.<br>
+3.Initialize server:`python webapp.py`.<br>
+4.Start Server: `python webapp.py`.<br>
+5.Set the WIFI ID and password in the program and set the server's IP address and port number.<br>
+6.Connect the serial port of the microbit with the Obloq (tx to rx, rx to tx).<br>
 7.Click to download and run.
 
 ### 2.MQTT
