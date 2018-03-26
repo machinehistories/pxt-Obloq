@@ -130,6 +130,7 @@ namespace Obloq {
     //% weight=101
     //% blockId=Obloq_serialInit
     //% block="serial init tx %tx| rx %rx|baudrate %Baudrate"
+    //% advanced=true
     export function Obloq_serialInit(tx: SerialPin, rx: SerialPin, Baudrate: BaudRate): void{ 
         let item = ""
         //First send data through usb, avoid the first data scrambled.
