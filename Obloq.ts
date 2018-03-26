@@ -535,13 +535,12 @@ namespace Obloq {
             if (!serialinit) { 
                 Obloq_serialInit(SerialPin.P2, SerialPin.P1)
             }
+            Obloq_wifiIconShow()
             for (let i = 0; i < 3; i++) {
                 obloqWriteString("|1|1|\r")
                 basic.pause(100)
-            }
-            
+            }  
             obloqreadString(obloqgetRxBufferSize())
-            basic.pause(10)
             obloqWriteString("|2|1|"+OBLOQ_SSID+","+OBLOQ_PASSWORD+"|\r")
         }
         if (!initmqtt) {
