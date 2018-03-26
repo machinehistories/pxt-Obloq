@@ -130,7 +130,6 @@ namespace Obloq {
     //% weight=101
     //% blockId=Obloq_serialInit
     //% block="serial init tx %tx| rx %rx|baudrate %Baudrate"
-    //% advanced=true
     export function Obloq_serialInit(tx: SerialPin, rx: SerialPin, Baudrate: BaudRate): void{ 
         let item = ""
         //First send data through usb, avoid the first data scrambled.
@@ -442,7 +441,7 @@ namespace Obloq {
     //% weight=100
     //% blockId=Obloq_connectWifi
     //% block="connect wifi to %SSID| %PWD| timeout %time"
-    export function Obloq_connectWifi(SSID: string, PWD: string, time: number): boolean { 
+    export function Obloq_connectWifi(SSID: string, PWD: string, time: number): void { 
         if (time < 100) { 
             time = 100
         }
@@ -504,7 +503,7 @@ namespace Obloq {
                                 FIRST = OBLOQ_FALSE
                                 //serial.writeString(IP);
                                 //serial.writeString("\r\n");
-                                return OBLOQ_TRUE
+                                return
                             }
                         }
                     }
@@ -523,11 +522,12 @@ namespace Obloq {
                 basic.pause(100)
                 _timeout += 1
                 if (_timeout > timeout) { 
-                    return OBLOQ_FALSE
+                    basic.showIcon(IconNames.No)
+                    return
                 }
             }
         }
-        return OBLOQ_TRUE
+        return
     }
 
     /**
