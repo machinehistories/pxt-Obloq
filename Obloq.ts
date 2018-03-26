@@ -199,7 +199,7 @@ namespace Obloq {
     */
     //% weight=101
     //% blockId=Obloq_serialInit
-    //% block="serial init tx %tx| rx %rx"
+    //% block="serial redirect to tx %tx| rx %rx"
     export function Obloq_serialInit(tx: SerialPin, rx: SerialPin): void{ 
         let item = ""
         //First send data through usb, avoid the first data scrambled.
@@ -1099,7 +1099,7 @@ namespace Obloq {
     */
     //% weight=68
     //% blockId=Obloq_sendMessage
-    //% block="pubLish | mess %mess"
+    //% block="pubLish | %mess"
     export function Obloq_sendMessage(mess: string): void { 
         if (!serialinit) { 
             Obloq_serialInit(SerialPin.P2, SerialPin.P1)
