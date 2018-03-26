@@ -143,12 +143,14 @@ namespace Obloq {
             case 1: {
                 basic.clearScreen()
                 led.plot(0, 4)
+                icon += 1
             } break;
             case 2: { 
                 led.plot(0, 2)
                 led.plot(1, 2)
                 led.plot(2, 3)
                 led.plot(2, 4)
+                icon += 1
             } break;
             case 3: {
                 led.plot(0, 0)
