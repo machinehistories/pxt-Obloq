@@ -137,9 +137,9 @@ namespace Obloq {
     */
     //% weight=102
     //% blockId=Obloq_setup
-    //% block="Obloq setup | WIFI:| SSID: %SSID| PASSWORD: %PASSWORD| MQTT:| IOT_PWD: %IOT_PWD| IOT_ID: %IOT_ID| IOT_TOPIC: %IOT_TOPIC| MQTT_PORT: %MQTT_PORT| MQTT_SERVER: %MQTT_SERVER| HTTP: | HTTP_IP %HTTP_IP| HTTP_PORT %HTTP_PORT"
+    //% block="Obloq setup | WIFI: ↴| SSID: %SSID| PASSWORD: %PASSWORD| MQTT: ↴| PORT: %MQTT_PORT| SERVER: %MQTT_SERVER| IOT_PWD: %IOT_PWD| IOT_ID: %IOT_ID| IOT_TOPIC: %IOT_TOPIC| HTTP: ↴ | HTTP_IP %HTTP_IP| HTTP_PORT %HTTP_PORT"
     export function Obloq_setup(/*wifi*/SSID: string,    PASSWORD: string,
-                                         /*mqtt*/IOT_PWD: string, IOT_ID: string,    IOT_TOPIC: string, MQTT_PORT: number, MQTT_SERVER: string,
+                                         /*mqtt*/MQTT_PORT: number, MQTT_SERVER: string, IOT_PWD: string, IOT_ID: string,    IOT_TOPIC: string,
                                          /*http*/HTTP_IP: string, HTTP_PORT: number):
     void { 
 
