@@ -1143,7 +1143,7 @@ namespace Obloq {
     //% mutate=objectdestructuring
     //% mutateText=Packeta
     //% mutateDefaults="myparam:message"
-    //% blockId=obloq_mqttCallbackUser block="on received"
+    //% blockId=obloq_mqttCallbackUser block="on obloq received"
     //% advanced=true
     export function obloq_mqttCallbackUser(cb: (packet: Packeta) => void) {
         obloq_mqttCallback(() => {

@@ -18,5 +18,5 @@
 	"Obloq.Obloq_connectMqtt|block": "MQTT连接",
 	"Obloq.Obloq_sendMessage|block": "发送消息 | %mess",
 	"Obloq.Obloq_subTopic|block": "订阅一个TOPIC",
-	"Obloq.obloq_mqttCallbackUser|block": "监听回调函数"
+	"Obloq.obloq_mqttCallbackUser|block": "在obloq收到消息时运行"
 }
