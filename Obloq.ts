@@ -148,12 +148,17 @@ namespace Obloq {
     //% weight=102
     //% blockId=Obloq_setup
     //% block="Obloq setup | WIFI: ↴| SSID: %SSID| PASSWORD: %PASSWORD| MQTT: ↴| IOT_PWD: %IOT_PWD| IOT_ID: %IOT_ID| IOT_TOPIC: %IOT_TOPIC"
-    export function Obloq_setup(/*wifi*/SSID: string,    PASSWORD: string,
-                                /*mqtt*/IOT_PWD: string, IOT_ID: string,    IOT_TOPIC: string):
+    export function Obloq_setup(/*wifi*/SSID: string, PASSWORD: string,
+                                /*mqtt*/IOT_PWD: string, IOT_ID: string, IOT_TOPIC: string):
     void { 
-
+        OBLOQ_SSID = SSID
+        OBLOQ_PASSWORD = PASSWORD
+        OBLOQ_MQTT_SERVER = "iot.dfrobot.com.cn"
+        OBLOQ_MQTT_PORT = 1883
+        OBLOQ_IOT_PWD = IOT_PWD
+        OBLOQ_IOT_ID = IOT_ID
+        OBLOQ_IOT_TOPIC = IOT_TOPIC
     }
-      
 
     /**
      * Initialization serial port
@@ -468,14 +473,12 @@ namespace Obloq {
     /**
      * connect Wifi.SSID(string):account; PWD(string):password;
      * time(ms): private long maxWait
-     * @param SSID name of the value stream, eg: SSID
-     * @param PWD name of the value stream, eg: PASSWORD
-     * @param time to timeout, eg: 10000
     */
     //% weight=100
     //% blockId=Obloq_connectWifi
-    //% block="connect wifi to %SSID| %PWD| timeout %time"
-    export function Obloq_connectWifi(SSID: string, PWD: string, time: number): void { 
+    //% block="wifi connect"
+    export function Obloq_connectWifi(): void { 
+        let time = 10000
         if (time < 100) { 
             time = 100
         }
@@ -504,7 +507,7 @@ namespace Obloq {
             
             obloqreadString(obloqgetRxBufferSize())
             basic.pause(10)
-            obloqWriteString("|2|1|"+SSID+","+PWD+"|\r")
+            obloqWriteString("|2|1|"+OBLOQ_SSID+","+OBLOQ_PASSWORD+"|\r")
         }
         if (!initmqtt) {
             let item = ""
@@ -966,26 +969,28 @@ namespace Obloq {
         return item
     }
 */
-
+ 
     /**
-     * Set the MQTT related parameters.
-     * callback(none):The default fixed parameter, the user does not care, 
-     * the listening callback function calls the "callbackfunction" directly.
-     * url(string): URL; port(number):The port number.
-     * @param port set port, eg: 1883
+     * Connect the MQTT.
+     * @param Iot_id set Iot_id, eg: Iot_id
+     * @param Iot_pwd set Iot_pwd, eg: Iot_pwd
     */
-    //% weight=70
-    //% blockId=Obloq_initMqtt
-    //% block="mqtt set | callback %callback| url %url| port %port"
-    export function Obloq_initMqtt(callback: Callback, url: string, port: number): void { 
+    //% weight=69
+    //% blockId=Obloq_connectMqtt
+    //% block="mqtt connect"
+    export function Obloq_connectMqtt(): void {
         defobloq = OBLOQ_TRUE
         mycb = cb
-        myhost = url;
-        mymqport = port;
+        myhost = OBLOQ_MQTT_SERVER;
+        mymqport = OBLOQ_MQTT_PORT;
         initmqtt = OBLOQ_TRUE;
-
         onEvent()
-    }    
+
+        if (!serialinit) { 
+            Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
+        }
+        obloqWriteString("|4|1|1|"+myhost+"|"+mymqport+"|"+OBLOQ_IOT_ID+"|"+OBLOQ_IOT_PWD+"|\r")
+    } 
 
     /**
      * Reconnect the MQTT.
@@ -1010,22 +1015,7 @@ namespace Obloq {
         if (!serialinit) { 
             Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
         }
-    }  
-
-    /**
-     * Connect the MQTT.
-     * @param Iot_id set Iot_id, eg: Iot_id
-     * @param Iot_pwd set Iot_pwd, eg: Iot_pwd
-    */
-    //% weight=69
-    //% blockId=Obloq_connectMqtt
-    //% block="mqtt connect | iot id %Iot_id| iot pwd %Iot_pwd"
-    export function Obloq_connectMqtt(Iot_id: string, Iot_pwd: string): void { 
-        if (!serialinit) { 
-            Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
-        }
-        obloqWriteString("|4|1|1|"+myhost+"|"+mymqport+"|"+Iot_id+"|"+Iot_pwd+"|\r")
-    }  
+    }   
 
     /**
      * Send a message.
