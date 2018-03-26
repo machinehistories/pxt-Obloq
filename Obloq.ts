@@ -50,6 +50,8 @@ let e = ""
 let serialinit = false
 
 let icon = 1
+
+let SubOk = false
 /*
  *Fixed parameters are passed in.
  */
@@ -1074,6 +1076,14 @@ namespace Obloq {
         if (!serialinit) { 
             Obloq_serialInit(SerialPin.P2, SerialPin.P1)
         }
+        let _timeout = 0
+        while (!SubOk) { 
+            basic.pause(100)
+            _timeout += 1
+            if (_timeout > 100) { 
+                return
+            }
+        }
         obloqWriteString("|4|1|3|"+OBLOQ_IOT_TOPIC+"|"+mess+"|\r")
     }  
 
@@ -1192,6 +1202,7 @@ namespace Obloq {
                                 item.charAt(i + 7) == '|'
                             ) {
                                 e = "SubOk"
+                                SubOk = true
                                 param = ""
                                 break
                             } else if (item.charAt(i + 3) == '|' &&
