@@ -14,6 +14,20 @@
  */
 
 
+
+//wifi
+let OBLOQ_SSID = ""
+let OBLOQ_PASSWORD = ""
+//mqtt
+let OBLOQ_MQTT_PORT = 1883
+let OBLOQ_MQTT_SERVER = "iot.dfrobot.com.cn"
+let OBLOQ_IOT_PWD = ""
+let OBLOQ_IOT_ID = ""
+let OBLOQ_IOT_TOPIC = ""
+//http
+let OBLOQ_HTTP_IP = ""
+let OBLOQ_HTTP_PORT = 8080
+
 //Connect to the WiFi IP address.
 let IP = "0.0.0.0"
 
@@ -127,20 +141,15 @@ namespace Obloq {
 	 * Two parallel stepper motors are executed simultaneously(DegreeDual).
      * @param SSID to SSID ,eg: "yourSSID"
      * @param PASSWORD to PASSWORD ,eg: "yourPASSWORD"
-     * @param MQTT_PORT to MQTT_PORT ,eg: 1883
-     * @param MQTT_SERVER to SSID ,eg: "iot.dfrobot.com.cn"
      * @param IOT_PWD to IOT_PWD ,eg: "yourIotPwd"
      * @param IOT_ID to SSID ,eg: "yourIotId"
      * @param IOT_TOPIC to SSID ,eg: "yourIotTopic"
-     * @param HTTP_IP to SSID ,eg: "0.0.0.0"
-     * @param HTTP_PORT to SSID ,eg: 8080
     */
     //% weight=102
     //% blockId=Obloq_setup
-    //% block="Obloq setup | WIFI: ↴| SSID: %SSID| PASSWORD: %PASSWORD| MQTT: ↴| PORT: %MQTT_PORT| SERVER: %MQTT_SERVER| IOT_PWD: %IOT_PWD| IOT_ID: %IOT_ID| IOT_TOPIC: %IOT_TOPIC| HTTP: ↴ | IP %HTTP_IP| PORT %HTTP_PORT"
+    //% block="Obloq setup | WIFI: ↴| SSID: %SSID| PASSWORD: %PASSWORD| MQTT: ↴| IOT_PWD: %IOT_PWD| IOT_ID: %IOT_ID| IOT_TOPIC: %IOT_TOPIC"
     export function Obloq_setup(/*wifi*/SSID: string,    PASSWORD: string,
-                                         /*mqtt*/MQTT_PORT: number, MQTT_SERVER: string, IOT_PWD: string, IOT_ID: string,    IOT_TOPIC: string,
-                                         /*http*/HTTP_IP: string, HTTP_PORT: number):
+                                /*mqtt*/IOT_PWD: string, IOT_ID: string,    IOT_TOPIC: string):
     void { 
 
     }
