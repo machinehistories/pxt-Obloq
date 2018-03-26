@@ -1122,6 +1122,7 @@ namespace Obloq {
     //% weight=67
     //% blockId=Obloq_subTopic
     //% block="subTopic"
+    //% advanced=true
     export function Obloq_subTopic(): void { 
         if (!serialinit) { 
             Obloq_serialInit(SerialPin.P2, SerialPin.P1)
