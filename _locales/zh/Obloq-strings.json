@@ -1,4 +1,6 @@
 {
+	
+	"Obloq.Obloq_setup|block": "Obloq设置 | WIFI: ↴| SSID: %SSID| PASSWORD: %PASSWORD| MQTT: ↴| IOT_PWD: %IOT_PWD| IOT_ID: %IOT_ID| IOT_TOPIC: %IOT_TOPIC",
 	"Obloq.Obloq_serialInit|block": "串口重定向到 TX %tx| RX %rx",
 	"Obloq.Obloq_quit|block": "断开串口连接",
 	"Obloq.Obloq_sendPing|block": "发送PING 超时 %time",
