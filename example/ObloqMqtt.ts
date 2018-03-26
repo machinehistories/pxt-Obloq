@@ -5,14 +5,14 @@ Obloq.Obloq_setup(
     "ry-MOzFAPz",
     "SkMaGKCDM"
     )
-Obloq.obloq_mqttCallbackUser( ({ mye: e, myparam: param }) =>  {
-    if (e == "SkMaGKCDM") {
-        basic.showString(param)
+Obloq.obloq_mqttCallbackUser(({ mye: instruction, myparam: message }) => {
+    if (instruction == "SkMaGKCDM") {
+        basic.showString(message)
     }
-    if (e == "MqttConneted") {
+    if (message == "MqttConneted") {
         Obloq.Obloq_subTopic()
     }
-    if (e == "SubOk") {
+    if (instruction == "SubOk") {
         basic.showString("OK")
     }
 })

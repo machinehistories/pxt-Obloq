@@ -1038,7 +1038,6 @@ namespace Obloq {
     //% weight=68
     //% blockId=Obloq_sendMessage
     //% block="pubLish | mess %mess"
-    //% advanced=true
     export function Obloq_sendMessage(mess: string): void { 
         if (!serialinit) { 
             Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
