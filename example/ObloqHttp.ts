@@ -8,7 +8,7 @@ ssid = "dfrobotYanfa"
 port = 8080
 ip = "192.168.0.119"
 Obloq.Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
-Obloq.Obloq_connectWifi(ssid, password, 10000)
+Obloq.Obloq_connectWifi()
 basic.showString(Obloq.Obloq_ifconfig())
 Obloq.Obloq_initHttp(ip, port)
 basic.forever(() => {

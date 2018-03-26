@@ -197,6 +197,7 @@ namespace Obloq {
     //% blockGap=50
     //% blockId=Obloq_quit
     //% block="quit"
+    //% advanced=true
     export function Obloq_quit(): void { 
         obloqWriteString("quit!\r")
     }
@@ -208,6 +209,7 @@ namespace Obloq {
     //% weight=49
     //% blockId=Obloq_sendPing
     //% block="sendPing timeout|%time"
+    //% advanced=true
     export function Obloq_sendPing(time: number): string { 
         if (time < 100) { 
             time = 100
@@ -268,6 +270,7 @@ namespace Obloq {
     //% weight=50
     //% blockId=Obloq_getVersion
     //% block="get version timeout %time"
+    //% advanced=true
     export function Obloq_getVersion(time: number): string { 
         if (time < 100) { 
             time = 100
@@ -337,6 +340,7 @@ namespace Obloq {
     //% weight=48
     //% blockId=Obloq_getHeartbeat
     //% block="get heartbeat timeout %time"
+    //% advanced=true
     export function Obloq_getHeartbeat(time: number): string { 
         if (time < 100) { 
             time = 100
@@ -395,6 +399,7 @@ namespace Obloq {
     //% weight=47
     //% blockId=Obloq_stopHeartbeat
     //% block="stop heartbeat"
+    //% advanced=true
     export function Obloq_stopHeartbeat(): boolean { 
         if (!serialinit) { 
             Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
@@ -412,6 +417,7 @@ namespace Obloq {
     //% weight=99
     //% blockId=Obloq_reconnectWifi
     //% block="reconnectWifi timeout %time"
+    //% advanced=true
     export function Obloq_reconnectWifi(time: number): boolean {
         if (time < 100) { 
             time = 100
@@ -586,6 +592,7 @@ namespace Obloq {
     //% weight=80
     //% blockId=Obloq_initHttp
     //% block="http set | ip %ip| port %port"
+    //% advanced=true
     export function Obloq_initHttp(ip: string, port: number): void { 
         defobloq = true
         myip = ip
@@ -600,6 +607,7 @@ namespace Obloq {
     //% weight=79
     //% blockId=Obloq_httpGet
     //% block="http get | url %url| timeout %time"
+    //% advanced=true
     export function Obloq_httpGet(url: string, time: number): string[] { 
         if (time < 100) { 
             time = 100
@@ -693,6 +701,7 @@ namespace Obloq {
     //% weight=78
     //% blockId=Obloq_httpPost
     //% block="http post | url %url| content %content| timeout %time"
+    //% advanced=true
     export function Obloq_httpPost(url: string, content: string, time: number): string[] { 
         if (time < 100) { 
             time = 100
@@ -782,6 +791,7 @@ namespace Obloq {
     //% weight=77
     //% blockId=Obloq_httpPut
     //% block="http put | url %url| content %content| timeout %time"
+    //% advanced=true
     export function Obloq_httpPut(url: string, content: string, time: number): string[] {
         if (time < 100) { 
             time = 100
@@ -871,6 +881,7 @@ namespace Obloq {
     //% blockGap=50
     //% blockId=Obloq_httpDelete
     //% block="http delete | url %url| content %content| timeout %time"
+    //% advanced=true
     export function Obloq_httpDelete(url: string, content: string, time: number): string[] {
         if (time < 100) { 
             time = 100
@@ -998,6 +1009,7 @@ namespace Obloq {
     //% weight=65
     //% blockId=Obloq_reconnectMqtt
     //% block="mqtt reconnect"
+    //% advanced=true
     export function Obloq_reconnectMqtt(): void {
         if (!serialinit) { 
             Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
@@ -1011,6 +1023,7 @@ namespace Obloq {
     //% weight=66
     //% blockId=Obloq_disconnectMqtt
     //% block="mqtt disconnect"
+    //% advanced=true
     export function Obloq_disconnectMqtt(): void { 
         if (!serialinit) { 
             Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
@@ -1025,6 +1038,7 @@ namespace Obloq {
     //% weight=68
     //% blockId=Obloq_sendMessage
     //% block="pubLish | top %top| mess %mess"
+    //% advanced=true
     export function Obloq_sendMessage(top: string, mess: string): void { 
         if (!serialinit) { 
             Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
@@ -1060,6 +1074,7 @@ namespace Obloq {
     //% mutateText=Packeta
     //% mutateDefaults="mye:e,myparam:param"
     //% blockId=obloq_mqttCallbackUser block="callback function"
+    //% advanced=true
     export function obloq_mqttCallbackUser(cb: (packet: Packeta) => void) {
         obloq_mqttCallback(() => {
             const packet = new Packeta();
