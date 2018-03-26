@@ -154,8 +154,8 @@ namespace Obloq {
             } break;
             case 3: {
                 led.plot(0, 0)
-                led.plot(0, 1)
-                led.plot(0, 2)
+                led.plot(1, 0)
+                led.plot(2, 0)
                 led.plot(3, 1)
                 led.plot(4, 2)
                 led.plot(4, 3)
@@ -549,6 +549,9 @@ namespace Obloq {
             let num = 0
             let j = 0
             while (OBLOQ_TRUE) {
+                if ((_timeout+1) % 3 == 0) { 
+                    Obloq_wifiIconShow()
+                }
                 num = obloqRxBufferedSize()
                 //item = serial.readUntil(serial.delimiters(Delimiters.NewLine))
                 if (num >= 5) {
@@ -593,11 +596,11 @@ namespace Obloq {
                  serial.writeString("\r\n");*/
                 basic.pause(100)
                 _timeout += 1
-                if (_timeout > timeout) { 
+                if (_timeout > timeout) {
+                    basic.clearScreen()
                     basic.showIcon(IconNames.No)
                     return
                 }
-                Obloq_wifiIconShow()
             }
         }
         return
