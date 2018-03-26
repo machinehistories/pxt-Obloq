@@ -21,5 +21,5 @@ Obloq.Obloq_connectWifi()
 Obloq.Obloq_connectMqtt()
 basic.forever(() => {
     Obloq.Obloq_sendMessage("hello")
-    basic.pause(5000)
+    basic.pause(10000)
 })
