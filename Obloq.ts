@@ -612,8 +612,9 @@ namespace Obloq {
     */
     //% weight=98
     //% blockId=Obloq_Obloq_ifconfig
-    //% block="ifconfig"
-    export function Obloq_ifconfig(): string { 
+    //% block="ipconfig"
+    //% advanced=true
+    export function Obloq_ipconfig(): string { 
         return IP
     }
 
@@ -1024,6 +1025,7 @@ namespace Obloq {
     //% blockId=Obloq_connectMqtt
     //% block="mqtt connect"
     export function Obloq_connectMqtt(): void {
+        let _timeout = 0
         defobloq = OBLOQ_TRUE
         mycb = cb
         myhost = OBLOQ_MQTT_SERVER;
@@ -1034,7 +1036,33 @@ namespace Obloq {
         if (!serialinit) { 
             Obloq_serialInit(SerialPin.P2, SerialPin.P1)
         }
-        obloqWriteString("|4|1|1|"+myhost+"|"+mymqport+"|"+OBLOQ_IOT_ID+"|"+OBLOQ_IOT_PWD+"|\r")
+        obloqWriteString("|4|1|1|" + myhost + "|" + mymqport + "|" + OBLOQ_IOT_ID + "|" + OBLOQ_IOT_PWD + "|\r")
+        
+        while (_timeout<10000) { 
+            if (e == "MqttConneted") { 
+                break
+            }
+            basic.pause(1)
+            _timeout += 1
+        }
+        if (_timeout >= 10000) { 
+            basic.showString("timeout!")
+            return
+        }
+        Obloq_subTopic()
+        _timeout = 0
+        while (_timeout<10000) { 
+            if (e == "SubOk") { 
+                break
+            }
+            basic.pause(1)
+            _timeout += 1
+        }
+        if (_timeout >= 10000) { 
+            basic.showString("timeout!")
+            return
+        }
+        basic.showString("ok")
     } 
 
     /**
@@ -1113,7 +1141,7 @@ namespace Obloq {
     //% blockGap=50
     //% mutate=objectdestructuring
     //% mutateText=Packeta
-    //% mutateDefaults="mye:instruction,myparam:message"
+    //% mutateDefaults="myparam:message"
     //% blockId=obloq_mqttCallbackUser block="on received"
     //% advanced=true
     export function obloq_mqttCallbackUser(cb: (packet: Packeta) => void) {
@@ -1139,7 +1167,7 @@ namespace Obloq {
                         if (item.charAt(i + 2) == '1') { //|1|1|
                             e = "Pingok"
                             param = ""
-                            break
+                            return
                         } else if (item.charAt(i + 2) == '2') { //|1|2|
                             let z = 0
                             let j = i + 4
@@ -1152,11 +1180,11 @@ namespace Obloq {
                             }
                             e = "getVersion"
                             param = item.substr(j, z)
-                            break
+                            return
                         } else if (item.charAt(i + 2) == '3') { //|1|3|
                             e = "Heartbeat"
                             param = "OK"
-                            break
+                            return
                         } 
                     }
                 } else if (item.charAt(i) == '2') {
@@ -1175,11 +1203,11 @@ namespace Obloq {
                             }
                             e = "WifiConnected"
                             param = item.substr(j, z)
-                            break
+                            return
                         } else if (item.charAt(i + 2) == '4') { //|2|4|
                             e = "DisConnected"
                             param = "fail"
-                            break
+                            return
                         } 
                     }
                 } else if (item.charAt(i) == '4') { // serial.writeNumber(2);
@@ -1194,7 +1222,7 @@ namespace Obloq {
                                 e = "MqttConneted"
                                 param = ""
                                // serial.writeNumber(size);
-                                break
+                               return
                             } else if (item.charAt(i + 3) == '|' &&
                                 item.charAt(i + 4) == '2' && //|4|1|2|1|
                                 item.charAt(i + 5) == '|' &&
@@ -1204,7 +1232,7 @@ namespace Obloq {
                                 e = "SubOk"
                                 SubOk = true
                                 param = ""
-                                break
+                                return
                             } else if (item.charAt(i + 3) == '|' &&
                                 item.charAt(i + 4) == '3' && //|4|1|3|1|
                                 item.charAt(i + 5) == '|' &&
@@ -1213,7 +1241,7 @@ namespace Obloq {
                             ) {  //led.plot(0, 1)
                                 e = "PulishOk"
                                 param = ""
-                                break
+                                return
                             } else if (item.charAt(i + 3) == '|' &&
                                 item.charAt(i + 4) == '5' && //|4|1|5|
                                 item.charAt(i + 5) == '|'
@@ -1259,7 +1287,7 @@ namespace Obloq {
                                 }
                                 e = "ConnectErr"
                                 param = item.substr(j, z)
-                                break
+                                return
                             }
                         }
                     }

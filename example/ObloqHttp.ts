@@ -9,7 +9,7 @@ port = 8080
 ip = "192.168.0.119"
 Obloq.Obloq_serialInit(SerialPin.P2, SerialPin.P1)
 Obloq.Obloq_connectWifi()
-basic.showString(Obloq.Obloq_ifconfig())
+basic.showString(Obloq.Obloq_ipconfig())
 Obloq.Obloq_initHttp(ip, port)
 basic.forever(() => {
     item = Obloq.Obloq_httpGet("input?id=1&val=" + input.temperature(), 10000)
