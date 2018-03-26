@@ -121,6 +121,31 @@ namespace Obloq {
     function obloqWriteString(text: string): void {
         return
     }  
+
+
+    let IOT_PWD = ""
+    let IOT_ID = ""
+    let PASSWORD = ""
+    let SSID = ""
+    let PORT = 0
+    let IOT_TOPIC = ""
+    let SERVER = ""
+    let ip = ""
+    let port = 0
+    /**
+	 * Two parallel stepper motors are executed simultaneously(DegreeDual).
+    */
+    //% weight=102
+    //% blockId=Obloq_setup
+    //% block = "Obloq setup WIFI:| SSID: %SSID| PASSWORD: %PASSWORD| MQTT:| IOT_PWD: %IOT_PWD| IOT_ID: %IOT_ID| IOT_TOPIC: %IOT_TOPIC| MQTT_PORT: %MQTT_PORT| MQTT_SERVER: %MQTT_SERVER| HTTP: | HTTP_IP %HTTP_IP| HTTP_PORT %HTTP_PORT"
+    export function Obloq_setup(/*wifi*/SSID: string,    PASSWORD: string,
+                                         /*mqtt*/IOT_PWD: string, IOT_ID: string,    IOT_TOPIC: string, MQTT_PORT: number, MQTT_SERVER: string,
+                                         /*http*/HTTP_IP: string, HTTP_PORT: number):
+    void { 
+
+    }
+      
+
     /**
      * Initialization serial port
      * @param tx to tx, eg: SerialPin.P2

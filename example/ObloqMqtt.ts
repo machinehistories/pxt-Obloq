@@ -24,9 +24,7 @@ IOT_ID = "ry-MOzFAPz"
 IOT_PWD = "H1zzdztAwz"
 IOT_TOPIC = "SkMaGKCDM"
 Obloq.Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
-while (Obloq.Obloq_connectWifi(SSID, PASSWORD, 10000) != true) {
-    basic.showString(".")
-}
+Obloq.Obloq_connectWifi(SSID, PASSWORD, 10000)
 Obloq.Obloq_initMqtt(Callback.C1, SERVER, PORT)
 Obloq.Obloq_connectMqtt(IOT_ID, IOT_PWD)
 basic.forever(() => {
