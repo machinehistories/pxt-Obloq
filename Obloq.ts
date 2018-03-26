@@ -535,7 +535,6 @@ namespace Obloq {
             if (!serialinit) { 
                 Obloq_serialInit(SerialPin.P2, SerialPin.P1)
             }
-            Obloq_reconnectWifi(10000)
             for (let i = 0; i < 3; i++) {
                 obloqWriteString("|1|1|\r")
                 basic.pause(100)
