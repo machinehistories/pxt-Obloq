@@ -10,7 +10,7 @@ Obloq.obloq_mqttCallbackUser( ({ mye: e, myparam: param }) =>  {
         basic.showString(param)
     }
     if (e == "MqttConneted") {
-        Obloq.Obloq_subTopic("SkMaGKCDM")
+        Obloq.Obloq_subTopic()
     }
     if (e == "SubOk") {
         basic.showString("OK")
@@ -20,6 +20,6 @@ Obloq.Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
 Obloq.Obloq_connectWifi()
 Obloq.Obloq_connectMqtt()
 basic.forever(() => {
-    Obloq.Obloq_sendMessage("SkMaGKCDM", "hello")
+    Obloq.Obloq_sendMessage("hello")
     basic.pause(5000)
 })

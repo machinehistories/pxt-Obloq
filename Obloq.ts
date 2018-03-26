@@ -1037,13 +1037,13 @@ namespace Obloq {
     */
     //% weight=68
     //% blockId=Obloq_sendMessage
-    //% block="pubLish | top %top| mess %mess"
+    //% block="pubLish | mess %mess"
     //% advanced=true
-    export function Obloq_sendMessage(top: string, mess: string): void { 
+    export function Obloq_sendMessage(mess: string): void { 
         if (!serialinit) { 
             Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
         }
-        obloqWriteString("|4|1|3|"+top+"|"+mess+"|\r")
+        obloqWriteString("|4|1|3|"+OBLOQ_IOT_TOPIC+"|"+mess+"|\r")
     }  
 
     /**
@@ -1052,12 +1052,12 @@ namespace Obloq {
     */
     //% weight=67
     //% blockId=Obloq_subTopic
-    //% block="subTopic | %top"
-    export function Obloq_subTopic(top: string): void { 
+    //% block="subTopic"
+    export function Obloq_subTopic(): void { 
         if (!serialinit) { 
             Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
         }
-        obloqWriteString("|4|1|2|"+top+"|\r")
+        obloqWriteString("|4|1|2|"+OBLOQ_IOT_TOPIC+"|\r")
     }  
 
     function obloq_mqttCallback(a: Action): void{
@@ -1072,8 +1072,8 @@ namespace Obloq {
     //% blockGap=50
     //% mutate=objectdestructuring
     //% mutateText=Packeta
-    //% mutateDefaults="mye:e,myparam:param"
-    //% blockId=obloq_mqttCallbackUser block="callback function"
+    //% mutateDefaults="mye:instruction,myparam:message"
+    //% blockId=obloq_mqttCallbackUser block="on received"
     //% advanced=true
     export function obloq_mqttCallbackUser(cb: (packet: Packeta) => void) {
         obloq_mqttCallback(() => {
