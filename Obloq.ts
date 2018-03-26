@@ -48,6 +48,8 @@ let param = ""
 let e = ""
 
 let serialinit = false
+
+let icon = 1
 /*
  *Fixed parameters are passed in.
  */
@@ -134,7 +136,32 @@ namespace Obloq {
     //% advanced=true shim=Obloq::obloqWriteString
     function obloqWriteString(text: string): void {
         return
-    }  
+    }
+
+    function Obloq_wifiIconShow(): void { 
+        switch (icon) { 
+            case 1: {
+                basic.clearScreen()
+                led.plot(0, 4)
+            } break;
+            case 2: { 
+                led.plot(0, 2)
+                led.plot(1, 2)
+                led.plot(2, 3)
+                led.plot(2, 4)
+            } break;
+            case 3: {
+                led.plot(0, 0)
+                led.plot(0, 1)
+                led.plot(0, 2)
+                led.plot(3, 1)
+                led.plot(4, 2)
+                led.plot(4, 3)
+                led.plot(4, 4)
+                icon = 1
+            } break;
+        }
+    }
 
 
     /**
@@ -168,8 +195,8 @@ namespace Obloq {
     */
     //% weight=101
     //% blockId=Obloq_serialInit
-    //% block="serial init tx %tx| rx %rx|baudrate %Baudrate"
-    export function Obloq_serialInit(tx: SerialPin, rx: SerialPin, Baudrate: BaudRate): void{ 
+    //% block="serial init tx %tx| rx %rx"
+    export function Obloq_serialInit(tx: SerialPin, rx: SerialPin): void{ 
         let item = ""
         //First send data through usb, avoid the first data scrambled.
         obloqWriteString("123")  
@@ -179,7 +206,7 @@ namespace Obloq {
         serial.redirect(
             tx,
             rx,
-            Baudrate
+            BaudRate.BaudRate9600
         )
         obloqSetTxBufferSize(300)
         obloqSetRxBufferSize(300)
@@ -217,7 +244,7 @@ namespace Obloq {
         let timeout = time / 100
         let _timeout = 0
         if (!serialinit) { 
-            Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
+            Obloq_serialInit(SerialPin.P2, SerialPin.P1)
         }
         obloqWriteString("|1|1|\r")
         if (!initmqtt) {
@@ -278,7 +305,7 @@ namespace Obloq {
         let timeout = time / 100
         let _timeout = 0
         if (!serialinit) { 
-            Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
+            Obloq_serialInit(SerialPin.P2, SerialPin.P1)
         }
         obloqWriteString("|1|2|\r")
         if (!initmqtt) {
@@ -348,7 +375,7 @@ namespace Obloq {
         let timeout = time / 100
         let _timeout = 0
         if (!serialinit) { 
-            Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
+            Obloq_serialInit(SerialPin.P2, SerialPin.P1)
         }
         obloqWriteString("|1|3|" + time + "|\r")
         if (!initmqtt) {
@@ -402,7 +429,7 @@ namespace Obloq {
     //% advanced=true
     export function Obloq_stopHeartbeat(): boolean { 
         if (!serialinit) { 
-            Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
+            Obloq_serialInit(SerialPin.P2, SerialPin.P1)
         }
         obloqWriteString("|1|3|-1000|\r")
         return OBLOQ_TRUE
@@ -425,7 +452,7 @@ namespace Obloq {
         let timeout = time / 100
         let _timeout = 0
         if (!serialinit) { 
-            Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
+            Obloq_serialInit(SerialPin.P2, SerialPin.P1)
         }
         obloqWriteString("|2|2|\r")
         if (!initmqtt) {
@@ -504,7 +531,7 @@ namespace Obloq {
             //obloqSetTxBufferSize(60)
             //obloqSetRxBufferSize(60)
             if (!serialinit) { 
-                Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
+                Obloq_serialInit(SerialPin.P2, SerialPin.P1)
             }
             for (let i = 0; i < 3; i++) {
                 obloqWriteString("|1|1|\r")
@@ -568,6 +595,7 @@ namespace Obloq {
                     basic.showIcon(IconNames.No)
                     return
                 }
+                Obloq_wifiIconShow()
             }
         }
         return
@@ -615,7 +643,7 @@ namespace Obloq {
         let timeout = time / 100
         let _timeout = 0
         if (!serialinit) { 
-            Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
+            Obloq_serialInit(SerialPin.P2, SerialPin.P1)
         }
         obloqWriteString("|3|1|http://" + myip + ":" + myport + "/" + url + "|\r")
         //while((strncmp(buf,"|1|3|\r",strlen(buf)) == 0)){
@@ -709,7 +737,7 @@ namespace Obloq {
         let timeout = time / 100
         let _timeout = 0
         if (!serialinit) { 
-            Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
+            Obloq_serialInit(SerialPin.P2, SerialPin.P1)
         }
         obloqWriteString("|3|2|http://" + myip + ":" + myport + "/" + url + "," + content + "|\r")
         //while((strncmp(buf,"|1|3|\r",strlen(buf)) == 0)){
@@ -799,7 +827,7 @@ namespace Obloq {
         let timeout = time / 100
         let _timeout = 0
         if (!serialinit) { 
-            Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
+            Obloq_serialInit(SerialPin.P2, SerialPin.P1)
         }
         obloqWriteString("|3|3|http://"+myip+":"+myport+"/"+url+","+content+"|\r")
         let item = ""
@@ -889,7 +917,7 @@ namespace Obloq {
         let timeout = time / 100
         let _timeout = 0
         if (!serialinit) { 
-            Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
+            Obloq_serialInit(SerialPin.P2, SerialPin.P1)
         }
         obloqWriteString("|3|4|http://"+myip+":"+myport+"/"+url+","+content+"|\r")
         let item = ""
@@ -998,7 +1026,7 @@ namespace Obloq {
         onEvent()
 
         if (!serialinit) { 
-            Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
+            Obloq_serialInit(SerialPin.P2, SerialPin.P1)
         }
         obloqWriteString("|4|1|1|"+myhost+"|"+mymqport+"|"+OBLOQ_IOT_ID+"|"+OBLOQ_IOT_PWD+"|\r")
     } 
@@ -1012,7 +1040,7 @@ namespace Obloq {
     //% advanced=true
     export function Obloq_reconnectMqtt(): void {
         if (!serialinit) { 
-            Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
+            Obloq_serialInit(SerialPin.P2, SerialPin.P1)
         }
         obloqWriteString("|4|1|5|\r")
     }  
@@ -1026,7 +1054,7 @@ namespace Obloq {
     //% advanced=true
     export function Obloq_disconnectMqtt(): void { 
         if (!serialinit) { 
-            Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
+            Obloq_serialInit(SerialPin.P2, SerialPin.P1)
         }
     }   
 
@@ -1040,7 +1068,7 @@ namespace Obloq {
     //% block="pubLish | mess %mess"
     export function Obloq_sendMessage(mess: string): void { 
         if (!serialinit) { 
-            Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
+            Obloq_serialInit(SerialPin.P2, SerialPin.P1)
         }
         obloqWriteString("|4|1|3|"+OBLOQ_IOT_TOPIC+"|"+mess+"|\r")
     }  
@@ -1054,7 +1082,7 @@ namespace Obloq {
     //% block="subTopic"
     export function Obloq_subTopic(): void { 
         if (!serialinit) { 
-            Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
+            Obloq_serialInit(SerialPin.P2, SerialPin.P1)
         }
         obloqWriteString("|4|1|2|"+OBLOQ_IOT_TOPIC+"|\r")
     }  
@@ -1231,7 +1259,7 @@ namespace Obloq {
 
     function onEvent() {
         if (!serialinit) { 
-            Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
+            Obloq_serialInit(SerialPin.P2, SerialPin.P1)
         }
         //obloqClearRxBuffer()
         //obloqClearTxBuffer()

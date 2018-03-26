@@ -16,7 +16,7 @@ Obloq.obloq_mqttCallbackUser(({ mye: instruction, myparam: message }) => {
         basic.showString("OK")
     }
 })
-Obloq.Obloq_serialInit(SerialPin.P2, SerialPin.P1, BaudRate.BaudRate9600)
+Obloq.Obloq_serialInit(SerialPin.P2, SerialPin.P1)
 Obloq.Obloq_connectWifi()
 Obloq.Obloq_connectMqtt()
 basic.forever(() => {
