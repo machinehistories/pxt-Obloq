@@ -9,7 +9,7 @@ Obloq.obloq_mqttCallbackUser(({ mye: instruction, myparam: message }) => {
     if (instruction == "SkMaGKCDM") {
         basic.showString(message)
     }
-    if (message == "MqttConneted") {
+    if (instruction == "MqttConneted") {
         Obloq.Obloq_subTopic()
     }
     if (instruction == "SubOk") {
