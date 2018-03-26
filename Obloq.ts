@@ -578,6 +578,7 @@ namespace Obloq {
                                 FIRST = OBLOQ_FALSE
                                 //serial.writeString(IP);
                                 //serial.writeString("\r\n");
+                                basic.showIcon(IconNames.Yes)
                                 return
                             }
                         }
@@ -597,7 +598,6 @@ namespace Obloq {
                 basic.pause(100)
                 _timeout += 1
                 if (_timeout > timeout) {
-                    basic.clearScreen()
                     basic.showIcon(IconNames.No)
                     return
                 }
