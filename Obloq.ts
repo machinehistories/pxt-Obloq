@@ -1116,6 +1116,7 @@ namespace Obloq {
 */
  
     function Obloq_connectMqtt(): number {
+        let iconnum = 0
         let _timeout = 0
         defobloq = OBLOQ_TRUE
         mycb = cb
@@ -1132,6 +1133,7 @@ namespace Obloq {
         while (_timeout < 5000) { 
             if (_timeout % 50 == 0) { 
                 Obloq_mqttIconShow()
+                iconnum += 1;
             }
             if (e == "MqttConneted") {
                 basic.showIcon(IconNames.Yes)
@@ -1152,10 +1154,13 @@ namespace Obloq {
         while (_timeout < 5000) {
             if (_timeout % 50 == 0) { 
                 Obloq_mqttIconShow()
+                iconnum += 1
             }
-            if (e == "SubOk") { 
-                break
-            }
+            if (iconnum > 6) {//动画两次以上
+                if (e == "SubOk") {
+                    break
+                }
+            }    
             basic.pause(1)
             _timeout += 1
         }
