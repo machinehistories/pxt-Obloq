@@ -1114,7 +1114,13 @@ namespace Obloq {
         return item
     }
 */
- 
+    function Obloq_connectIot(): void { 
+        if (!serialinit) { 
+            Obloq_serialInit(SerialPin.P2, SerialPin.P1)
+        }
+        obloqWriteString("|4|1|1|" + myhost + "|" + mymqport + "|" + OBLOQ_IOT_ID + "|" + OBLOQ_IOT_PWD + "|\r")
+    }
+
     function Obloq_connectMqtt(): number {
         let iconnum = 0
         let _timeout = 0
@@ -1125,11 +1131,8 @@ namespace Obloq {
         initmqtt = OBLOQ_TRUE;
         onEvent()
 
-        if (!serialinit) { 
-            Obloq_serialInit(SerialPin.P2, SerialPin.P1)
-        }
-        obloqWriteString("|4|1|1|" + myhost + "|" + mymqport + "|" + OBLOQ_IOT_ID + "|" + OBLOQ_IOT_PWD + "|\r")
-        
+        Obloq_connectIot()
+
         while (_timeout < 5000) { 
             if (_timeout % 50 == 0) { 
                 Obloq_mqttIconShow()
