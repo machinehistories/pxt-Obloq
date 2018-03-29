@@ -1133,14 +1133,12 @@ namespace Obloq {
 
         Obloq_connectMqtt()
 
-        while (_timeout < 5000) { 
+        while (_timeout < 2000) { 
             if (_timeout % 50 == 0) { 
                 Obloq_mqttIconShow()
                 iconnum += 1;
             }
             if (e == "MqttConneted") {
-                basic.showIcon(IconNames.Yes)
-                basic.pause(500)
                 break
             } else if (e == "ConnectErr") { 
                 OBLOQ_MQTT_CONNECT_FAILURE
@@ -1148,12 +1146,12 @@ namespace Obloq {
             basic.pause(1)
             _timeout += 1
         }
-        if (_timeout >= 5000) { 
+        if (_timeout >= 2000) { 
             //basic.showString("timeout!")
             return OBLOQ_MQTT_CONNECT_TIMEOUT 
         }
         Obloq_subTopic()
-        let __timeout = _timeout + 5000
+        let __timeout = _timeout + 2000
         while (_timeout < __timeout) {
             if (_timeout % 50 == 0) { 
                 Obloq_mqttIconShow()
