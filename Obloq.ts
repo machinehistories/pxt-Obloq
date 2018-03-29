@@ -1150,8 +1150,8 @@ namespace Obloq {
             return OBLOQ_MQTT_CONNECT_TIMEOUT 
         }
         Obloq_subTopic()
-        _timeout = 0
-        while (_timeout < 5000) {
+        let __timeout = _timeout + 5000
+        while (_timeout < __timeout) {
             if (_timeout % 50 == 0) { 
                 Obloq_mqttIconShow()
                 iconnum += 1
@@ -1164,7 +1164,7 @@ namespace Obloq {
             basic.pause(1)
             _timeout += 1
         }
-        if (_timeout >= 5000) { 
+        if (_timeout >= __timeout) { 
            //basic.showString("timeout!")
             return OBLOQ_MQTT_SUBTOPIC_TIMEOUT
         }
