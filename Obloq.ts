@@ -175,12 +175,15 @@ namespace Obloq {
      * @param IOT_ID to SSID ,eg: "yourIotId"
      * @param IOT_PWD to IOT_PWD ,eg: "yourIotPwd"
      * @param IOT_TOPIC to SSID ,eg: "yourIotTopic"
+     * @param receive to tx, eg: SerialPin.P1
+     * @param send to tx, eg: SerialPin.P2
     */
     //% weight=102
     //% blockId=Obloq_setup
-    //% block="Obloq setup | WIFI: ↴| SSID: %SSID| PASSWORD: %PASSWORD| MQTT: ↴| IOT_ID: %IOT_ID| IOT_PWD: %IOT_PWD| IOT_TOPIC: %IOT_TOPIC"
+    //% block="Obloq setup | WIFI: ↴| SSID: %SSID| PASSWORD: %PASSWORD| MQTT: ↴| IOT_ID: %IOT_ID| IOT_PWD: %IOT_PWD| IOT_TOPIC: %IOT_TOPIC| SERIAL: ↴| receive: %SerialPin| send: %SerialPin"
     export function Obloq_setup(/*wifi*/SSID: string, PASSWORD: string,
-                                /*mqtt*/IOT_ID: string, IOT_PWD: string, IOT_TOPIC: string):
+                                /*mqtt*/IOT_ID: string, IOT_PWD: string, IOT_TOPIC: string,
+                                /*serial*/receive: SerialPin, send: SerialPin):
     void { 
         OBLOQ_SSID = SSID
         OBLOQ_PASSWORD = PASSWORD
@@ -189,18 +192,10 @@ namespace Obloq {
         OBLOQ_IOT_PWD = IOT_PWD
         OBLOQ_IOT_ID = IOT_ID
         OBLOQ_IOT_TOPIC = IOT_TOPIC
+        Obloq_serialInit(send, receive)
     }
 
-    /**
-     * Initialization serial port
-     * @param tx to tx, eg: SerialPin.P2
-     * @param rx to tx, eg: SerialPin.P1
-     * @param Baudrate to tx, eg: BaudRate.BaudRate9600
-    */
-    //% weight=101
-    //% blockId=Obloq_serialInit
-    //% block="serial redirect to tx %tx| rx %rx"
-    export function Obloq_serialInit(tx: SerialPin, rx: SerialPin): void{ 
+    function Obloq_serialInit(tx: SerialPin, rx: SerialPin): void{ 
         let item = ""
         //First send data through usb, avoid the first data scrambled.
         obloqWriteString("123")  
