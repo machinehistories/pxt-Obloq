@@ -1379,6 +1379,7 @@ namespace Obloq {
                                     param = ""
                                     event = false
                                     FIRST = true
+                                    initmqtt = false
                                     return
                                 } else if (item.charAt(i + 3) == '|' &&
                                     item.charAt(i + 4) == '5' && //|4|1|5|
