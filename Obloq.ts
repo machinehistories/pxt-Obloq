@@ -1139,7 +1139,7 @@ namespace Obloq {
             }
             basic.pause(1)
             _timeout += 1
-            if (_timeout % 300 == 0) { 
+            if (_timeout % 100 == 0) { 
                 Obloq_mqttIconShow()
             }
         }
@@ -1155,7 +1155,7 @@ namespace Obloq {
             }
             basic.pause(1)
             _timeout += 1
-            if (_timeout % 300 == 0) { 
+            if (_timeout % 100 == 0) { 
                 Obloq_mqttIconShow()
             }
         }
