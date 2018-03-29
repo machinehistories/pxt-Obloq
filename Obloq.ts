@@ -587,7 +587,7 @@ namespace Obloq {
         ret = Obloq_connectIot()
         switch (ret) { 
             case OBLOQ_SUCCE_OK: {
-                basic.showString("OK")
+                basic.showIcon(IconNames.Yes)
                 basic.pause(500)
              } break;
             case OBLOQ_MQTT_SUBTOPIC_TIMEOUT: { 
@@ -1247,6 +1247,9 @@ namespace Obloq {
     //% block="subTopic"
     //% advanced=true
     export function Obloq_subTopic(): void { 
+        if (event == false) { 
+            return 
+        }
         if (!serialinit) { 
             Obloq_serialInit()
         }
@@ -1375,6 +1378,7 @@ namespace Obloq {
                                     e = "PulishFailure"
                                     param = ""
                                     event = false
+                                    FIRST = true
                                     return
                                 } else if (item.charAt(i + 3) == '|' &&
                                     item.charAt(i + 4) == '5' && //|4|1|5|
