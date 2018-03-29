@@ -175,12 +175,11 @@ namespace Obloq {
      * @param IOT_ID to SSID ,eg: "yourIotId"
      * @param IOT_PWD to IOT_PWD ,eg: "yourIotPwd"
      * @param IOT_TOPIC to SSID ,eg: "yourIotTopic"
-     * @param receive to receive, eg: SerialPin.P1
      * @param send to send, eg: SerialPin.P2
     */
     //% weight=102
     //% blockId=Obloq_setup
-    //% block="Obloq setup | WIFI: ↴| SSID: %SSID| PASSWORD: %PASSWORD| MQTT: ↴| IOT_ID: %IOT_ID| IOT_PWD: %IOT_PWD| IOT_TOPIC: %IOT_TOPIC| SERIAL: ↴| receive: %SerialPin| send: %SerialPin"
+    //% block="Obloq setup | WIFI: ↴| ssid: %SSID| password: %PASSWORD| mqtt: ↴| iot id: %IOT_ID| iot pwd: %IOT_PWD| iot topic: %IOT_TOPIC| serial: ↴| receive: %SerialPin| send: %SerialPin"
     export function Obloq_setup(/*wifi*/SSID: string, PASSWORD: string,
                                 /*mqtt*/IOT_ID: string, IOT_PWD: string, IOT_TOPIC: string,
                                 /*serial*/receive: SerialPin, send: SerialPin):
