@@ -593,12 +593,14 @@ namespace Obloq {
                 basic.pause(500)
              } break;
             case OBLOQ_MQTT_SUBTOPIC_TIMEOUT: { 
+                FIRST = true
                 event = false
                 Obloq_disconnectMqtt()
                 e = "PulishFailure"
                 return
             } break;
             case OBLOQ_MQTT_CONNECT_TIMEOUT: { 
+                FIRST = true
                 event = false
                 Obloq_disconnectMqtt()
                 e = "PulishFailure"
