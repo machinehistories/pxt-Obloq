@@ -176,7 +176,7 @@ namespace Obloq {
      * @param IOT_PWD to IOT_PWD ,eg: "yourIotPwd"
      * @param IOT_TOPIC to SSID ,eg: "yourIotTopic"
      * @param receive to tx, eg: SerialPin.P1
-     * @param send to tx, eg: SerialPin.P2
+     * @param send to send, eg: SerialPin.P2
     */
     //% weight=102
     //% blockId=Obloq_setup
