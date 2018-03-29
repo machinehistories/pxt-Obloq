@@ -577,7 +577,7 @@ namespace Obloq {
                 while (true) { basic.pause(10000) }
             } break;
         }
-        ret = Obloq_connectMqtt()
+        ret = Obloq_connectIot()
         switch (ret) { 
             case OBLOQ_SUCCE_OK: {
                 basic.showString("OK")
@@ -1114,14 +1114,14 @@ namespace Obloq {
         return item
     }
 */
-    function Obloq_connectIot(): void { 
+    function Obloq_connectMqtt(): void { 
         if (!serialinit) { 
             Obloq_serialInit(SerialPin.P2, SerialPin.P1)
         }
         obloqWriteString("|4|1|1|" + myhost + "|" + mymqport + "|" + OBLOQ_IOT_ID + "|" + OBLOQ_IOT_PWD + "|\r")
     }
 
-    function Obloq_connectMqtt(): number {
+    function Obloq_connectIot(): number {
         let iconnum = 0
         let _timeout = 0
         defobloq = OBLOQ_TRUE
@@ -1131,7 +1131,7 @@ namespace Obloq {
         initmqtt = OBLOQ_TRUE;
         onEvent()
 
-        Obloq_connectIot()
+        Obloq_connectMqtt()
 
         while (_timeout < 5000) { 
             if (_timeout % 50 == 0) { 
