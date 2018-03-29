@@ -580,7 +580,7 @@ namespace Obloq {
         ret = Obloq_connectMqtt()
         switch (ret) { 
             case OBLOQ_SUCCE_OK: {
-                basic.showIcon(IconNames.Yes)
+                basic.showString("OK")
                 basic.pause(500)
              } break;
             case OBLOQ_MQTT_SUBTOPIC_TIMEOUT: { 
@@ -1133,6 +1133,8 @@ namespace Obloq {
         
         while (_timeout<10000) { 
             if (e == "MqttConneted") {
+                basic.showIcon(IconNames.Yes)
+                basic.pause(500)
                 break
             } else if (e == "ConnectErr") { 
                 OBLOQ_MQTT_CONNECT_FAILURE
