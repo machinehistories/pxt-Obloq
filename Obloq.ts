@@ -170,8 +170,8 @@ namespace Obloq {
 
     /**
 	 * Two parallel stepper motors are executed simultaneously(DegreeDual).
-     * @param SSID to SSID ,eg: "yourSSID"
-     * @param PASSWORD to PASSWORD ,eg: "yourPASSWORD"
+     * @param ssid to ssid ,eg: "yourSSID"
+     * @param password to password ,eg: "yourPASSWORD"
      * @param IOT_ID to SSID ,eg: "yourIotId"
      * @param IOT_PWD to IOT_PWD ,eg: "yourIotPwd"
      * @param IOT_TOPIC to SSID ,eg: "yourIotTopic"
@@ -179,13 +179,13 @@ namespace Obloq {
     */
     //% weight=102
     //% blockId=Obloq_setup
-    //% block="Obloq setup | WIFI: ↴| ssid: %SSID| password: %PASSWORD| mqtt: ↴| iot id: %IOT_ID| iot pwd: %IOT_PWD| iot topic: %IOT_TOPIC| serial: ↴| receive: %SerialPin| send: %SerialPin"
-    export function Obloq_setup(/*wifi*/SSID: string, PASSWORD: string,
+    //% block="Obloq setup | WIFI: ↴| ssid: %ssid| password: %password| mqtt: ↴| iot id: %IOT_ID| iot pwd: %IOT_PWD| iot topic: %IOT_TOPIC| serial: ↴| receive: %SerialPin| send: %SerialPin"
+    export function Obloq_setup(/*wifi*/ssid: string, password: string,
                                 /*mqtt*/IOT_ID: string, IOT_PWD: string, IOT_TOPIC: string,
                                 /*serial*/receive: SerialPin, send: SerialPin):
     void { 
-        OBLOQ_SSID = SSID
-        OBLOQ_PASSWORD = PASSWORD
+        OBLOQ_SSID = ssid
+        OBLOQ_PASSWORD = password
         OBLOQ_MQTT_SERVER = "iot.dfrobot.com.cn"
         OBLOQ_MQTT_PORT = 1883
         OBLOQ_IOT_PWD = IOT_PWD
