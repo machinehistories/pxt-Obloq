@@ -558,8 +558,6 @@ namespace Obloq {
     //% block="start connect"
     export function Obloq_startConnect(): void { 
         let ret = Obloq_connectWifi()
-        basic.showNumber(ret)
-        while (true) { basic.pause(10000) }
         switch (ret) { 
             case OBLOQ_SUCCE_OK: {
                 basic.showIcon(IconNames.Yes)
