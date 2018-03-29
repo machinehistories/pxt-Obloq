@@ -3,12 +3,14 @@ Obloq.Obloq_setup(
     "hidfrobot",
     "ry-MOzFAPz",
     "H1zzdztAwz",
-    "SkMaGKCDM"
+    "SkMaGKCDM",
+    SerialPin.P1,
+    SerialPin.P2
+
     )
     Obloq.obloq_mqttCallbackUser( ({ myparam: message }) =>  {
         basic.showString(message)
     })
-Obloq.Obloq_serialInit(SerialPin.P2, SerialPin.P1)
 Obloq.Obloq_connectWifi()
 Obloq.Obloq_connectMqtt()
 basic.forever(() => {
