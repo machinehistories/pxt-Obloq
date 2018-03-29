@@ -605,8 +605,6 @@ namespace Obloq {
 
 
 
-
-
     function Obloq_connectWifi(): number { 
         let time = 10000
         if (time < 100) { 
@@ -1131,7 +1129,10 @@ namespace Obloq {
         }
         obloqWriteString("|4|1|1|" + myhost + "|" + mymqport + "|" + OBLOQ_IOT_ID + "|" + OBLOQ_IOT_PWD + "|\r")
         
-        while (_timeout<10000) { 
+        while (_timeout < 5000) { 
+            if (_timeout % 50 == 0) { 
+                Obloq_mqttIconShow()
+            }
             if (e == "MqttConneted") {
                 basic.showIcon(IconNames.Yes)
                 basic.pause(500)
@@ -1141,27 +1142,24 @@ namespace Obloq {
             }
             basic.pause(1)
             _timeout += 1
-            if (_timeout % 100 == 0) { 
-                Obloq_mqttIconShow()
-            }
         }
-        if (_timeout >= 10000) { 
+        if (_timeout >= 5000) { 
             //basic.showString("timeout!")
             return OBLOQ_MQTT_CONNECT_TIMEOUT 
         }
         Obloq_subTopic()
         _timeout = 0
-        while (_timeout<10000) { 
+        while (_timeout < 5000) {
+            if (_timeout % 50 == 0) { 
+                Obloq_mqttIconShow()
+            }
             if (e == "SubOk") { 
                 break
             }
             basic.pause(1)
             _timeout += 1
-            if (_timeout % 100 == 0) { 
-                Obloq_mqttIconShow()
-            }
         }
-        if (_timeout >= 10000) { 
+        if (_timeout >= 5000) { 
            //basic.showString("timeout!")
             return OBLOQ_MQTT_SUBTOPIC_TIMEOUT
         }
