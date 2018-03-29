@@ -567,13 +567,14 @@ namespace Obloq {
         let ret = Obloq_connectWifi()
         switch (ret) { 
             case OBLOQ_SUCCE_OK: {
+                FIRST = OBLOQ_FALSE
                 basic.showIcon(IconNames.Yes)
                 basic.pause(500)
              } break;
             case OBLOQ_WIFI_CONNECT_TIMEOUT: { 
                 Obloq_disconnectWifi()
-                basic.showIcon(IconNames.No)
-                while (true) { basic.pause(10000) }
+                e = "PulishFailure"
+                return
             } break;
             case OBLOQ_WIFI_CONNECT_FAILURE: { 
                 basic.showIcon(IconNames.No)
@@ -587,17 +588,19 @@ namespace Obloq {
         ret = Obloq_connectIot()
         switch (ret) { 
             case OBLOQ_SUCCE_OK: {
+                initmqtt = OBLOQ_TRUE
                 basic.showIcon(IconNames.Yes)
                 basic.pause(500)
              } break;
             case OBLOQ_MQTT_SUBTOPIC_TIMEOUT: { 
                 Obloq_disconnectMqtt()
-                basic.showIcon(IconNames.No)
-                while (true) { basic.pause(10000) }
+                e = "PulishFailure"
+                return
             } break;
             case OBLOQ_MQTT_CONNECT_TIMEOUT: { 
-                basic.showIcon(IconNames.No)
-                while (true) { basic.pause(10000) }
+                Obloq_disconnectMqtt()
+                e = "PulishFailure"
+                return
             } break;
             case OBLOQ_MQTT_CONNECT_FAILURE: { 
                 basic.showIcon(IconNames.No)
@@ -649,8 +652,8 @@ namespace Obloq {
             }  
             obloqreadString(obloqgetRxBufferSize())
             obloqWriteString("|2|1|"+OBLOQ_SSID+","+OBLOQ_PASSWORD+"|\r")
-        }
-        if (!initmqtt) {
+        
+        
             let item = ""
             let num = 0
             let j = 0
@@ -681,7 +684,6 @@ namespace Obloq {
                                 }
                                 ip = item.substr(j, z)
                                 IP = ip
-                                FIRST = OBLOQ_FALSE
                                 //serial.writeString(IP);
                                 //serial.writeString("\r\n");
                                 //basic.showIcon(IconNames.Yes)
@@ -717,7 +719,7 @@ namespace Obloq {
                 }
             }
         }
-        return OBLOQ_SUCCE_ERR
+        return OBLOQ_SUCCE_OK
     }
 
     /**
@@ -1141,7 +1143,6 @@ namespace Obloq {
         defobloq = OBLOQ_TRUE
         myhost = OBLOQ_MQTT_SERVER
         mymqport = OBLOQ_MQTT_PORT
-        initmqtt = OBLOQ_TRUE
         mycb = cb
         onEvent()
         event = true
