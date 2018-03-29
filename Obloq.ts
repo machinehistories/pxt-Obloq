@@ -237,7 +237,7 @@ namespace Obloq {
     */
     //% weight=102
     //% blockId=Obloq_setup
-    //% block="Obloq setup | wifi: ↴| ssid: %SSID| password: %PASSWORD| mqtt: ↴| iot id: %IOT_ID| iot pwd: %IOT_PWD| iot topic: %IOT_TOPIC| serial: ↴| receive: %SerialPin| send: %SerialPin"
+    //% block="Obloq setup | wifi: ↴| ssid: %SSID| password: %PASSWORD| mqtt: ↴| iot id: %IOT_ID| iot pwd: %IOT_PWD| iot topic: %IOT_TOPIC| serial: ↴| receive: %receive| send: %send"
     export function Obloq_setup(/*wifi*/SSID: string, PASSWORD: string,
                                 /*mqtt*/IOT_ID: string, IOT_PWD: string, IOT_TOPIC: string,
                                 /*serial*/receive: SerialPin, send: SerialPin):
