@@ -49,7 +49,8 @@ let e = ""
 
 let serialinit = false
 
-let icon = 1
+let wifi_icon = 1
+let mqtt_icon = 1
 
 let SubOk = false
 /*
@@ -68,6 +69,15 @@ enum Callback {
 namespace Obloq {
     const OBLOQ_STR_NONE = ""
     const OBLOQ_SUCCE_OK = 0
+    const OBLOQ_SUCCE_ERR = 1
+    const OBLOQ_WIFI_CONNECT_FAILURE = -2
+    const OBLOQ_WIFI_CONNECT_TIMEOUT = -1
+    const OBLOQ_MQTT_SUBTOPIC_TIMEOUT = -3
+    const OBLOQ_MQTT_CONNECT_TIMEOUT = -4
+    const OBLOQ_MQTT_CONNECT_FAILURE = -5
+
+
+
     const OBLOQ_TRUE = true
     const OBLOQ_FALSE = false
 
@@ -141,18 +151,18 @@ namespace Obloq {
     }
 
     function Obloq_wifiIconShow(): void { 
-        switch (icon) { 
+        switch (wifi_icon) { 
             case 1: {
                 basic.clearScreen()
                 led.plot(0, 4)
-                icon += 1
+                wifi_icon += 1
             } break;
             case 2: { 
                 led.plot(0, 2)
                 led.plot(1, 2)
                 led.plot(2, 3)
                 led.plot(2, 4)
-                icon += 1
+                wifi_icon += 1
             } break;
             case 3: {
                 led.plot(0, 0)
@@ -162,11 +172,58 @@ namespace Obloq {
                 led.plot(4, 2)
                 led.plot(4, 3)
                 led.plot(4, 4)
-                icon = 1
+                wifi_icon = 1
             } break;
         }
     }
 
+    function Obloq_mqttIconShow(): void { 
+        switch (mqtt_icon) { 
+            case 1: {
+                basic.clearScreen()
+                led.plot(4, 0)
+                mqtt_icon += 1
+            } break;
+            case 2: { 
+                led.plot(2, 0)
+                led.plot(2, 1)
+                led.plot(3, 2)
+                led.plot(4, 2)
+                mqtt_icon += 1
+            } break;
+            case 3: {
+                led.plot(0, 0)
+                led.plot(0, 1)
+                led.plot(0, 2)
+                led.plot(1, 3)
+                led.plot(2, 4)
+                led.plot(3, 4)
+                led.plot(4, 4)
+                mqtt_icon = 1
+            } break;
+        }
+    }
+
+    function Obloq_serialInit(tx: SerialPin, rx: SerialPin): void{ 
+        let item = ""
+        //First send data through usb, avoid the first data scrambled.
+        obloqWriteString("123")  
+        item = serial.readString()
+        item = serial.readString()
+        item = serial.readString()
+        serial.redirect(
+            tx,
+            rx,
+            BaudRate.BaudRate9600
+        )
+        obloqSetTxBufferSize(300)
+        obloqSetRxBufferSize(300)
+        obloqWriteString("\r")
+        item = serial.readString()
+        serialinit = OBLOQ_TRUE
+        obloqClearRxBuffer()
+        obloqClearTxBuffer()
+    }
 
     /**
 	 * Two parallel stepper motors are executed simultaneously(DegreeDual).
@@ -193,27 +250,6 @@ namespace Obloq {
         OBLOQ_IOT_ID = IOT_ID
         OBLOQ_IOT_TOPIC = IOT_TOPIC
         Obloq_serialInit(send, receive)
-    }
-
-    function Obloq_serialInit(tx: SerialPin, rx: SerialPin): void{ 
-        let item = ""
-        //First send data through usb, avoid the first data scrambled.
-        obloqWriteString("123")  
-        item = serial.readString()
-        item = serial.readString()
-        item = serial.readString()
-        serial.redirect(
-            tx,
-            rx,
-            BaudRate.BaudRate9600
-        )
-        obloqSetTxBufferSize(300)
-        obloqSetRxBufferSize(300)
-        obloqWriteString("\r")
-        item = serial.readString()
-        serialinit = OBLOQ_TRUE
-        obloqClearRxBuffer()
-        obloqClearTxBuffer()
     }
 
     /**
@@ -434,6 +470,12 @@ namespace Obloq {
         return OBLOQ_TRUE
     }
 
+    
+    function Obloq_disconnectWifi(): void { 
+        if (!serialinit) { 
+            Obloq_serialInit(SerialPin.P2, SerialPin.P1)
+        }
+    }
 
 
     /**
@@ -502,14 +544,70 @@ namespace Obloq {
         }
         return OBLOQ_TRUE
     }
+
+
+
+
+
     /**
      * connect Wifi.SSID(string):account; PWD(string):password;
      * time(ms): private long maxWait
     */
     //% weight=100
     //% blockId=Obloq_connectWifi
-    //% block="wifi connect"
-    export function Obloq_connectWifi(): void { 
+    //% block="start connect"
+    export function Obloq_startConnect(): void { 
+        let ret = Obloq_connectWifi()
+        switch (ret) { 
+            case OBLOQ_SUCCE_OK: {
+                basic.showIcon(IconNames.Yes)
+                basic.pause(500)
+             } break;
+            case OBLOQ_WIFI_CONNECT_TIMEOUT: { 
+                Obloq_disconnectWifi()
+                basic.showIcon(IconNames.No)
+                while (true) { basic.pause(10000) }
+            } break;
+            case OBLOQ_WIFI_CONNECT_FAILURE: { 
+                basic.showIcon(IconNames.No)
+                while (true) { basic.pause(10000) }
+            } break;
+            case OBLOQ_SUCCE_ERR: { 
+                basic.showIcon(IconNames.No)
+                while (true) { basic.pause(10000) }
+            } break;
+        }
+        ret = Obloq_connectMqtt()
+        switch (ret) { 
+            case OBLOQ_SUCCE_OK: {
+                basic.showIcon(IconNames.Yes)
+                basic.pause(500)
+             } break;
+            case OBLOQ_MQTT_SUBTOPIC_TIMEOUT: { 
+                Obloq_disconnectMqtt()
+                basic.showIcon(IconNames.No)
+                while (true) { basic.pause(10000) }
+            } break;
+            case OBLOQ_MQTT_CONNECT_TIMEOUT: { 
+                basic.showIcon(IconNames.No)
+                while (true) { basic.pause(10000) }
+            } break;
+            case OBLOQ_MQTT_CONNECT_FAILURE: { 
+                basic.showIcon(IconNames.No)
+                while (true) { basic.pause(10000) }
+            } break;
+            case OBLOQ_SUCCE_ERR: { 
+                basic.showIcon(IconNames.No)
+                while (true) { basic.pause(10000) }
+            } break;
+        }
+    }
+
+
+
+
+
+    function Obloq_connectWifi(): number { 
         let time = 10000
         if (time < 100) { 
             time = 100
@@ -554,7 +652,7 @@ namespace Obloq {
                     item = obloqreadString(num)
                     for (let i = 0; i < num; i++) {
                         if (item.charAt(i) == '3') {
-                            if (item.charAt(i + 1) == '|' && //|2|3|
+                            if (item.charAt(i + 1) == '|' && //|2|3| 连接成功，返回ip地址
                                 item.charAt(i - 1) == '|' &&
                                 item.charAt(i - 2) == '2' &&
                                 item.charAt(i - 3) == '|'
@@ -574,8 +672,16 @@ namespace Obloq {
                                 FIRST = OBLOQ_FALSE
                                 //serial.writeString(IP);
                                 //serial.writeString("\r\n");
-                                basic.showIcon(IconNames.Yes)
-                                return
+                                //basic.showIcon(IconNames.Yes)
+                                return OBLOQ_SUCCE_OK
+                            }
+                        }else if (item.charAt(i) == '4') {
+                            if (item.charAt(i + 1) == '|' && //|2|4| 连接失败
+                                item.charAt(i - 1) == '|' &&
+                                item.charAt(i - 2) == '2' &&
+                                item.charAt(i - 3) == '|'
+                            ) {
+                                return OBLOQ_WIFI_CONNECT_FAILURE
                             }
                         }
                     }
@@ -594,12 +700,12 @@ namespace Obloq {
                 basic.pause(100)
                 _timeout += 1
                 if (_timeout > timeout) {
-                    basic.showIcon(IconNames.No)
-                    return
+                    //basic.showIcon(IconNames.No)
+                    return OBLOQ_WIFI_CONNECT_TIMEOUT 
                 }
             }
         }
-        return
+        return OBLOQ_SUCCE_ERR
     }
 
     /**
@@ -1011,15 +1117,7 @@ namespace Obloq {
     }
 */
  
-    /**
-     * Connect the MQTT.
-     * @param Iot_id set Iot_id, eg: Iot_id
-     * @param Iot_pwd set Iot_pwd, eg: Iot_pwd
-    */
-    //% weight=69
-    //% blockId=Obloq_connectMqtt
-    //% block="mqtt connect"
-    export function Obloq_connectMqtt(): void {
+    function Obloq_connectMqtt(): number {
         let _timeout = 0
         defobloq = OBLOQ_TRUE
         mycb = cb
@@ -1034,15 +1132,20 @@ namespace Obloq {
         obloqWriteString("|4|1|1|" + myhost + "|" + mymqport + "|" + OBLOQ_IOT_ID + "|" + OBLOQ_IOT_PWD + "|\r")
         
         while (_timeout<10000) { 
-            if (e == "MqttConneted") { 
+            if (e == "MqttConneted") {
                 break
+            } else if (e == "ConnectErr") { 
+                OBLOQ_MQTT_CONNECT_FAILURE
             }
             basic.pause(1)
             _timeout += 1
+            if (_timeout % 300 == 0) { 
+                Obloq_mqttIconShow()
+            }
         }
         if (_timeout >= 10000) { 
-            basic.showString("timeout!")
-            return
+            //basic.showString("timeout!")
+            return OBLOQ_MQTT_CONNECT_TIMEOUT 
         }
         Obloq_subTopic()
         _timeout = 0
@@ -1052,12 +1155,16 @@ namespace Obloq {
             }
             basic.pause(1)
             _timeout += 1
+            if (_timeout % 300 == 0) { 
+                Obloq_mqttIconShow()
+            }
         }
         if (_timeout >= 10000) { 
-            basic.showString("timeout!")
-            return
+           //basic.showString("timeout!")
+            return OBLOQ_MQTT_SUBTOPIC_TIMEOUT
         }
-        basic.showString("ok")
+        return OBLOQ_SUCCE_OK
+        //basic.showString("ok")
     } 
 
     /**
