@@ -677,6 +677,14 @@ namespace Obloq {
                                 //basic.showIcon(IconNames.Yes)
                                 return OBLOQ_SUCCE_OK
                             }
+                        }else if (item.charAt(i) == '4') {
+                            if (item.charAt(i + 1) == '|' && //|2|4| 连接失败
+                                item.charAt(i - 1) == '|' &&
+                                item.charAt(i - 2) == '2' &&
+                                item.charAt(i - 3) == '|'
+                            ) {
+                                return OBLOQ_WIFI_CONNECT_FAILURE
+                            }
                         }
                     }
                 }
