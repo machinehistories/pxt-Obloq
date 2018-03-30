@@ -12,6 +12,6 @@ SerialPin.P2
 )
 Obloq.Obloq_startConnect()
 basic.forever(() => {
-    Obloq.Obloq_sendMessage("mess")
+    Obloq.Obloq_sendMessage("hello")
     basic.pause(5000)
 })

@@ -51,6 +51,8 @@ let mqtt_icon = 1
 
 let Tx = SerialPin.P2
 let Rx = SerialPin.P1
+
+let event = false
 /**
  *Obloq implementation method.
  */
@@ -494,11 +496,14 @@ namespace Obloq {
     }
 
     basic.forever(() => {
-        basic.pause(2000)
+        led.plot(0, 0)
+        basic.pause(1000)
         if (e == "PulishFailure") { 
             Obloq_startConnect()
             e = ""
         }
+        led.unplot(0, 0)
+        basic.pause(1000)
     })   
 
 
@@ -1136,6 +1141,7 @@ namespace Obloq {
         if (!serialinit) { 
             Obloq_serialInit()
         }
+        event = true
         //obloqClearRxBuffer()
         //obloqClearTxBuffer()
         //obloqEventAfter(1)
