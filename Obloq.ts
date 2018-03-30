@@ -965,7 +965,9 @@ namespace Obloq {
     function obloqRecevice(): void {
             let size = obloqRxBufferedSize()
             //serial.writeNumber(size)
-            if (size > 5) { // serial.writeNumber(1);
+        if (size > 5) { // serial.writeNumber(1);
+            e = ""
+            param = ""
                 let item = obloqreadString(size)
                 //if (size > 10) {serial.writeString(item) }
                 for (let i = 0; i < size; i++) {
@@ -1126,6 +1128,7 @@ namespace Obloq {
                                         }
                                     }
                                     param = item.substr(j, z)///?????????
+                                    obloqforevers(mycb)
                                     break
                                 }
                             } else if (item.charAt(i + 2) == '2') {
@@ -1164,14 +1167,10 @@ namespace Obloq {
                             param = ""
                             return
                         }
-
-                    } else { 
-                        return
                     }
                 }
                 //serial.writeNumber(n);
                 // serial.writeString("\r\n");
-                obloqforevers(mycb)
             }
             //onEvent()
     }
