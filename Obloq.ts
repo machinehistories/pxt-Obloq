@@ -87,7 +87,6 @@ namespace Obloq {
         public myparam: string;
     }
 
-
     //% advanced=true shim=Obloq::obloqreadString
     function obloqreadString(size: number): string {
         return OBLOQ_STR_NONE
@@ -813,27 +812,6 @@ namespace Obloq {
         return list
     }
     
-/*  readbuf
-    function readbuf(timeout: number): string { 
-        let item = " "
-        let num = 0
-        let time = 0
-        while (true) { 
-            num = obloqRxBufferedSize()
-            if (num) { 
-                item = obloqreadString(num)
-                break
-            }
-            basic.pause(1)
-            time += 1
-            if (time > timeout) { 
-                item = "timeout"
-                break
-            }
-        }
-        return item
-    }
-*/
     function Obloq_connectMqtt(): void { 
         if (!serialinit) { 
             Obloq_serialInit()
@@ -1097,10 +1075,6 @@ namespace Obloq {
                                     item.charAt(i + 6) == '1' &&
                                     item.charAt(i + 7) == '|'
                                 ) {  //led.plot(0, 1)
-                                    if (witemess) {
-                                        basic.clearScreen()
-                                        witemess = OBLOQ_FALSE
-                                    }
                                     e = "PulishOk"
                                     param = ""
                                     return
@@ -1141,6 +1115,10 @@ namespace Obloq {
                                         }
                                     }
                                     param = item.substr(j, z)///?????????
+                                    if (witemess) {
+                                        witemess = OBLOQ_FALSE
+                                        basic.clearScreen()
+                                    }
                                     obloqforevers(mycb)
                                     break
                                 }
