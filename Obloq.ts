@@ -1082,7 +1082,10 @@ namespace Obloq {
                                     item.charAt(i + 6) == '1' &&
                                     item.charAt(i + 7) == '|'
                                 ) {  //led.plot(0, 1)
-                                    if (witemess) { witemess = OBLOQ_FALSE}
+                                    if (witemess) {
+                                        basic.clearScreen()
+                                        witemess = OBLOQ_FALSE
+                                    }
                                     e = "PulishOk"
                                     param = ""
                                     return
