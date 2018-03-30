@@ -566,7 +566,6 @@ namespace Obloq {
         let ret = Obloq_connectWifi()
         switch (ret) { 
             case OBLOQ_SUCCE_OK: {
-                FIRST = OBLOQ_FALSE
                 basic.showIcon(IconNames.Yes)
                 basic.pause(500)
              } break;
@@ -630,29 +629,21 @@ namespace Obloq {
         }
         let timeout = time / 100
         let _timeout = 0
-        if (FIRST) { 
-            //let item = ""
-            //serial.writeString("123")
-            //item = serial.readString()
-            //item = serial.readString()
-            //item = serial.readString()
-            // serial.redirect(
-            //    SerialPin.P2,
-            //    SerialPin.P1,
-            //    BaudRate.BaudRate9600
-            //)
-            //obloqSetTxBufferSize(60)
-            //obloqSetRxBufferSize(60)
-            if (!serialinit) { 
+        if (FIRST) {
+            //serial init
+            if (!serialinit) {
                 Obloq_serialInit()
             }
+            //show icon
             Obloq_wifiIconShow()
             for (let i = 0; i < 3; i++) {
                 obloqWriteString("|1|1|\r")
                 basic.pause(100)
-            }  
+            }
             obloqreadString(obloqgetRxBufferSize())
-            obloqWriteString("|2|1|"+OBLOQ_SSID+","+OBLOQ_PASSWORD+"|\r")
+            obloqWriteString("|2|1|" + OBLOQ_SSID + "," + OBLOQ_PASSWORD + "|\r")
+            FIRST = OBLOQ_FALSE
+        }
         
             while (OBLOQ_TRUE) {
                 if ((_timeout+1) % 3 == 0) { 
@@ -664,56 +655,6 @@ namespace Obloq {
                 } else if (e == "DisConnected") { 
                     return OBLOQ_WIFI_CONNECT_FAILURE
                 }
-                // num = obloqRxBufferedSize()
-                // //item = serial.readUntil(serial.delimiters(Delimiters.NewLine))
-                // if (num >= 5) {
-                //     item = obloqreadString(num)
-                //     for (let i = 0; i < num; i++) {
-                //         if (item.charAt(i) == '3') {
-                //             if (item.charAt(i + 1) == '|' && //|2|3| 连接成功，返回ip地址
-                //                 item.charAt(i - 1) == '|' &&
-                //                 item.charAt(i - 2) == '2' &&
-                //                 item.charAt(i - 3) == '|'
-                //             ) {
-                //                 j = i + 2
-                //                 let z = 0
-                //                 let ip = ""
-                //                 for (i = i + 2; i < num; i++) {
-                //                     if (item.charAt(i) == '|') {
-                //                         break;
-                //                     } else {
-                //                         z = z + 1
-                //                     }
-                //                 }
-                //                 ip = item.substr(j, z)
-                //                 IP = ip
-                //                 //serial.writeString(IP);
-                //                 //serial.writeString("\r\n");
-                //                 //basic.showIcon(IconNames.Yes)
-                //                 return OBLOQ_SUCCE_OK
-                //             }
-                //         }else if (item.charAt(i) == '4') {
-                //             if (item.charAt(i + 1) == '|' && //|2|4| 连接失败
-                //                 item.charAt(i - 1) == '|' &&
-                //                 item.charAt(i - 2) == '2' &&
-                //                 item.charAt(i - 3) == '|'
-                //             ) {
-                //                 return OBLOQ_WIFI_CONNECT_FAILURE
-                //             }
-                //         }
-                //     }
-                // }
-                /* serial.writeNumber(num)
-                 serial.writeString("\r\n");
-                 item = obloqreadString(num)
-                 for (let i = 0; i < num; i++) { 
-                     serial.writeString(item.charAt(i));
-                     if (item.charAt(i) == '3') {
-                         basic.pause(1000)
-                         return
-                     }
-                 }
-                 serial.writeString("\r\n");*/
                 basic.pause(100)
                 _timeout += 1
                 if (_timeout > timeout) {
@@ -721,7 +662,7 @@ namespace Obloq {
                     return OBLOQ_WIFI_CONNECT_TIMEOUT 
                 }
             }
-        }
+        
         return OBLOQ_SUCCE_OK
     }
 
