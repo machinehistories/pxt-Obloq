@@ -1135,6 +1135,7 @@ namespace Obloq {
                                 ) {
                                     e = "MqttConnectErr"
                                     param = ""
+                                    return
                                 } else if (item.charAt(i + 3) == '|') { //|4|2|
                                     let z = 0
                                     let j = i + 4
