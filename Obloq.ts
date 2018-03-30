@@ -527,7 +527,9 @@ namespace Obloq {
         basic.pause(150)
         if (e == "PulishFailure") { 
             Obloq_startConnect()
-            e = ""
+            if (initmqtt) { 
+                e = ""
+            }
         }
         if (DEBUG) { led.unplot(0, 0) }
         basic.pause(150)
