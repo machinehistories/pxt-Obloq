@@ -564,6 +564,7 @@ namespace Obloq {
     //% block="start connect"
     export function Obloq_startConnect(): void { 
         let ret = Obloq_connectWifi()
+        basic.showNumber(ret)
         switch (ret) { 
             case OBLOQ_SUCCE_OK: {
                 basic.showIcon(IconNames.Yes)
@@ -645,24 +646,23 @@ namespace Obloq {
             FIRST = OBLOQ_FALSE
         }
         
-            while (OBLOQ_TRUE) {
-                if ((_timeout+1) % 3 == 0) { 
-                    Obloq_wifiIconShow()
-                }
-                if (e == "WifiConnected") {
-                    IP = param
-                    return OBLOQ_SUCCE_OK
-                } else if (e == "DisConnected") { 
-                    return OBLOQ_WIFI_CONNECT_FAILURE
-                }
-                basic.pause(100)
-                _timeout += 1
-                if (_timeout > timeout) {
-                    //basic.showIcon(IconNames.No)
-                    return OBLOQ_WIFI_CONNECT_TIMEOUT 
-                }
+        while (OBLOQ_TRUE) {
+            if ((_timeout+1) % 3 == 0) { 
+                Obloq_wifiIconShow()
             }
-        
+            if (e == "WifiConnected") {
+                IP = param
+                return OBLOQ_SUCCE_OK
+            } else if (e == "DisConnected") { 
+                return OBLOQ_WIFI_CONNECT_FAILURE
+            }
+            basic.pause(100)
+            _timeout += 1
+            if (_timeout > timeout) {
+                //basic.showIcon(IconNames.No)
+                return OBLOQ_WIFI_CONNECT_TIMEOUT 
+            }
+        }
         return OBLOQ_SUCCE_OK
     }
 
