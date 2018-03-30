@@ -13,6 +13,8 @@
  * @date  2018-03-20
  */
 
+let DEBUG = true
+
 //wifi
 let OBLOQ_SSID = ""
 let OBLOQ_PASSWORD = ""
@@ -445,7 +447,7 @@ namespace Obloq {
     //% block="start connect"
     export function Obloq_startConnect(): void { 
         let ret = Obloq_connectWifi()
-        basic.showNumber(ret)
+        if (DEBUG) { basic.showNumber(ret) }
         switch (ret) { 
             case OBLOQ_SUCCE_OK: {
                 basic.showIcon(IconNames.Yes)
@@ -496,13 +498,13 @@ namespace Obloq {
     }
 
     basic.forever(() => {
-        led.plot(0, 0)
+        if (DEBUG) { led.plot(0, 0) }
         basic.pause(1000)
         if (e == "PulishFailure") { 
             Obloq_startConnect()
             e = ""
         }
-        led.unplot(0, 0)
+        if (DEBUG) { led.unplot(0, 0) }
         basic.pause(1000)
     })   
 
