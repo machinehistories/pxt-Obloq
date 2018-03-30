@@ -76,4 +76,14 @@ namespace Obloq {
       uBit.serial.send(ManagedString(text));
     }
 
+    //%
+    void obloqDisDisplay() {
+        uBit.display.disable();
+    }
+
+    //%
+    void obloqEnDisplay() {
+        uBit.display.enable();
+    }
+
 }

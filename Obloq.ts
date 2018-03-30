@@ -143,6 +143,16 @@ namespace Obloq {
         return
     }
 
+    //% advanced=true shim=Obloq::obloqDisDisplay
+    function obloqDisDisplay(): void {
+        return
+    }
+
+    //% advanced=true shim=Obloq::obloqEnDisplay
+    function obloqEnDisplay(): void {
+        return
+    }    
+
     function Obloq_witeMess(): void { 
         switch (_witemess) { 
             case 1: {
@@ -541,6 +551,7 @@ namespace Obloq {
 
 
     function Obloq_connectWifi(): number { 
+        obloqEnDisplay()
         wifi_icon = 1
         let time = 10000
         if (time < 100) { 
@@ -1100,6 +1111,7 @@ namespace Obloq {
                                     item.charAt(i + 6) == '2' &&
                                     item.charAt(i + 7) == '|'
                                 ) {  //led.plot(0, 1)
+                                    obloqDisDisplay()    
                                     e = "PulishFailure"
                                     param = ""
                                     FIRST = true
