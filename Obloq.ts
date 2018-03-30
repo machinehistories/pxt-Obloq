@@ -497,6 +497,7 @@ namespace Obloq {
                 basic.showIcon(IconNames.Yes)
                 basic.pause(500)
                 basic.clearScreen()
+                _witemess = 1
                 witemess = OBLOQ_TRUE
              } break;
             case OBLOQ_MQTT_SUBTOPIC_TIMEOUT: { 
