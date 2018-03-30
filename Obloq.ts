@@ -56,8 +56,6 @@ let SubOk = false
 
 let Tx = SerialPin.P2
 let Rx = SerialPin.P1
-
-let event = false
 /*
  *Fixed parameters are passed in.
  */
@@ -228,6 +226,7 @@ namespace Obloq {
         serialinit = OBLOQ_TRUE
         obloqClearRxBuffer()
         obloqClearTxBuffer()
+        onEvent()
     }
 
     /**
@@ -594,14 +593,12 @@ namespace Obloq {
              } break;
             case OBLOQ_MQTT_SUBTOPIC_TIMEOUT: { 
                 FIRST = true
-                event = false
                 Obloq_disconnectMqtt()
                 e = "PulishFailure"
                 return
             } break;
             case OBLOQ_MQTT_CONNECT_TIMEOUT: { 
                 FIRST = true
-                event = false
                 Obloq_disconnectMqtt()
                 e = "PulishFailure"
                 return
@@ -657,53 +654,55 @@ namespace Obloq {
             obloqreadString(obloqgetRxBufferSize())
             obloqWriteString("|2|1|"+OBLOQ_SSID+","+OBLOQ_PASSWORD+"|\r")
         
-        
-            let item = ""
-            let num = 0
-            let j = 0
             while (OBLOQ_TRUE) {
                 if ((_timeout+1) % 3 == 0) { 
                     Obloq_wifiIconShow()
                 }
-                num = obloqRxBufferedSize()
-                //item = serial.readUntil(serial.delimiters(Delimiters.NewLine))
-                if (num >= 5) {
-                    item = obloqreadString(num)
-                    for (let i = 0; i < num; i++) {
-                        if (item.charAt(i) == '3') {
-                            if (item.charAt(i + 1) == '|' && //|2|3| 连接成功，返回ip地址
-                                item.charAt(i - 1) == '|' &&
-                                item.charAt(i - 2) == '2' &&
-                                item.charAt(i - 3) == '|'
-                            ) {
-                                j = i + 2
-                                let z = 0
-                                let ip = ""
-                                for (i = i + 2; i < num; i++) {
-                                    if (item.charAt(i) == '|') {
-                                        break;
-                                    } else {
-                                        z = z + 1
-                                    }
-                                }
-                                ip = item.substr(j, z)
-                                IP = ip
-                                //serial.writeString(IP);
-                                //serial.writeString("\r\n");
-                                //basic.showIcon(IconNames.Yes)
-                                return OBLOQ_SUCCE_OK
-                            }
-                        }else if (item.charAt(i) == '4') {
-                            if (item.charAt(i + 1) == '|' && //|2|4| 连接失败
-                                item.charAt(i - 1) == '|' &&
-                                item.charAt(i - 2) == '2' &&
-                                item.charAt(i - 3) == '|'
-                            ) {
-                                return OBLOQ_WIFI_CONNECT_FAILURE
-                            }
-                        }
-                    }
+                if (e == "WifiConnected") {
+                    IP = param
+                    return OBLOQ_SUCCE_OK
+                } else if (e == "DisConnected") { 
+                    return OBLOQ_WIFI_CONNECT_FAILURE
                 }
+                // num = obloqRxBufferedSize()
+                // //item = serial.readUntil(serial.delimiters(Delimiters.NewLine))
+                // if (num >= 5) {
+                //     item = obloqreadString(num)
+                //     for (let i = 0; i < num; i++) {
+                //         if (item.charAt(i) == '3') {
+                //             if (item.charAt(i + 1) == '|' && //|2|3| 连接成功，返回ip地址
+                //                 item.charAt(i - 1) == '|' &&
+                //                 item.charAt(i - 2) == '2' &&
+                //                 item.charAt(i - 3) == '|'
+                //             ) {
+                //                 j = i + 2
+                //                 let z = 0
+                //                 let ip = ""
+                //                 for (i = i + 2; i < num; i++) {
+                //                     if (item.charAt(i) == '|') {
+                //                         break;
+                //                     } else {
+                //                         z = z + 1
+                //                     }
+                //                 }
+                //                 ip = item.substr(j, z)
+                //                 IP = ip
+                //                 //serial.writeString(IP);
+                //                 //serial.writeString("\r\n");
+                //                 //basic.showIcon(IconNames.Yes)
+                //                 return OBLOQ_SUCCE_OK
+                //             }
+                //         }else if (item.charAt(i) == '4') {
+                //             if (item.charAt(i + 1) == '|' && //|2|4| 连接失败
+                //                 item.charAt(i - 1) == '|' &&
+                //                 item.charAt(i - 2) == '2' &&
+                //                 item.charAt(i - 3) == '|'
+                //             ) {
+                //                 return OBLOQ_WIFI_CONNECT_FAILURE
+                //             }
+                //         }
+                //     }
+                // }
                 /* serial.writeNumber(num)
                  serial.writeString("\r\n");
                  item = obloqreadString(num)
@@ -1148,8 +1147,6 @@ namespace Obloq {
         myhost = OBLOQ_MQTT_SERVER
         mymqport = OBLOQ_MQTT_PORT
         mycb = cb
-        onEvent()
-        event = true
 
         Obloq_connectMqtt()
 
@@ -1252,9 +1249,6 @@ namespace Obloq {
     //% block="subTopic"
     //% advanced=true
     export function Obloq_subTopic(): void { 
-        if (event == false) { 
-            return 
-        }
         if (!serialinit) { 
             Obloq_serialInit()
         }
@@ -1285,7 +1279,6 @@ namespace Obloq {
     }
     
     function obloqRecevice(): void {
-        if (event == true) {
             let size = obloqRxBufferedSize()
             //serial.writeNumber(size)
             if (size > 5) { // serial.writeNumber(1);
@@ -1382,7 +1375,6 @@ namespace Obloq {
                                 ) {  //led.plot(0, 1)
                                     e = "PulishFailure"
                                     param = ""
-                                    event = false
                                     FIRST = true
                                     initmqtt = false
                                     return
@@ -1442,7 +1434,6 @@ namespace Obloq {
                 obloqforevers(mycb)
             }
             //onEvent()
-        }    
     }
 
     function onEvent() {
