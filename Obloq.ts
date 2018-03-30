@@ -58,6 +58,8 @@ let Tx = SerialPin.P2
 let Rx = SerialPin.P1
 //event flag
 let event = false
+//mode
+let mode = 0
 /**
  *Obloq implementation method.
  */
@@ -71,6 +73,9 @@ namespace Obloq {
     const OBLOQ_MQTT_SUBTOPIC_TIMEOUT = -3
     const OBLOQ_MQTT_CONNECT_TIMEOUT = -4
     const OBLOQ_MQTT_CONNECT_FAILURE = -5
+    
+    const OBLOQ_MODE_MQTT = 2
+    const OBLOQ_MODE_HTTP = 3
 
     const OBLOQ_TRUE = true
     const OBLOQ_FALSE = false
@@ -478,6 +483,7 @@ namespace Obloq {
     //% blockId=Obloq_connectWifi
     //% block="start connect"
     export function Obloq_startConnect(): void { 
+        mode = OBLOQ_MODE_MQTT
         let ret = Obloq_connectWifi()
         if (DEBUG) { basic.showNumber(ret) }
         switch (ret) { 
@@ -537,7 +543,9 @@ namespace Obloq {
         if (DEBUG) { led.plot(0, 0) }
         basic.pause(150)
         if (diwifi == "PulishFailure") { 
-            Obloq_startConnect()
+            if (mode == OBLOQ_MODE_MQTT) { 
+                Obloq_startConnect()
+            }
             if (initmqtt) { 
                 diwifi = ""
             }
