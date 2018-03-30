@@ -538,6 +538,7 @@ namespace Obloq {
 
 
     function Obloq_connectWifi(): number { 
+        wifi_icon = 1
         let time = 10000
         if (time < 100) { 
             time = 100
@@ -828,6 +829,7 @@ namespace Obloq {
     }
 
     function Obloq_connectIot(): number {
+        mqtt_icon = 1
         let iconnum = 0
         let _timeout = 0
         defobloq = OBLOQ_TRUE
