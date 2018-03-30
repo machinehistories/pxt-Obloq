@@ -16,44 +16,46 @@
 let DEBUG = true
 
 //wifi
-let OBLOQ_SSID = ""
-let OBLOQ_PASSWORD = ""
+let OBLOQ_SSID        = ""
+let OBLOQ_PASSWORD    = ""
 //mqtt
-let OBLOQ_MQTT_PORT = 1883
+let OBLOQ_MQTT_PORT   = 1883
 let OBLOQ_MQTT_SERVER = "iot.dfrobot.com.cn"
-let OBLOQ_IOT_PWD = ""
-let OBLOQ_IOT_ID = ""
-let OBLOQ_IOT_TOPIC = ""
+let OBLOQ_IOT_PWD     = ""
+let OBLOQ_IOT_ID      = ""
+let OBLOQ_IOT_TOPIC   = ""
 //http
-let OBLOQ_HTTP_IP = ""
-let OBLOQ_HTTP_PORT = 8080
+let OBLOQ_HTTP_IP     = ""
+let OBLOQ_HTTP_PORT   = 8080
 //Connect to the WiFi IP address.
 let IP = "0.0.0.0"
 //Record state
-let FIRST = true
+let FIRST    = true
 let initmqtt = false
 let defobloq = false
 //http
-let myip = ""
-let myport = 80
+let myip     = ""
+let myport   = 80
 //mqtt
-let myhost = ""
+let myhost   = ""
 let mymqport = 80
 //callback function
 let cb: Action
 let mycb: Action
 //Record commands and messages.
-let param = ""
-let e = ""
+let e        = ""
+let param    = ""
 //serial
 let serialinit = false
 //animation
-let wifi_icon = 1
+let wifi_icon  = 1
 let mqtt_icon = 1
-
+let _witemess = 1
+let witemess = false
+//serial pin
 let Tx = SerialPin.P2
 let Rx = SerialPin.P1
-
+//event flag
 let event = false
 /**
  *Obloq implementation method.
@@ -68,8 +70,6 @@ namespace Obloq {
     const OBLOQ_MQTT_SUBTOPIC_TIMEOUT = -3
     const OBLOQ_MQTT_CONNECT_TIMEOUT = -4
     const OBLOQ_MQTT_CONNECT_FAILURE = -5
-
-
 
     const OBLOQ_TRUE = true
     const OBLOQ_FALSE = false
@@ -142,6 +142,28 @@ namespace Obloq {
     function obloqWriteString(text: string): void {
         return
     }
+
+    function Obloq_witeMess(): void { 
+        switch (_witemess) { 
+            case 1: {
+                basic.clearScreen()
+                led.plot(0, 4)
+                _witemess += 1
+            } break;
+            case 2: { 
+                led.plot(1, 4)
+                _witemess += 1
+            } break;
+            case 3: {
+                led.plot(2, 4)
+                _witemess += 1
+            } break;
+            case 4: {
+                led.plot(3, 4)
+                _witemess = 1
+            } break;
+        }
+    }    
 
     function Obloq_wifiIconShow(): void { 
         switch (wifi_icon) { 
@@ -452,6 +474,7 @@ namespace Obloq {
             case OBLOQ_SUCCE_OK: {
                 basic.showIcon(IconNames.Yes)
                 basic.pause(500)
+                basic.clearScreen()
              } break;
             case OBLOQ_WIFI_CONNECT_TIMEOUT: { 
                 Obloq_disconnectWifi()
@@ -460,11 +483,11 @@ namespace Obloq {
             } break;
             case OBLOQ_WIFI_CONNECT_FAILURE: { 
                 basic.showIcon(IconNames.No)
-                while (true) { basic.pause(10000) }
+                while (OBLOQ_TRUE) { basic.pause(10000) }
             } break;
             case OBLOQ_SUCCE_ERR: { 
                 basic.showIcon(IconNames.No)
-                while (true) { basic.pause(10000) }
+                while (OBLOQ_TRUE) { basic.pause(10000) }
             } break;
         }
         ret = Obloq_connectIot()
@@ -473,39 +496,44 @@ namespace Obloq {
                 initmqtt = OBLOQ_TRUE
                 basic.showIcon(IconNames.Yes)
                 basic.pause(500)
+                basic.clearScreen()
+                witemess = OBLOQ_TRUE
              } break;
             case OBLOQ_MQTT_SUBTOPIC_TIMEOUT: { 
-                FIRST = true
+                FIRST = OBLOQ_TRUE
                 Obloq_disconnectMqtt()
                 e = "PulishFailure"
                 return
             } break;
             case OBLOQ_MQTT_CONNECT_TIMEOUT: { 
-                FIRST = true
+                FIRST = OBLOQ_TRUE
                 Obloq_disconnectMqtt()
                 e = "PulishFailure"
                 return
             } break;
             case OBLOQ_MQTT_CONNECT_FAILURE: { 
                 basic.showIcon(IconNames.No)
-                while (true) { basic.pause(10000) }
+                while (OBLOQ_TRUE) { basic.pause(10000) }
             } break;
             case OBLOQ_SUCCE_ERR: { 
                 basic.showIcon(IconNames.No)
-                while (true) { basic.pause(10000) }
+                while (OBLOQ_TRUE) { basic.pause(10000) }
             } break;
         }     
     }
 
     basic.forever(() => {
         if (DEBUG) { led.plot(0, 0) }
-        basic.pause(1000)
+        basic.pause(150)
         if (e == "PulishFailure") { 
             Obloq_startConnect()
             e = ""
         }
         if (DEBUG) { led.unplot(0, 0) }
-        basic.pause(1000)
+        basic.pause(150)
+        if (witemess) { 
+            Obloq_witeMess()
+        }
     })   
 
 
@@ -574,7 +602,7 @@ namespace Obloq {
     //% block="http set | ip %ip| port %port"
     //% advanced=true
     export function Obloq_initHttp(ip: string, port: number): void { 
-        defobloq = true
+        defobloq = OBLOQ_TRUE
         myip = ip
         myport = port
         initmqtt = OBLOQ_FALSE
@@ -1054,6 +1082,7 @@ namespace Obloq {
                                     item.charAt(i + 6) == '1' &&
                                     item.charAt(i + 7) == '|'
                                 ) {  //led.plot(0, 1)
+                                    if (witemess) { witemess = OBLOQ_FALSE}
                                     e = "PulishOk"
                                     param = ""
                                     return
@@ -1143,7 +1172,7 @@ namespace Obloq {
         if (!serialinit) { 
             Obloq_serialInit()
         }
-        event = true
+        event = OBLOQ_TRUE
         //obloqClearRxBuffer()
         //obloqClearTxBuffer()
         //obloqEventAfter(1)
