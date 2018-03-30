@@ -13,7 +13,7 @@
  * @date  2018-03-20
  */
 
-let DEBUG = true
+let DEBUG = false
 
 //wifi
 let OBLOQ_SSID        = ""
