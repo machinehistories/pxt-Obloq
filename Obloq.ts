@@ -25,10 +25,9 @@ let OBLOQ_IOT_TOPIC = ""
 //http
 let OBLOQ_HTTP_IP = ""
 let OBLOQ_HTTP_PORT = 8080
-
 //Connect to the WiFi IP address.
 let IP = "0.0.0.0"
-
+//Record state
 let FIRST = true
 let initmqtt = false
 let defobloq = false
@@ -41,28 +40,17 @@ let mymqport = 80
 //callback function
 let cb: Action
 let mycb: Action
-
+//Record commands and messages.
 let param = ""
 let e = ""
-
+//serial
 let serialinit = false
-
+//animation
 let wifi_icon = 1
 let mqtt_icon = 1
 
-let SubOk = false
-
 let Tx = SerialPin.P2
 let Rx = SerialPin.P1
-/*
- *Fixed parameters are passed in.
- */
-//%
-enum Callback {
-    //% block="callback"
-    C1 = <number>1
-}
-
 /**
  *Obloq implementation method.
  */
@@ -896,14 +884,6 @@ namespace Obloq {
         if (!serialinit) { 
             Obloq_serialInit()
         }
-        let _timeout = 0
-        while (!SubOk) { 
-            basic.pause(100)
-            _timeout += 1
-            if (_timeout > 100) { 
-                return
-            }
-        }
         obloqWriteString("|4|1|3|"+OBLOQ_IOT_TOPIC+"|"+mess+"|\r")
     }  
 
@@ -1059,7 +1039,6 @@ namespace Obloq {
                                     item.charAt(i + 7) == '|'
                                 ) {
                                     e = "SubOk"
-                                    SubOk = true
                                     param = ""
                                     return
                                 } else if (item.charAt(i + 3) == '|' &&
