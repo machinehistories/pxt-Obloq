@@ -13,8 +13,6 @@
  * @date  2018-03-20
  */
 
-
-
 //wifi
 let OBLOQ_SSID = ""
 let OBLOQ_PASSWORD = ""
@@ -292,31 +290,10 @@ namespace Obloq {
             let num = 0
             let item = ""
             while (OBLOQ_TRUE) {
-                num = obloqRxBufferedSize()
-                //item = serial.readUntil(serial.delimiters(Delimiters.NewLine))
-                if (num >= 5) {
-                    item = obloqreadString(num)
-                    for (let i = 0; i < num; i++) {
-                        if (item.charAt(i) == '1') {
-                            if (item.charAt(i - 1) == '|' &&//|1|1|
-                                item.charAt(i + 1) == '|' &&
-                                item.charAt(i + 2) == '1' &&
-                                item.charAt(i + 3) == '|'
-                            ) {
-                                return "true"
-                            }
-                        } else if (item.charAt(i) == 't'&&//timeout
-                            item.charAt(i+1) == 'i' &&
-                            item.charAt(i+2) == 'm' &&
-                            item.charAt(i+3) == 'e' &&
-                            item.charAt(i+4) == 'o' &&
-                            item.charAt(i+5) == 'u' &&
-                            item.charAt(i+6) == 't'
-                        ) { 
-                            return "timeout"
-                        }
-                    }
-                    return "false"
+                if (e == "Pingok") {
+                    return "true"
+                } else if (e == "timeout") { 
+                    return "timeout"
                 }
                 basic.pause(100)
                 _timeout += 1
@@ -353,40 +330,10 @@ namespace Obloq {
             let num = 0
             let item = ""
             while (OBLOQ_TRUE) {
-                num = obloqRxBufferedSize()
-                //item = serial.readUntil(serial.delimiters(Delimiters.NewLine))
-                if (num >= 5) {
-                    item = obloqreadString(num)
-                    for (let i = 0; i < num; i++) {
-                        if (item.charAt(i) == '1') {
-                            if (item.charAt(i - 1) == '|' &&//|1|2|
-                                item.charAt(i + 1) == '|' &&
-                                item.charAt(i + 2) == '2' &&
-                                item.charAt(i + 3) == '|'
-                            ) {
-                                let j = i + 4
-                                let z = 0
-                                for (i = i + 4; i < num; i++) {
-                                    if (item.charAt(i) == '|') {
-                                        break;
-                                    } else {
-                                        z = z + 1
-                                    }
-                                }
-                                return item.substr(j, z)
-                            }
-                        } else if (item.charAt(i) == 't'&&//timeout
-                            item.charAt(i+1) == 'i' &&
-                            item.charAt(i+2) == 'm' &&
-                            item.charAt(i+3) == 'e' &&
-                            item.charAt(i+4) == 'o' &&
-                            item.charAt(i+5) == 'u' &&
-                            item.charAt(i+6) == 't'
-                        ) { 
-                            return "timeout"
-                        }
-                    }
-                    return "err"
+                if (e == "getVersion") {
+                    return param
+                } else if (e == "timeout") { 
+                    return "timeout"
                 }
                 basic.pause(100)
                 _timeout += 1
@@ -423,31 +370,10 @@ namespace Obloq {
             let num = 0
             let item = ""
             while (OBLOQ_TRUE) {
-                num = obloqRxBufferedSize()
-                //item = serial.readUntil(serial.delimiters(Delimiters.NewLine))
-                if (num >= 5) {
-                    item = obloqreadString(num)
-                    for (let i = 0; i < num; i++) {
-                        if (item.charAt(i) == '1') {
-                            if (item.charAt(i - 1) == '|' &&//|1|3|
-                                item.charAt(i + 1) == '|' &&
-                                item.charAt(i + 2) == '3' &&
-                                item.charAt(i + 3) == '|'
-                            ) {
-                                return "OK"
-                            }
-                        } else if (item.charAt(i) == 't'&&//timeout
-                            item.charAt(i+1) == 'i' &&
-                            item.charAt(i+2) == 'm' &&
-                            item.charAt(i+3) == 'e' &&
-                            item.charAt(i+4) == 'o' &&
-                            item.charAt(i+5) == 'u' &&
-                            item.charAt(i+6) == 't'
-                        ) { 
-                            return "timeout"
-                        }
-                    }
-                    return "err"
+                if (e == "Heartbeat") {
+                    return param
+                } else if (e == "timeout") { 
+                    return "timeout"
                 }
                 basic.pause(100)
                 _timeout += 1
@@ -503,41 +429,10 @@ namespace Obloq {
         }
         obloqWriteString("|2|2|\r")
         if (!initmqtt) {
-            let item = ""
-            let num = 0
-            let j = 0
             while (OBLOQ_TRUE) {
-                num = obloqRxBufferedSize()
-                //item = serial.readUntil(serial.delimiters(Delimiters.NewLine))
-                if (num >= 5) {
-                    item = obloqreadString(num)
-                    for (let i = 0; i < num; i++) {
-                        if (item.charAt(i) == '2') {
-                            if (item.charAt(i - 1) == '|' &&
-                                item.charAt(i + 1) == '|' &&
-                                item.charAt(i + 2) == '3' &&
-                                item.charAt(i + 3) == '|'
-                            ) {
-                                j = i + 2
-                                let z = 0
-                                let ip = ""
-                                for (i = i + 2; i < num; i++) {
-                                    if (item.charAt(i) == '|') {
-                                        break;
-                                    } else {
-                                        z = z + 1
-                                    }
-                                }
-                                ip = ""
-                                ip = item.substr(j, z)
-                                IP = ip
-                                FIRST = false
-                                //serial.writeString(IP);
-                                //serial.writeString("\r\n");
-                                return OBLOQ_TRUE
-                            }
-                        }
-                    }
+                if (e == "WifiConnected") { 
+                    IP = param
+                    return OBLOQ_TRUE
                 }
                 basic.pause(100)
                 _timeout += 1
@@ -550,10 +445,6 @@ namespace Obloq {
         }
         return OBLOQ_TRUE
     }
-
-
-
-
 
     /**
      * connect Wifi.SSID(string):account; PWD(string):password;
@@ -719,57 +610,15 @@ namespace Obloq {
         let num = 0
         let j = 0
         while (OBLOQ_TRUE) {
-            num = obloqRxBufferedSize()
-            //item = serial.readUntil(serial.delimiters(Delimiters.NewLine))
-            if (num >= 5) {
-                item = obloqreadString(num)
-                for (let i = 0; i < num; i++) {
-                    if (item.charAt(i) == '3') {
-                        if (item.charAt(i - 1) == '|' && //|3|200|
-                            item.charAt(i + 1) == '|' &&
-                            item.charAt(i + 2) == '2' &&
-                            item.charAt(i + 3) == '0' &&
-                            item.charAt(i + 4) == '0' &&
-                            item.charAt(i + 5) == '|'
-                        ) {
-                            let z = 0
-                            j = i + 6
-                            for (i = i + 6; i < num; i++) {
-                                if (item.charAt(i) == '|') {
-                                    break;
-                                } else {
-                                    z = z + 1
-                                }
-                            }
-                            let list = ["200", item.substr(j, z)]
-                            return list
-                        } else if (item.charAt(i - 1) == '|' && //|3|err|
-                            item.charAt(i + 1) == '|'
-                        ) {
-                            let z = 0
-                            j = i + 2
-                            for (i = i + 2; i < num; i++) {
-                                if (item.charAt(i) == '|') {
-                                    break;
-                                } else {
-                                    z = z + 1
-                                }
-                            }
-                            let err = item.substr(j, z)
-                            let list = [err, ""]
-                            return list
-                        }
-                    } else if (item.charAt(i) == '2') {
-                        if (item.charAt(i - 1) == '|' && //|2|1|
-                            item.charAt(i + 1) == '|' &&
-                            item.charAt(i + 2) == '1' &&
-                            item.charAt(i + 3) == '|'
-                        ) {
-                            let list = ["999", "disconnet wifi"]
-                            return list
-                        }
-                    }
-                }
+            if (e == "200") {
+                let list = ["200", param]
+                return list
+            } else if (e == "err") {
+                let list = ["err", param]
+                return list
+            } else if (e == "|2|1|") {
+                let list = ["999", "disconnet wifi"]
+                return list
             }
             basic.pause(100)
             _timeout += 1
@@ -813,57 +662,15 @@ namespace Obloq {
         let num = 0
         let j = 0
         while (OBLOQ_TRUE) {
-            num = obloqRxBufferedSize()
-            //item = serial.readUntil(serial.delimiters(Delimiters.NewLine))
-            if (num >= 5) {
-                item = obloqreadString(num)
-                for (let i = 0; i < num; i++) {
-                    if (item.charAt(i) == '3') {
-                        if (item.charAt(i - 1) == '|' && //|3|200|
-                            item.charAt(i + 1) == '|' &&
-                            item.charAt(i + 2) == '2' &&
-                            item.charAt(i + 3) == '0' &&
-                            item.charAt(i + 4) == '0' &&
-                            item.charAt(i + 5) == '|'
-                        ) {
-                            let z = 0
-                            j = i + 6
-                            for (i = i + 6; i < num; i++) {
-                                if (item.charAt(i) == '|') {
-                                    break;
-                                } else {
-                                    z = z + 1
-                                }
-                            }
-                            let list = ["200", item.substr(j, z)]
-                            return list
-                        } else if (item.charAt(i - 1) == '|' && //|3|err|
-                            item.charAt(i + 1) == '|'
-                        ) {
-                            let z = 0
-                            j = i + 2
-                            for (i = i + 2; i < num; i++) {
-                                if (item.charAt(i) == '|') {
-                                    break;
-                                } else {
-                                    z = z + 1
-                                }
-                            }
-                            let err = item.substr(j, z)
-                            let list = [err, ""]
-                            return list
-                        }
-                    } else if (item.charAt(i) == '2') {
-                        if (item.charAt(i - 1) == '|' && //|2|1|
-                            item.charAt(i + 1) == '|' &&
-                            item.charAt(i + 2) == '1' &&
-                            item.charAt(i + 3) == '|'
-                        ) {
-                            let list = ["999", "disconnet wifi"]
-                            return list
-                        }
-                    }
-                }
+            if (e == "200") {
+                let list = ["200", param]
+                return list
+            } else if (e == "err") {
+                let list = ["err", param]
+                return list
+            } else if (e == "|2|1|") {
+                let list = ["999", "disconnet wifi"]
+                return list
             }
             basic.pause(100)
             _timeout += 1
@@ -900,57 +707,15 @@ namespace Obloq {
         let num = 0
         let j = 0
         while (OBLOQ_TRUE) {
-            num = obloqRxBufferedSize()
-            //item = serial.readUntil(serial.delimiters(Delimiters.NewLine))
-            if (num >= 5) {
-                item = obloqreadString(num)
-                for (let i = 0; i < num; i++) {
-                    if (item.charAt(i) == '3') {
-                        if (item.charAt(i - 1) == '|' && //|3|200|
-                            item.charAt(i + 1) == '|' &&
-                            item.charAt(i + 2) == '2' &&
-                            item.charAt(i + 3) == '0' &&
-                            item.charAt(i + 4) == '0' &&
-                            item.charAt(i + 5) == '|'
-                        ) {
-                            let z = 0
-                            j = i + 6
-                            for (i = i + 6; i < num; i++) {
-                                if (item.charAt(i) == '|') {
-                                    break;
-                                } else {
-                                    z = z + 1
-                                }
-                            }
-                            let list = ["200", item.substr(j, z)]
-                            return list
-                        } else if (item.charAt(i - 1) == '|' && //|3|err|
-                            item.charAt(i + 1) == '|'
-                        ) {
-                            let z = 0
-                            j = i + 2
-                            for (i = i + 2; i < num; i++) {
-                                if (item.charAt(i) == '|') {
-                                    break;
-                                } else {
-                                    z = z + 1
-                                }
-                            }
-                            let err = item.substr(j, z)
-                            let list = [err, ""]
-                            return list
-                        }
-                    } else if (item.charAt(i) == '2') {
-                        if (item.charAt(i - 1) == '|' && //|2|1|
-                            item.charAt(i + 1) == '|' &&
-                            item.charAt(i + 2) == '1' &&
-                            item.charAt(i + 3) == '|'
-                        ) {
-                            let list = ["999", "disconnet wifi"]
-                            return list
-                        }
-                    }
-                }
+            if (e == "200") {
+                let list = ["200", param]
+                return list
+            } else if (e == "err") {
+                let list = ["err", param]
+                return list
+            } else if (e == "|2|1|") {
+                let list = ["999", "disconnet wifi"]
+                return list
             }
             basic.pause(100)
             _timeout += 1
@@ -990,57 +755,15 @@ namespace Obloq {
         let num = 0
         let j = 0
         while (OBLOQ_TRUE) {
-            num = obloqRxBufferedSize()
-            //item = serial.readUntil(serial.delimiters(Delimiters.NewLine))
-            if (num >= 5) {
-                item = obloqreadString(num)
-                for (let i = 0; i < num; i++) {
-                    if (item.charAt(i) == '3') {
-                        if (item.charAt(i - 1) == '|' && //|3|200|
-                            item.charAt(i + 1) == '|' &&
-                            item.charAt(i + 2) == '2' &&
-                            item.charAt(i + 3) == '0' &&
-                            item.charAt(i + 4) == '0' &&
-                            item.charAt(i + 5) == '|'
-                        ) {
-                            let z = 0
-                            j = i + 6
-                            for (i = i + 6; i < num; i++) {
-                                if (item.charAt(i) == '|') {
-                                    break;
-                                } else {
-                                    z = z + 1
-                                }
-                            }
-                            let list = ["200", item.substr(j, z)]
-                            return list
-                        } else if (item.charAt(i - 1) == '|' && //|3|err|
-                            item.charAt(i + 1) == '|'
-                        ) {
-                            let z = 0
-                            j = i + 2
-                            for (i = i + 2; i < num; i++) {
-                                if (item.charAt(i) == '|') {
-                                    break;
-                                } else {
-                                    z = z + 1
-                                }
-                            }
-                            let err = item.substr(j, z)
-                            let list = [err, ""]
-                            return list
-                        }
-                    } else if (item.charAt(i) == '2') {
-                        if (item.charAt(i - 1) == '|' && //|2|1|
-                            item.charAt(i + 1) == '|' &&
-                            item.charAt(i + 2) == '1' &&
-                            item.charAt(i + 3) == '|'
-                        ) {
-                            let list = ["999", "disconnet wifi"]
-                            return list
-                        }
-                    }
-                }
+            if (e == "200") {
+                let list = ["200", param]
+                return list
+            } else if (e == "err") {
+                let list = ["err", param]
+                return list
+            } else if (e == "|2|1|") {
+                let list = ["999", "disconnet wifi"]
+                return list
             }
             basic.pause(100)
             _timeout += 1
@@ -1167,6 +890,9 @@ namespace Obloq {
     //% blockId=Obloq_sendMessage
     //% block="pubLish | %mess"
     export function Obloq_sendMessage(mess: string): void { 
+        if (!initmqtt) { 
+            return
+        }
         if (!serialinit) { 
             Obloq_serialInit()
         }
@@ -1227,9 +953,7 @@ namespace Obloq {
                 //if (size > 10) {serial.writeString(item) }
                 for (let i = 0; i < size; i++) {
                     if (item.charAt(i) == '1') {
-                        if (item.charAt(i - 1) == '|' &&
-                            item.charAt(i + 1) == '|'
-                        ) {
+                        if (item.charAt(i + 1) == '|') {
                             if (item.charAt(i + 2) == '1') { //|1|1|
                                 e = "Pingok"
                                 param = ""
@@ -1254,9 +978,7 @@ namespace Obloq {
                             }
                         }
                     } else if (item.charAt(i) == '2') {
-                        if (item.charAt(i - 1) == '|' &&
-                            item.charAt(i + 1) == '|'
-                        ) {
+                        if (item.charAt(i + 1) == '|') {
                             if (item.charAt(i + 2) == '3') { //|2|3|
                                 let z = 0
                                 let j = i + 4
@@ -1274,9 +996,50 @@ namespace Obloq {
                                 e = "DisConnected"
                                 param = "fail"
                                 return
+                            } else if (item.charAt(i + 2) == '1') { //|2|1|
+                                e = "|2|1|"
+                                return
                             }
                         }
-                    } else if (item.charAt(i) == '4') { // serial.writeNumber(2);
+                    } else if (item.charAt(i) == '3') {     
+                        if (item.charAt(i + 1) == '|') { 
+                            if (item.charAt(i + 2) == '2' && //|3|200|
+                                item.charAt(i + 3) == '0' &&
+                                item.charAt(i + 4) == '0' &&
+                                item.charAt(i + 5) == '|'
+                            ) {
+                                let z = 0
+                                let j = i + 6
+                                for (i = i + 6; i < size; i++) {
+                                    if (item.charAt(i) == '|') {
+                                        break;
+                                    } else {
+                                        z = z + 1
+                                    }
+                                }
+                                e = "200"
+                                param = item.substr(j, z)
+                                return
+                            } else if (item.charAt(i + 2) == 'e' && //|3|err|
+                                item.charAt(i + 3) == 'r' &&
+                                item.charAt(i + 4) == 'r' &&
+                                item.charAt(i + 5) == '|' 
+                            ) {
+                                let z = 0
+                                let j = i + 6
+                                for (i = i + 6; i < size; i++) {
+                                    if (item.charAt(i) == '|') {
+                                        break;
+                                    } else {
+                                        z = z + 1
+                                    }
+                                }
+                                e = "err"
+                                param = item.substr(j, z)
+                                return
+                            }
+                        }
+                    }else if (item.charAt(i) == '4') { // serial.writeNumber(2);
                         if (item.charAt(i + 1) == '|') {
                             if (item.charAt(i + 2) == '1') {   //|4|1|1|1|
                                 if (item.charAt(i + 3) == '|' &&
@@ -1368,6 +1131,19 @@ namespace Obloq {
                                 }
                             }
                         }
+                    } else if (item.charAt(i) == 't') {
+                        if (item.charAt(i + 1) == 'i' &&
+                            item.charAt(i + 2) == 'm' &&
+                            item.charAt(i + 3) == 'e' &&
+                            item.charAt(i + 4) == 'o' &&
+                            item.charAt(i + 5) == 'u' &&
+                            item.charAt(i + 6) == 't'
+                        ) { 
+                            e = "timeout"
+                            param = ""
+                            return
+                        }
+
                     }
                 }
                 //serial.writeNumber(n);
