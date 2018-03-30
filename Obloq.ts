@@ -1018,8 +1018,8 @@ namespace Obloq {
                                 return
                             }
                         }
-                    } else if (item.charAt(i) == '3') {     
-                        if (item.charAt(i + 1) == '|') { 
+                    } else if (item.charAt(i) == '3') {
+                        if (item.charAt(i + 1) == '|') {
                             if (item.charAt(i + 2) == '2' && //|3|200|
                                 item.charAt(i + 3) == '0' &&
                                 item.charAt(i + 4) == '0' &&
@@ -1040,7 +1040,7 @@ namespace Obloq {
                             } else if (item.charAt(i + 2) == 'e' && //|3|err|
                                 item.charAt(i + 3) == 'r' &&
                                 item.charAt(i + 4) == 'r' &&
-                                item.charAt(i + 5) == '|' 
+                                item.charAt(i + 5) == '|'
                             ) {
                                 let z = 0
                                 let j = i + 6
@@ -1056,7 +1056,7 @@ namespace Obloq {
                                 return
                             }
                         }
-                    }else if (item.charAt(i) == '4') { // serial.writeNumber(2);
+                    } else if (item.charAt(i) == '4') { // serial.writeNumber(2);
                         if (item.charAt(i + 1) == '|') {
                             if (item.charAt(i + 2) == '1') {   //|4|1|1|1|
                                 if (item.charAt(i + 3) == '|' &&
@@ -1159,12 +1159,14 @@ namespace Obloq {
                             item.charAt(i + 4) == 'o' &&
                             item.charAt(i + 5) == 'u' &&
                             item.charAt(i + 6) == 't'
-                        ) { 
+                        ) {
                             e = "timeout"
                             param = ""
                             return
                         }
 
+                    } else { 
+                        return
                     }
                 }
                 //serial.writeNumber(n);
