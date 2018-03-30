@@ -487,7 +487,6 @@ namespace Obloq {
                 basic.clearScreen()
              } break;
             case OBLOQ_WIFI_CONNECT_TIMEOUT: { 
-                FIRST = OBLOQ_TRUE
                 Obloq_disconnectWifi()
                 e = "PulishFailure"
                 return
