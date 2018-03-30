@@ -44,7 +44,8 @@ let cb: Action
 let mycb: Action
 //Record commands and messages.
 let e        = ""
-let param    = ""
+let param = ""
+let diwifi = ""
 //serial
 let serialinit = false
 //animation
@@ -487,7 +488,7 @@ namespace Obloq {
              } break;
             case OBLOQ_WIFI_CONNECT_TIMEOUT: { 
                 Obloq_disconnectWifi()
-                e = "PulishFailure"
+                diwifi = "PulishFailure"
                 return
             } break;
             case OBLOQ_WIFI_CONNECT_FAILURE: { 
@@ -512,13 +513,13 @@ namespace Obloq {
             case OBLOQ_MQTT_SUBTOPIC_TIMEOUT: { 
                 FIRST = OBLOQ_TRUE
                 Obloq_disconnectMqtt()
-                e = "PulishFailure"
+                diwifi = "PulishFailure"
                 return
             } break;
             case OBLOQ_MQTT_CONNECT_TIMEOUT: { 
                 FIRST = OBLOQ_TRUE
                 Obloq_disconnectMqtt()
-                e = "PulishFailure"
+                diwifi = "PulishFailure"
                 return
             } break;
             case OBLOQ_MQTT_CONNECT_FAILURE: { 
@@ -535,10 +536,10 @@ namespace Obloq {
     basic.forever(() => {
         if (DEBUG) { led.plot(0, 0) }
         basic.pause(150)
-        if (e == "PulishFailure") { 
+        if (diwifi == "PulishFailure") { 
             Obloq_startConnect()
             if (initmqtt) { 
-                e = ""
+                diwifi = ""
             }
         }
         if (DEBUG) { led.unplot(0, 0) }
@@ -1005,7 +1006,12 @@ namespace Obloq {
                                 param = "fail"
                                 return
                             } else if (item.charAt(i + 2) == '1') { //|2|1|
+                                led.stopAnimation()    
+                                basic.clearScreen()  
                                 e = "|2|1|"
+                                diwifi = "PulishFailure"
+                                param = ""
+                                FIRST = true
                                 return
                             }
                         }
@@ -1090,6 +1096,7 @@ namespace Obloq {
                                     param = ""
                                     FIRST = true
                                     initmqtt = false
+                                    diwifi = "PulishFailure"
                                     return
                                 } else if (item.charAt(i + 3) == '|' &&
                                     item.charAt(i + 4) == '5' && //|4|1|5|
