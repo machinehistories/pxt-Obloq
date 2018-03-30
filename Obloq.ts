@@ -1015,11 +1015,12 @@ namespace Obloq {
                                 return
                             } else if (item.charAt(i + 2) == '1') { //|2|1|
                                 led.stopAnimation()    
-                                basic.clearScreen()  
+                                basic.clearScreen()    
                                 e = "|2|1|"
-                                diwifi = "PulishFailure"
                                 param = ""
                                 FIRST = true
+                                initmqtt = false
+                                diwifi = "PulishFailure"
                                 return
                             }
                         }
