@@ -966,8 +966,6 @@ namespace Obloq {
             let size = obloqRxBufferedSize()
             //serial.writeNumber(size)
         if (size > 5) { // serial.writeNumber(1);
-            e = ""
-            param = ""
                 let item = obloqreadString(size)
                 //if (size > 10) {serial.writeString(item) }
                 for (let i = 0; i < size; i++) {
