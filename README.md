@@ -22,33 +22,15 @@ OBLOQ is a serial port of WIFI connection module for receiving and sending Inter
 Board firmware upgrade switch, easy to upgrade the firmware.
 
 ## Blocks
-### 1.WIFI and SERIAL
-![image](https://github.com/DFRobot/pxt-Obloq/blob/master/image/WIFI&SERIAL.png)
-### 2.HTTP
-![image](https://github.com/DFRobot/pxt-Obloq/blob/master/image/HTTP.png)
-### 3.MQTT
+
+### MQTT
 ![image](https://github.com/DFRobot/pxt-Obloq/blob/master/image/MQTT.png)
-### 4.OTHER
-![image](https://github.com/DFRobot/pxt-Obloq/blob/master/image/OTHER.png)
+
 
 ## Example
-### 1.HTTP
-![image](https://github.com/DFRobot/pxt-Obloq/blob/master/image/demoHTTP.png)
 
-get code ```https://github.com/DFRobot/pxt-Obloq/blob/master/example/ObloqHttp.ts```
-
-#### steps:
-[Download server](http://docs.dfrobot.com.cn/Myweather1.3.1.rar)<br>
-1.Install more than 2.7 versions of python on your computer.<br>
-2.Install the flask: ```'pip install Flask'```.<br>
-3.Initialize server:```'python webapp.py'```.<br>
-4.Start Server: ```'python webapp.py'```.<br>
-5.Set the WIFI ID and password in the program and set the server's IP address and port number.<br>
-6.Connect the serial port of the microbit with the Obloq (tx to rx, rx to tx).<br>
-7.Click to download and run.
-
-### 2.MQTT
-![image](https://github.com/DFRobot/pxt-Obloq/blob/master/image/demoMQTT.png)
+### MQTT
+![image](https://github.com/DFRobot/pxt-Obloq/blob/master/image/MQTTDemo.png)
 
 get code: ```https://github.com/DFRobot/pxt-Obloq/blob/master/example/ObloqMqtt.ts```
 
