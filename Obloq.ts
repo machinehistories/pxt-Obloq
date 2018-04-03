@@ -989,8 +989,10 @@ namespace Obloq {
                                 param = item.substr(j, z)
                                 return
                             } else if (item.charAt(i + 2) == '3') { //|1|3|
-                                e = "Heartbeat"
-                                param = "OK"
+                                if(initmqtt){
+                                    e = "Heartbeat"
+                                    param = "OK"
+                                }
                                 return
                             }
                         }
