@@ -51,8 +51,6 @@ let serialinit = false
 //animation
 let wifi_icon  = 1
 let mqtt_icon = 1
-let _witemess = 1
-let witemess = false
 //serial pin
 let Tx = SerialPin.P2
 let Rx = SerialPin.P1
@@ -156,28 +154,6 @@ namespace Obloq {
     //% advanced=true shim=Obloq::obloqEnDisplay
     function obloqEnDisplay(): void {
         return
-    }    
-
-    function Obloq_witeMess(): void { 
-        switch (_witemess) { 
-            case 1: {
-                basic.clearScreen()
-                led.plot(0, 4)
-                _witemess += 1
-            } break;
-            case 2: { 
-                led.plot(1, 4)
-                _witemess += 1
-            } break;
-            case 3: {
-                led.plot(2, 4)
-                _witemess += 1
-            } break;
-            case 4: {
-                led.plot(3, 4)
-                _witemess = 1
-            } break;
-        }
     }    
 
     function Obloq_wifiIconShow(): void { 
@@ -513,8 +489,6 @@ namespace Obloq {
                 basic.showIcon(IconNames.Yes)
                 basic.pause(500)
                 basic.clearScreen()
-                _witemess = 1
-                witemess = OBLOQ_TRUE
              } break;
             case OBLOQ_MQTT_SUBTOPIC_TIMEOUT: { 
                 FIRST = OBLOQ_TRUE
@@ -552,9 +526,6 @@ namespace Obloq {
         }
         if (DEBUG) { led.unplot(0, 0) }
         basic.pause(150)
-        if (witemess) { 
-            Obloq_witeMess()
-        }
     })   
 
 
@@ -1135,10 +1106,6 @@ namespace Obloq {
                                         }
                                     }
                                     param = item.substr(j, z)///?????????
-                                    if (witemess) {
-                                        witemess = OBLOQ_FALSE
-                                        basic.clearScreen()
-                                    }
                                     obloqforevers(mycb)
                                     break
                                 }
