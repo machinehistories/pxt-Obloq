@@ -236,17 +236,17 @@ namespace Obloq {
 	 * Two parallel stepper motors are executed simultaneously(DegreeDual).
      * @param SSID to SSID ,eg: "yourSSID"
      * @param PASSWORD to PASSWORD ,eg: "yourPASSWORD"
-     * @param IOT_ID to SSID ,eg: "yourIotId"
      * @param IOT_PWD to IOT_PWD ,eg: "yourIotPwd"
+     * @param IOT_ID to SSID ,eg: "yourIotId"
      * @param IOT_TOPIC to SSID ,eg: "yourIotTopic"
      * @param receive to receive ,eg: SerialPin.P1
      * @param send to send ,eg: SerialPin.P2
     */
     //% weight=102
     //% blockId=Obloq_setup
-    //% block="Obloq setup | wifi: ↴| ssid: %SSID| password: %PASSWORD| mqtt: ↴| iot id: %IOT_ID| iot pwd: %IOT_PWD| iot topic: %IOT_TOPIC| serial: ↴| receive: %receive| send: %send"
+    //% block="Obloq setup | wifi: ↴| ssid: %SSID| password: %PASSWORD| mqtt: ↴| iot pwd: %IOT_PWD| iot id: %IOT_ID| iot topic: %IOT_TOPIC| serial: ↴| receive: %receive| send: %send"
     export function Obloq_setup(/*wifi*/SSID: string, PASSWORD: string,
-                                /*mqtt*/IOT_ID: string, IOT_PWD: string, IOT_TOPIC: string,
+                                /*mqtt*/IOT_PWD: string, IOT_ID: string, IOT_TOPIC: string,
                                 /*serial*/receive: SerialPin, send: SerialPin):
     void { 
         OBLOQ_SSID = SSID
