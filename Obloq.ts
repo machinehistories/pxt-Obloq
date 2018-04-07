@@ -20,7 +20,7 @@ let OBLOQ_SSID        = ""
 let OBLOQ_PASSWORD    = ""
 //mqtt
 let OBLOQ_MQTT_PORT   = 1883
-let OBLOQ_MQTT_SERVER = "iot.dfrobot.com.cn"
+let OBLOQ_MQTT_SERVER = ""
 let OBLOQ_IOT_PWD     = ""
 let OBLOQ_IOT_ID      = ""
 let OBLOQ_IOT_TOPIC   = ""
@@ -246,12 +246,12 @@ namespace Obloq {
     //% blockId=Obloq_setup
     //% block="Obloq setup | Wi-Fi: | Wi-Fi name : %SSID| Wi-Fi password: %PASSWORD| Iot service: | IOT_PWD: %IOT_PWD| IOT_ID: %IOT_ID| IOT_TOPIC: %IOT_TOPIC| Pin set: | Receiving data (green wire): %receive| Sending data (blue wire): %send"
     export function Obloq_setup(/*wifi*/SSID: string, PASSWORD: string,
-                                /*mqtt*/IOT_PWD: string, IOT_ID: string, IOT_TOPIC: string,
+                                /*mqtt*/MQTT_SERVER: string, IOT_PWD: string, IOT_ID: string, IOT_TOPIC: string,
                                 /*serial*/receive: SerialPin, send: SerialPin):
     void { 
         OBLOQ_SSID = SSID
         OBLOQ_PASSWORD = PASSWORD
-        OBLOQ_MQTT_SERVER = "iot.dfrobot.com.cn"
+        OBLOQ_MQTT_SERVER = MQTT_SERVER
         OBLOQ_MQTT_PORT = 1883
         OBLOQ_IOT_PWD = IOT_PWD
         OBLOQ_IOT_ID = IOT_ID
