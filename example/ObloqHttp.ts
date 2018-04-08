@@ -1,13 +1,13 @@
 let ip = ""
 let port = 0
-let ssid = ""
 let password = ""
 let item: string[] = []
-password = "hidfrobot"
+let ssid = ""
 ssid = "dfrobotYanfa"
+password = "hidfrobot"
 port = 8080
-ip = "192.168.0.119"
-Obloq.Obloq_connectWifiExport(password, password)
+ip = "192.168.0.123"
+Obloq.Obloq_connectWifiExport(ssid, password)
 Obloq.Obloq_initHttp(ip, port)
 basic.forever(() => {
     item = Obloq.Obloq_httpGet("input?id=1&val=" + input.temperature(), 10000)
@@ -22,5 +22,5 @@ basic.forever(() => {
     } else {
         basic.showString(item[0])
     }
-    basic.pause(1)
+    basic.pause(500)
 })
