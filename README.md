@@ -38,7 +38,7 @@ Get the iot of things platform: [East IoT](http://iot.dfrobot.com.cn/).
 
 ## License
 
-MIT
+GNU
 
 ## Supported targets
 
