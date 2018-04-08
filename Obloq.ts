@@ -540,12 +540,14 @@ namespace Obloq {
     })   
 
     /**
-     * connect Wifi.SSID(string):account; PWD(string):password;
-     * time(ms): private long maxWait
+     * pin set
+     * @param receive to receive ,eg: SerialPin.P1
+     * @param send to send ,eg: SerialPin.P2
     */
     //% weight=101
     //% blockId=Obloq_pinSet
     //% block="pin set| receive %SerialPin| send %SerialPin"
+    //% advanced=true
     export function Obloq_pinSet(receive: SerialPin, send: SerialPin): void { 
         Tx = send
         Rx = receive
@@ -554,11 +556,13 @@ namespace Obloq {
 
     /**
      * connect Wifi.SSID(string):account; PWD(string):password;
-     * time(ms): private long maxWait
+     * @param SSID to SSID ,eg: "yourSSID"
+     * @param PASSWORD to PASSWORD ,eg: "yourPASSWORD"
     */
     //% weight=100
     //% blockId=Obloq_connectWifiExport
     //% block="wifi connect to| SSID %string| PASSWORD %string"
+    //% advanced=true
     export function Obloq_connectWifiExport(SSID: string, PASSWORD: string): void { 
         OBLOQ_SSID = SSID
         OBLOQ_PASSWORD = PASSWORD
