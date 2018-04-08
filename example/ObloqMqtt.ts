@@ -2,11 +2,11 @@ Obloq.obloq_mqttCallbackUser( ({ myparam: message }) =>  {
     basic.showString(message)
 })
 Obloq.Obloq_setup(
-"OPPO",
-"12345678",
-"ry-MOzFAPz",
-"H1zzdztAwz",
-"SkMaGKCDM",
+"dfrobotYanfa",
+"hidfrobot",
+"r1xUSVUwsz",
+"SJISVLvoz",
+"BkMH48Djf",
 SerialPin.P1,
 SerialPin.P2
 )
