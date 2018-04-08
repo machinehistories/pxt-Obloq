@@ -561,7 +561,7 @@ namespace Obloq {
     */
     //% weight=100
     //% blockId=Obloq_connectWifiExport
-    //% block="wifi connect to| SSID %string| PASSWORD %string"
+    //% block="wifi connect to| SSID %SSID| PASSWORD %PASSWORD"
     //% advanced=true
     export function Obloq_connectWifiExport(SSID: string, PASSWORD: string): void { 
         OBLOQ_SSID = SSID
