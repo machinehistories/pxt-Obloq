@@ -14,13 +14,21 @@
  */
 
 let DEBUG = false
+let MQTT_DEFAULT = true
+
+//DFRobot easy iot
+const EASY_IOT_SERVER = "iot.dfrobot.com.cn"
+const EASY_IOT_PORT = 1883
+//other iot
+const USER_IOT_SERVER = "-----------"
+const USER_IOT_PORT = 0
 
 //wifi
 let OBLOQ_SSID        = ""
 let OBLOQ_PASSWORD    = ""
 //mqtt
-let OBLOQ_MQTT_PORT   = 1883
-let OBLOQ_MQTT_SERVER = "iot.dfrobot.com.cn"
+let OBLOQ_MQTT_PORT   = 0
+let OBLOQ_MQTT_SERVER = ""
 let OBLOQ_IOT_PWD     = ""
 let OBLOQ_IOT_ID      = ""
 let OBLOQ_IOT_TOPIC   = ""
@@ -44,13 +52,13 @@ let cb: Action
 let mycb: Action
 //Record commands and messages.
 let e        = ""
-let param = ""
-let diwifi = ""
+let param    = ""
+let diwifi   = ""
 //serial
 let serialinit = false
 //animation
 let wifi_icon  = 1
-let mqtt_icon = 1
+let mqtt_icon  = 1
 //serial pin
 let Tx = SerialPin.P2
 let Rx = SerialPin.P1
@@ -80,13 +88,11 @@ namespace Obloq {
 
     export class Packeta {
         /**
-         * The number payload if a number was sent in this packet (via ``sendNumber()`` or ``sendValue()``)
-         * or 0 if this packet did not contain a number.
+         * Obloq receives commands.
          */
         public mye: string;
         /**
-         * The string payload if a string was sent in this packet (via ``sendString()`` or ``sendValue()``)
-         * or the empty string if this packet did not contain a string.
+         * Obloq receives the message content.
          */
         public myparam: string;
     }
@@ -251,8 +257,13 @@ namespace Obloq {
     void { 
         OBLOQ_SSID = SSID
         OBLOQ_PASSWORD = PASSWORD
-        OBLOQ_MQTT_SERVER = "iot.dfrobot.com.cn"
-        OBLOQ_MQTT_PORT = 1883
+        if (MQTT_DEFAULT) {
+            OBLOQ_MQTT_SERVER = EASY_IOT_SERVER
+            OBLOQ_MQTT_PORT = EASY_IOT_PORT
+        } else { 
+            OBLOQ_MQTT_SERVER = USER_IOT_SERVER
+            OBLOQ_MQTT_PORT = USER_IOT_PORT
+        }
         OBLOQ_IOT_PWD = IOT_PWD
         OBLOQ_IOT_ID = IOT_ID
         OBLOQ_IOT_TOPIC = IOT_TOPIC
@@ -432,7 +443,7 @@ namespace Obloq {
         if (!serialinit) { 
             Obloq_serialInit()
         }
-        obloqWriteString("|2|2|\r")
+        obloqWriteString("|2|3|\r")
         if (!initmqtt) {
             while (OBLOQ_TRUE) {
                 if (e == "WifiConnected") { 
@@ -456,7 +467,7 @@ namespace Obloq {
      * time(ms): private long maxWait
     */
     //% weight=100
-    //% blockId=Obloq_connectWifi
+    //% blockId=Obloq_startConnect
     //% block="start connect"
     export function Obloq_startConnect(): void { 
         mode = OBLOQ_MODE_MQTT
@@ -528,6 +539,31 @@ namespace Obloq {
         basic.pause(150)
     })   
 
+    /**
+     * connect Wifi.SSID(string):account; PWD(string):password;
+     * time(ms): private long maxWait
+    */
+    //% weight=101
+    //% blockId=Obloq_pinSet
+    //% block="pin set| receive %SerialPin| send %SerialPin"
+    export function Obloq_pinSet(receive: SerialPin, send: SerialPin): void { 
+        Tx = send
+        Rx = receive
+        Obloq_serialInit()
+    }
+
+    /**
+     * connect Wifi.SSID(string):account; PWD(string):password;
+     * time(ms): private long maxWait
+    */
+    //% weight=100
+    //% blockId=Obloq_connectWifiExport
+    //% block="wifi connect to| SSID %string| PASSWORD %string"
+    export function Obloq_connectWifiExport(SSID: string, PASSWORD: string): void { 
+        OBLOQ_SSID = SSID
+        OBLOQ_PASSWORD = PASSWORD
+        Obloq_connectWifi()
+    }
 
     function Obloq_connectWifi(): number { 
         wifi_icon = 1
