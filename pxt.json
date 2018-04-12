@@ -2,7 +2,7 @@
     "name": "Obloq",
     "version": "0.0.0",
     "description": "This is the obloq wifi module library.",
-    "license": "MIT",
+    "license": "GNU",
     "dependencies": {
         "core": "*",
         "radio": "*"

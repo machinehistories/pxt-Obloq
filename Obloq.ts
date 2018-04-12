@@ -14,12 +14,20 @@
  */
 
 let DEBUG = false
+let MQTT_DEFAULT = true
+
+//DFRobot easy iot
+const EASY_IOT_SERVER = "iot.dfrobot.com.cn"
+const EASY_IOT_PORT = 1883
+//other iot
+const USER_IOT_SERVER = "-----------"
+const USER_IOT_PORT = 0
 
 //wifi
 let OBLOQ_SSID        = ""
 let OBLOQ_PASSWORD    = ""
 //mqtt
-let OBLOQ_MQTT_PORT   = 1883
+let OBLOQ_MQTT_PORT   = 0
 let OBLOQ_MQTT_SERVER = ""
 let OBLOQ_IOT_PWD     = ""
 let OBLOQ_IOT_ID      = ""
@@ -44,13 +52,13 @@ let cb: Action
 let mycb: Action
 //Record commands and messages.
 let e        = ""
-let param = ""
-let diwifi = ""
+let param    = ""
+let diwifi   = ""
 //serial
 let serialinit = false
 //animation
 let wifi_icon  = 1
-let mqtt_icon = 1
+let mqtt_icon  = 1
 //serial pin
 let Tx = SerialPin.P2
 let Rx = SerialPin.P1
@@ -80,13 +88,11 @@ namespace Obloq {
 
     export class Packeta {
         /**
-         * The number payload if a number was sent in this packet (via ``sendNumber()`` or ``sendValue()``)
-         * or 0 if this packet did not contain a number.
+         * Obloq receives commands.
          */
         public mye: string;
         /**
-         * The string payload if a string was sent in this packet (via ``sendString()`` or ``sendValue()``)
-         * or the empty string if this packet did not contain a string.
+         * Obloq receives the message content.
          */
         public myparam: string;
     }
@@ -236,23 +242,28 @@ namespace Obloq {
 	 * Two parallel stepper motors are executed simultaneously(DegreeDual).
      * @param SSID to SSID ,eg: "yourSSID"
      * @param PASSWORD to PASSWORD ,eg: "yourPASSWORD"
+     * @param IOT_ID to IOT_ID ,eg: "yourIotId"
      * @param IOT_PWD to IOT_PWD ,eg: "yourIotPwd"
-     * @param IOT_ID to SSID ,eg: "yourIotId"
-     * @param IOT_TOPIC to SSID ,eg: "yourIotTopic"
+     * @param IOT_TOPIC to IOT_TOPIC ,eg: "yourIotTopic"
      * @param receive to receive ,eg: SerialPin.P1
      * @param send to send ,eg: SerialPin.P2
     */
     //% weight=102
     //% blockId=Obloq_setup
-    //% block="Obloq setup | Wi-Fi: | Wi-Fi name : %SSID| Wi-Fi password: %PASSWORD| Iot service: | IOT_PWD: %IOT_PWD| IOT_ID: %IOT_ID| IOT_TOPIC: %IOT_TOPIC| Pin set: | Receiving data (green wire): %receive| Sending data (blue wire): %send"
+    //% block="Obloq setup | Wi-Fi: | Wi-Fi name : %SSID| Wi-Fi password: %PASSWORD| Iot service: | IOT_ID: %IOT_ID| IOT_PWD: %IOT_PWD| IOT_TOPIC: %IOT_TOPIC| Pin set: | Receiving data (green wire): %receive| Sending data (blue wire): %send"
     export function Obloq_setup(/*wifi*/SSID: string, PASSWORD: string,
-                                /*mqtt*/MQTT_SERVER: string, IOT_PWD: string, IOT_ID: string, IOT_TOPIC: string,
+                                /*mqtt*/IOT_ID: string, IOT_PWD: string, IOT_TOPIC: string,
                                 /*serial*/receive: SerialPin, send: SerialPin):
     void { 
         OBLOQ_SSID = SSID
         OBLOQ_PASSWORD = PASSWORD
-        OBLOQ_MQTT_SERVER = MQTT_SERVER
-        OBLOQ_MQTT_PORT = 1883
+        if (MQTT_DEFAULT) {
+            OBLOQ_MQTT_SERVER = EASY_IOT_SERVER
+            OBLOQ_MQTT_PORT = EASY_IOT_PORT
+        } else { 
+            OBLOQ_MQTT_SERVER = USER_IOT_SERVER
+            OBLOQ_MQTT_PORT = USER_IOT_PORT
+        }
         OBLOQ_IOT_PWD = IOT_PWD
         OBLOQ_IOT_ID = IOT_ID
         OBLOQ_IOT_TOPIC = IOT_TOPIC
@@ -432,7 +443,7 @@ namespace Obloq {
         if (!serialinit) { 
             Obloq_serialInit()
         }
-        obloqWriteString("|2|2|\r")
+        obloqWriteString("|2|3|\r")
         if (!initmqtt) {
             while (OBLOQ_TRUE) {
                 if (e == "WifiConnected") { 
@@ -456,7 +467,7 @@ namespace Obloq {
      * time(ms): private long maxWait
     */
     //% weight=100
-    //% blockId=Obloq_connectWifi
+    //% blockId=Obloq_startConnect
     //% block="start connect"
     export function Obloq_startConnect(): void { 
         mode = OBLOQ_MODE_MQTT
@@ -528,6 +539,35 @@ namespace Obloq {
         basic.pause(150)
     })   
 
+    /**
+     * pin set
+     * @param receive to receive ,eg: SerialPin.P1
+     * @param send to send ,eg: SerialPin.P2
+    */
+    //% weight=101
+    //% blockId=Obloq_pinSet
+    //% block="pin set| receive %SerialPin| send %SerialPin"
+    //% advanced=true
+    export function Obloq_pinSet(receive: SerialPin, send: SerialPin): void { 
+        Tx = send
+        Rx = receive
+        Obloq_serialInit()
+    }
+
+    /**
+     * connect Wifi.SSID(string):account; PWD(string):password;
+     * @param SSID to SSID ,eg: "yourSSID"
+     * @param PASSWORD to PASSWORD ,eg: "yourPASSWORD"
+    */
+    //% weight=100
+    //% blockId=Obloq_connectWifiExport
+    //% block="wifi connect to| SSID %SSID| PASSWORD %PASSWORD"
+    //% advanced=true
+    export function Obloq_connectWifiExport(SSID: string, PASSWORD: string): void { 
+        OBLOQ_SSID = SSID
+        OBLOQ_PASSWORD = PASSWORD
+        Obloq_connectWifi()
+    }
 
     function Obloq_connectWifi(): number { 
         wifi_icon = 1
