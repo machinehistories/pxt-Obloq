@@ -13,12 +13,13 @@
  * @date  2018-03-20
  */
 
-let DEBUG = false
+let DEBUG = true
 let MQTT_DEFAULT = true
 
 //DFRobot easy iot
 const EASY_IOT_SERVER = "api.thingspeak.com"
-const EASY_IOT_PORT = 1883
+const EASY_IOT_PORT = 80
+//const EASY_IOT_PORT = 1883
 //other iot
 const USER_IOT_SERVER = "-----------"
 const USER_IOT_PORT = 0
@@ -34,7 +35,8 @@ let OBLOQ_IOT_ID      = ""
 let OBLOQ_IOT_TOPIC   = ""
 //http
 let OBLOQ_HTTP_IP     = ""
-let OBLOQ_HTTP_PORT   = 8080
+let OBLOQ_HTTP_PORT   = 80
+//let OBLOQ_HTTP_PORT   = 8080
 //Connect to the WiFi IP address.
 let IP = "192.168.2.81"
 //Record state
