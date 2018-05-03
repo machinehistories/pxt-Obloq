@@ -476,7 +476,7 @@ namespace Obloq {
         switch (ret) { 
             case OBLOQ_SUCCE_OK: {
                 basic.showIcon(IconNames.Yes)
-                basic.pause(500)
+                basic.pause(500);
                 basic.clearScreen()
              } break
             case OBLOQ_WIFI_CONNECT_TIMEOUT: { 
