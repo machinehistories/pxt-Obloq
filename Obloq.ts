@@ -493,7 +493,7 @@ namespace Obloq {
                 while (OBLOQ_TRUE) { basic.pause(10000) }
             } break;
         }
-        ret = Obloq_connectIot();     basic.showNumber(ret);basic.pause(50000)
+        ret = Obloq_connectIot();
         switch (ret) { 
             case OBLOQ_SUCCE_OK: {
                 initmqtt = OBLOQ_TRUE
@@ -504,20 +504,24 @@ namespace Obloq {
             case OBLOQ_MQTT_SUBTOPIC_TIMEOUT: { 
                 FIRST = OBLOQ_TRUE
                 Obloq_disconnectMqtt()
+                basic.showNumber(ret)
                 diwifi = "PulishFailure"
                 return
             } break;
             case OBLOQ_MQTT_CONNECT_TIMEOUT: { 
                 FIRST = OBLOQ_TRUE
                 Obloq_disconnectMqtt()
+                basic.showNumber(ret)
                 diwifi = "PulishFailure"
                 return
             } break;
             case OBLOQ_MQTT_CONNECT_FAILURE: { 
+                basic.showNumber(ret)
                 basic.showIcon(IconNames.No)
                 while (OBLOQ_TRUE) { basic.pause(10000) }
             } break;
             case OBLOQ_SUCCE_ERR: { 
+                basic.showNumber(ret)
                 basic.showIcon(IconNames.No)
                 while (OBLOQ_TRUE) { basic.pause(10000) }
             } break;
@@ -863,12 +867,12 @@ namespace Obloq {
             basic.pause(1)
             _timeout += 1
         }
-        if (_timeout >= 4000) { 
+        if (_timeout >= 60000) { 
             //basic.showString("timeout!")
             return OBLOQ_MQTT_CONNECT_TIMEOUT 
         }
         Obloq_subTopic()
-        let __timeout = _timeout + 2000
+        let __timeout = _timeout + 10000
         while (_timeout < __timeout) {
             if (_timeout % 50 == 0) { 
                 Obloq_mqttIconShow()
