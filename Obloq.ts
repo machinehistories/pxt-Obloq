@@ -863,7 +863,7 @@ namespace Obloq {
             basic.pause(1)
             _timeout += 1
         }
-        if (_timeout >= 2000) { 
+        if (_timeout >= 4000) { 
             //basic.showString("timeout!")
             return OBLOQ_MQTT_CONNECT_TIMEOUT 
         }
@@ -1186,7 +1186,7 @@ namespace Obloq {
                             return
                         }
                     }
-                }
+                } 
                 //serial.writeNumber(n);
                 // serial.writeString("\r\n");
             }
