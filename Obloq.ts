@@ -478,20 +478,23 @@ namespace Obloq {
                 basic.showIcon(IconNames.Yes)
                 basic.pause(500)
                 basic.clearScreen()
-             } break;
+             } break
             case OBLOQ_WIFI_CONNECT_TIMEOUT: { 
                 Obloq_disconnectWifi()
+                basic.showNumber(ret)
                 diwifi = "PulishFailure"
                 return
-            } break;
+            } break
             case OBLOQ_WIFI_CONNECT_FAILURE: { 
+                basic.showNumber(ret)
                 basic.showIcon(IconNames.No)
                 while (OBLOQ_TRUE) { basic.pause(10000) }
-            } break;
+            } break
             case OBLOQ_SUCCE_ERR: { 
+                basic.showNumber(ret)
                 basic.showIcon(IconNames.No)
                 while (OBLOQ_TRUE) { basic.pause(10000) }
-            } break;
+            } break
         }
         ret = Obloq_connectIot();
         switch (ret) { 
@@ -500,31 +503,31 @@ namespace Obloq {
                 basic.showIcon(IconNames.Yes)
                 basic.pause(500)
                 basic.clearScreen()
-             } break;
+             } break
             case OBLOQ_MQTT_SUBTOPIC_TIMEOUT: { 
                 FIRST = OBLOQ_TRUE
                 Obloq_disconnectMqtt()
                 basic.showNumber(ret)
                 diwifi = "PulishFailure"
                 return
-            } break;
+            } break
             case OBLOQ_MQTT_CONNECT_TIMEOUT: { 
                 FIRST = OBLOQ_TRUE
                 Obloq_disconnectMqtt()
                 basic.showNumber(ret)
                 diwifi = "PulishFailure"
                 return
-            } break;
+            } break
             case OBLOQ_MQTT_CONNECT_FAILURE: { 
                 basic.showNumber(ret)
                 basic.showIcon(IconNames.No)
                 while (OBLOQ_TRUE) { basic.pause(10000) }
-            } break;
+            } break
             case OBLOQ_SUCCE_ERR: { 
                 basic.showNumber(ret)
                 basic.showIcon(IconNames.No)
                 while (OBLOQ_TRUE) { basic.pause(10000) }
-            } break;
+            } break
         }     
     }
 
