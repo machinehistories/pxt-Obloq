@@ -493,7 +493,7 @@ namespace Obloq {
                 while (OBLOQ_TRUE) { basic.pause(10000) }
             } break;
         }
-        ret = Obloq_connectIot()
+        ret = Obloq_connectIot();     basic.showNumber(ret);basic.pause(50000)
         switch (ret) { 
             case OBLOQ_SUCCE_OK: {
                 initmqtt = OBLOQ_TRUE
