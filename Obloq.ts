@@ -248,11 +248,13 @@ namespace Obloq {
      * @param receive to receive ,eg: SerialPin.P1
      * @param send to send ,eg: SerialPin.P2
     */
+    /* block="Obloq setup | Wi-Fi: | Wi-Fi name : %SSID| Wi-Fi password: %PASSWORD| Iot service: | IOT_ID: %IOT_ID| IOT_PWD: %IOT_PWD| IOT_TOPIC: %IOT_TOPIC| Pin set: | Receiving data (green wire): %receive| Sending data (blue wire): %send" */
     //% weight=102
     //% blockId=Obloq_setup
-    //% block="Obloq setup | Wi-Fi: | Wi-Fi name : %SSID| Wi-Fi password: %PASSWORD| Iot service: | IOT_ID: %IOT_ID| IOT_PWD: %IOT_PWD| IOT_TOPIC: %IOT_TOPIC| Pin set: | Receiving data (green wire): %receive| Sending data (blue wire): %send"
+    //% block="Obloq setup | Wi-Fi: | Wi-Fi name : %SSID| Wi-Fi password: %PASSWORD| Iot service: | iot: %iot | Pin set: | Receiving data (green wire): %receive| Sending data (blue wire): %send"
     export function Obloq_setup(/*wifi*/SSID: string, PASSWORD: string,
-                                /*mqtt*/IOT_ID: string, IOT_PWD: string, IOT_TOPIC: string,
+                                /*mqtt*///IOT_ID: string, IOT_PWD: string, IOT_TOPIC: string,
+                                       iot: Iot,
                                 /*serial*/receive: SerialPin, send: SerialPin):
     void { 
         OBLOQ_SSID = SSID
@@ -264,9 +266,9 @@ namespace Obloq {
             OBLOQ_MQTT_SERVER = USER_IOT_SERVER
             OBLOQ_MQTT_PORT = USER_IOT_PORT
         }
-        OBLOQ_IOT_PWD = IOT_PWD
-        OBLOQ_IOT_ID = IOT_ID
-        OBLOQ_IOT_TOPIC = IOT_TOPIC
+        //OBLOQ_IOT_PWD = IOT_PWD
+        //OBLOQ_IOT_ID = IOT_ID
+        //OBLOQ_IOT_TOPIC = IOT_TOPIC
         Tx = send
         Rx = receive
         Obloq_serialInit()
@@ -1220,4 +1222,16 @@ namespace Obloq {
         onEvent()
     }  
 */
+
+
+
+class Iot {
+
+    constructor(IOT_ID: string, IOT_PWD: string, IOT_TOPIC: string) {
+
+    }
+
+}
+
+    
 }
