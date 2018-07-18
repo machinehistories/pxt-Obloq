@@ -1,7 +1,7 @@
 {
     "name": "Obloq",
     "version": "0.0.0",
-    "description": "This is the obloq wifi module library.",
+    "description": "Add Wi-Fi connectivity to micro:bit and start your IoT project in 5 minutes!",
     "license": "GNU",
     "dependencies": {
         "core": "*",
@@ -14,8 +14,7 @@
         "_locales/zh/Obloq-strings.json"
     ],
     "testFiles": [
-        "example/ObloqHttp.ts",
-        "example/ObloqMqtt.ts"
+        "mqtttest.ts"
     ],
     "public": false
 }
