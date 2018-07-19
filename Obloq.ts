@@ -68,6 +68,31 @@ let Rx = SerialPin.P1
 let event = false
 //mode
 let mode = 0
+
+enum TOPIC { 
+    TOPIC_1,
+    TOPIC_2,
+    TOPIC_3,
+    TOPIC_4
+}
+enum SERVERS { 
+    //% blockId="SER_CHINA" block="China"
+    SER_CHINA,
+    //% blockId="SER_GLOBAL" block="Global"
+    SER_GLOBAL
+}
+
+enum LIST { 
+    //% blockId="T1" block="1"
+    T1 = 1,
+    //% blockId="T2" block="2"
+    T2 = 2,
+    //% blockId="T3" block="3"
+    T3 = 3,
+    //% blockId="T4" block="4"
+    T4 = 4
+}
+
 /**
  *Obloq implementation method.
  */
@@ -87,30 +112,6 @@ namespace Obloq {
 
     const OBLOQ_TRUE = true
     const OBLOQ_FALSE = false
-    
-    export enum TOPIC { 
-        TOPIC_1,
-        TOPIC_2,
-        TOPIC_3,
-        TOPIC_4
-    }
-    export enum SERVERS { 
-        //% blockId="SER_CHINA" block="China"
-        SER_CHINA,
-        //% blockId="SER_GLOBAL" block="Global"
-        SER_GLOBAL
-    }
-    
-    export enum LIST { 
-        //% blockId="T1" block="1"
-        T1 = 1,
-        //% blockId="T2" block="2"
-        T2 = 2,
-        //% blockId="T3" block="3"
-        T3 = 3,
-        //% blockId="T4" block="4"
-        T4 = 4
-    }
 
     export class Packeta {
         /**
