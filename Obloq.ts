@@ -55,7 +55,7 @@ const TOPIC_NUM_MAX = 5
 //Record commands and messages.
 let e        = ""
 let param    = ""
-let diwifi   = ""
+let diwifi   = "" 
 //serial
 let serialinit = false
 //animation
