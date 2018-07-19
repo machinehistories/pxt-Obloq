@@ -32,7 +32,12 @@ Board firmware upgrade switch, easy to upgrade the firmware.
 ### MQTT
 ![image](https://github.com/DFRobot/pxt-Obloq/blob/master/image/MQTTDemo.png)
 
-get code: ```https://github.com/DFRobot/pxt-Obloq/blob/master/example/ObloqMqtt.ts```
+get code: ```https://github.com/DFRobot/pxt-Obloq/blob/master/mqtttest.ts```
+
+Multiple services：
+![image](https://github.com/DFRobot/pxt-Obloq/blob/master/image/MQTTMoreDemo.png)
+
+get code: ```https://github.com/DFRobot/pxt-Obloq/blob/master/mqttMoretest.ts```
 
 Get the iot of things platform: [East IoT](http://iot.dfrobot.com.cn/).
 
@@ -45,5 +50,5 @@ GNU
 * for PXT/microbit
 (The metadata above is needed for package search.)
 ```package
-gamePad=github:DFRobot/pxt-Obloq
+Obloq=github:DFRobot/pxt-Obloq
 ```

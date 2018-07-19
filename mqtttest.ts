@@ -2,11 +2,12 @@ Obloq.obloq_mqttCallbackUser( ({ myparam: message }) =>  {
     basic.showString(message)
 })
 Obloq.Obloq_setup(
+Obloq.SERVERS.SER_CHINA,
 "dfrobotYanfa",
 "hidfrobot",
-"r1xUSVUwsz",
-"SJISVLvoz",
-"BkMH48Djf",
+"HJZTNhw3fm",
+"HyGp4hD2zm",
+"rJq_biTXQ",
 SerialPin.P1,
 SerialPin.P2
 )

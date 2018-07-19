@@ -1,6 +1,7 @@
 {
-	
-	"Obloq.Obloq_setup|block": "Obloq 初始设置 | Wi-Fi: | Wi-Fi名称: %SSID| Wi-Fi密码: %PASSWORD| 物联网服务: | IOT_ID: %IOT_ID| IOT_PWD: %IOT_PWD| IOT_TOPIC: %IOT_TOPIC| 引脚设置: | 接收数据(绿色导线): %receive| 发送数据(蓝色导线): %send",
+	"Obloq.SERVERS.SER_CHINA|block": "中国",
+	"Obloq.SERVERS.SER_GLOBAL|block": "全球",
+	"Obloq.Obloq_setup|block": "Obloq 初始设置 | 服务器: | 选择: %SERVER | Wi-Fi: | Wi-Fi名称: %SSID| Wi-Fi密码: %PASSWORD| 物联网服务: | IOT_ID: %IOT_ID| IOT_PWD: %IOT_PWD| IOT_TOPIC: %IOT_TOPIC| 引脚设置: | 接收数据(绿色导线): %receive| 发送数据(蓝色导线): %send",
 	"Obloq.Obloq_serialInit|block": "串口重定向到 TX %tx| RX %rx",
 	"Obloq.Obloq_startConnect|block": "启动连接",
 	"Obloq.Obloq_quit|block": "断开串口连接",
@@ -10,14 +11,13 @@
 	"Obloq.Obloq_stopHeartbeat|block": "停止心跳请求",
 	"Obloq.Obloq_reconnectWifi|block": "重新连接WIFI 超时 %time",
 	"Obloq.Obloq_ipconfig|block": "获取IP地址",
-	"Obloq.Obloq_initHttp|block": "HTTP设置 | IP地址 %ip| 端口号 %port",
-	"Obloq.Obloq_httpGet|block": "HTTP(GET) | URL %url| 超时 %time",
-	"Obloq.Obloq_httpPost|block": "HTTP(POST) | URL %url| 内容 %content| 超时 %time",
-	"Obloq.Obloq_httpPut|block": "HTTP(PUT) | URL %url| 内容 %content| 超时 %time",
-	"Obloq.Obloq_httpDelete|block": "HTTP(DELETE) | URL %url| 内容 %content| 超时 %time",
 	"Obloq.Obloq_reconnectMqtt|block": "重新连接MQTT",
 	"Obloq.Obloq_disconnectMqtt|block": "MQTT断开连接",
 	"Obloq.Obloq_sendMessage|block": "发送消息 | %mess",
-	"Obloq.Obloq_subTopic|block": "订阅一个TOPIC",
-	"Obloq.obloq_mqttCallbackUser|block": "在obloq收到消息时运行"
+	"Obloq.Obloq_sendMessageMore|block": "发送消息 %mess | 到 %top",
+	"Obloq.Obloq_add_topic|block": "增加一个TOPIC 编号 %list |%IOT_TOPIC",
+	"Obloq.obloq_mqttCallbackUser|block": "在obloq收到消息时运行",
+	"Obloq.obloq_mqttCallbackUserMore|block": "在obloq收到消息时运行 %top |:",
+	"Obloq.Obloq_pinSet|block": "引脚设置| 接收数据(绿色导线): %receive| 发送数据(蓝色导线): %send",
+	"Obloq.Obloq_connectWifiExport|block": "WIFI连接到| 密码 %SSID| PASSWORD %PASSWORD"
 }

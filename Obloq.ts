@@ -17,7 +17,8 @@ let DEBUG = false
 let MQTT_DEFAULT = true
 
 //DFRobot easy iot
-const EASY_IOT_SERVER = "iot.dfrobot.com.cn"
+const EASY_IOT_SERVER_CHINA = "iot.dfrobot.com.cn"
+const EASY_IOT_SERVER_GLOBAL = "iot.dfrobot.com"
 const EASY_IOT_PORT = 1883
 //other iot
 const USER_IOT_SERVER = "-----------"
@@ -31,7 +32,7 @@ let OBLOQ_MQTT_PORT   = 0
 let OBLOQ_MQTT_SERVER = ""
 let OBLOQ_IOT_PWD     = ""
 let OBLOQ_IOT_ID      = ""
-let OBLOQ_IOT_TOPIC   = ""
+let OBLOQ_IOT_TOPIC: string[] = ["x","x","x","x","x"]
 //http
 let OBLOQ_HTTP_IP     = ""
 let OBLOQ_HTTP_PORT   = 8080
@@ -48,8 +49,9 @@ let myport   = 80
 let myhost   = ""
 let mymqport = 80
 //callback function
-let cb: Action
-let mycb: Action
+let cb: Action[] = [null,null,null,null,null]
+let mycb: Action[] = [null,null,null,null,null]
+const TOPIC_NUM_MAX = 5
 //Record commands and messages.
 let e        = ""
 let param    = ""
@@ -85,6 +87,30 @@ namespace Obloq {
 
     const OBLOQ_TRUE = true
     const OBLOQ_FALSE = false
+    
+    export enum TOPIC { 
+        TOPIC_1,
+        TOPIC_2,
+        TOPIC_3,
+        TOPIC_4
+    }
+    export enum SERVERS { 
+        //% blockId="SER_CHINA" block="China"
+        SER_CHINA,
+        //% blockId="SER_GLOBAL" block="Global"
+        SER_GLOBAL
+    }
+    
+    export enum LIST { 
+        //% blockId="T1" block="1"
+        T1 = 1,
+        //% blockId="T2" block="2"
+        T2 = 2,
+        //% blockId="T3" block="3"
+        T3 = 3,
+        //% blockId="T4" block="4"
+        T4 = 4
+    }
 
     export class Packeta {
         /**
@@ -240,6 +266,7 @@ namespace Obloq {
 
     /**
 	 * Two parallel stepper motors are executed simultaneously(DegreeDual).
+     * @param SERVER to SERVER ,eg: SERVERS.SER_CHINA
      * @param SSID to SSID ,eg: "yourSSID"
      * @param PASSWORD to PASSWORD ,eg: "yourPASSWORD"
      * @param IOT_ID to IOT_ID ,eg: "yourIotId"
@@ -249,16 +276,24 @@ namespace Obloq {
      * @param send to send ,eg: SerialPin.P2
     */
     //% weight=102
+    //% receive.fieldEditor="gridpicker" receive.fieldOptions.columns=3
+    //% send.fieldEditor="gridpicker" send.fieldOptions.columns=3
+    //% SERVER.fieldEditor="gridpicker" SERVER.fieldOptions.columns=2
     //% blockId=Obloq_setup
-    //% block="Obloq setup | Wi-Fi: | Wi-Fi name : %SSID| Wi-Fi password: %PASSWORD| Iot service: | IOT_ID: %IOT_ID| IOT_PWD: %IOT_PWD| IOT_TOPIC: %IOT_TOPIC| Pin set: | Receiving data (green wire): %receive| Sending data (blue wire): %send"
-    export function Obloq_setup(/*wifi*/SSID: string, PASSWORD: string,
+    //% block="Obloq setup | Servers: | choose: %SERVER | Wi-Fi: | Wi-Fi name : %SSID| Wi-Fi password: %PASSWORD| Iot service: | IOT_ID: %IOT_ID| IOT_PWD: %IOT_PWD| IOT_TOPIC: %IOT_TOPIC| Pin set: | Receiving data (green wire): %receive| Sending data (blue wire): %send"
+    export function Obloq_setup(/*server*/SERVER: SERVERS,
+                                /*wifi*/SSID: string, PASSWORD: string,
                                 /*mqtt*/IOT_ID: string, IOT_PWD: string, IOT_TOPIC: string,
                                 /*serial*/receive: SerialPin, send: SerialPin):
     void { 
         OBLOQ_SSID = SSID
         OBLOQ_PASSWORD = PASSWORD
         if (MQTT_DEFAULT) {
-            OBLOQ_MQTT_SERVER = EASY_IOT_SERVER
+            if (SERVER == SERVERS.SER_CHINA) {
+                OBLOQ_MQTT_SERVER = EASY_IOT_SERVER_CHINA
+            } else if (SERVER == SERVERS.SER_GLOBAL) { 
+                OBLOQ_MQTT_SERVER = EASY_IOT_SERVER_GLOBAL
+            }   
             OBLOQ_MQTT_PORT = EASY_IOT_PORT
         } else { 
             OBLOQ_MQTT_SERVER = USER_IOT_SERVER
@@ -266,11 +301,23 @@ namespace Obloq {
         }
         OBLOQ_IOT_PWD = IOT_PWD
         OBLOQ_IOT_ID = IOT_ID
-        OBLOQ_IOT_TOPIC = IOT_TOPIC
+        OBLOQ_IOT_TOPIC[0] = IOT_TOPIC
         Tx = send
         Rx = receive
         Obloq_serialInit()
     }
+
+    /**
+     * Disconnect the serial port.
+    */
+    //% weight=200
+    //% blockId=Obloq_add_topic
+    //% block="Add topic list %list |%IOT_TOPIC"
+    //% list.fieldEditor="gridpicker" list.fieldOptions.columns=2
+    //% advanced=true
+    export function Obloq_add_topic(list: LIST, IOT_TOPIC: string): void {
+        OBLOQ_IOT_TOPIC[list] = IOT_TOPIC
+    }   
 
     /**
      * Disconnect the serial port.
@@ -468,7 +515,7 @@ namespace Obloq {
     */
     //% weight=100
     //% blockId=Obloq_startConnect
-    //% block="start connect"
+    //% block="start connection"
     export function Obloq_startConnect(): void { 
         mode = OBLOQ_MODE_MQTT
         let ret = Obloq_connectWifi()
@@ -552,8 +599,10 @@ namespace Obloq {
      * @param send to send ,eg: SerialPin.P2
     */
     //% weight=101
+    //% receive.fieldEditor="gridpicker" receive.fieldOptions.columns=3
+    //% send.fieldEditor="gridpicker" send.fieldOptions.columns=3
     //% blockId=Obloq_pinSet
-    //% block="pin set| receive %SerialPin| send %SerialPin"
+    //% block="pin set| Receiving data (green wire): %receive| Sending data (blue wire): %send"
     //% advanced=true
     export function Obloq_pinSet(receive: SerialPin, send: SerialPin): void { 
         Tx = send
@@ -641,12 +690,13 @@ namespace Obloq {
     //% blockId=Obloq_initHttp
     //% block="http set | ip %ip| port %port"
     //% advanced=true
+    /*
     export function Obloq_initHttp(ip: string, port: number): void { 
         defobloq = OBLOQ_TRUE
         myip = ip
         myport = port
         initmqtt = OBLOQ_FALSE
-    }
+    }*/
 
     /**
      * The HTTP get request.url(string):URL:time(ms): private long maxWait
@@ -656,6 +706,7 @@ namespace Obloq {
     //% blockId=Obloq_httpGet
     //% block="http get | url %url| timeout %time"
     //% advanced=true
+    /*
     export function Obloq_httpGet(url: string, time: number): string[] { 
         if (time < 100) { 
             time = 100
@@ -692,7 +743,7 @@ namespace Obloq {
         }
         let list = ["408", "time out"]
         return list
-    }
+    }*/
 
 
 
@@ -708,6 +759,7 @@ namespace Obloq {
     //% blockId=Obloq_httpPost
     //% block="http post | url %url| content %content| timeout %time"
     //% advanced=true
+    /*
     export function Obloq_httpPost(url: string, content: string, time: number): string[] { 
         if (time < 100) { 
             time = 100
@@ -744,7 +796,7 @@ namespace Obloq {
         }
         let list = ["408", "time out"]
         return list
-    }
+    }*/
 
 
     /**
@@ -756,6 +808,7 @@ namespace Obloq {
     //% blockId=Obloq_httpPut
     //% block="http put | url %url| content %content| timeout %time"
     //% advanced=true
+    /*
     export function Obloq_httpPut(url: string, content: string, time: number): string[] {
         if (time < 100) { 
             time = 100
@@ -789,7 +842,7 @@ namespace Obloq {
         }
         let list = ["408", "time out"]
         return list
-    }
+    }*/
 
 
 
@@ -804,6 +857,7 @@ namespace Obloq {
     //% blockId=Obloq_httpDelete
     //% block="http delete | url %url| content %content| timeout %time"
     //% advanced=true
+    /*
     export function Obloq_httpDelete(url: string, content: string, time: number): string[] {
         if (time < 100) { 
             time = 100
@@ -837,7 +891,7 @@ namespace Obloq {
         }
         let list = ["408", "time out"]
         return list
-    }
+    }*/
     
     function Obloq_connectMqtt(): void { 
         if (!serialinit) { 
@@ -850,10 +904,13 @@ namespace Obloq {
         mqtt_icon = 1
         let iconnum = 0
         let _timeout = 0
+        let __timeout = 0
         defobloq = OBLOQ_TRUE
         myhost = OBLOQ_MQTT_SERVER
         mymqport = OBLOQ_MQTT_PORT
-        mycb = cb
+        for (let i = 0; i < TOPIC_NUM_MAX; i++) { 
+            mycb[i] = cb[i]
+        }
 
         Obloq_connectMqtt()
 
@@ -874,24 +931,31 @@ namespace Obloq {
             //basic.showString("timeout!")
             return OBLOQ_MQTT_CONNECT_TIMEOUT 
         }
-        Obloq_subTopic()
-        let __timeout = _timeout + 10000
-        while (_timeout < __timeout) {
-            if (_timeout % 50 == 0) { 
-                Obloq_mqttIconShow()
-                iconnum += 1
+        for (let i = 0; i < TOPIC_NUM_MAX; i++) {
+            if (OBLOQ_IOT_TOPIC[i] != "x") {
+                Obloq_subTopic(OBLOQ_IOT_TOPIC[i])
+            } else { 
+                continue
             }
-            if (iconnum > 6) {//动画两次以上
-                if (e == "SubOk") {
-                    break
+            __timeout = _timeout + 10000
+            while (_timeout < __timeout) {
+                if (_timeout % 50 == 0) {
+                    Obloq_mqttIconShow()
+                    iconnum += 1
                 }
-            }    
-            basic.pause(1)
-            _timeout += 1
-        }
-        if (_timeout >= __timeout) { 
-           //basic.showString("timeout!")
-            return OBLOQ_MQTT_SUBTOPIC_TIMEOUT
+                if (iconnum > 6) {//动画两次以上
+                    if (e == "SubOk") {
+                        e = ""
+                        break
+                    }
+                }
+                basic.pause(1)
+                _timeout += 1
+            }
+            if (_timeout >= __timeout) { 
+                //basic.showString("timeout!")
+                 return OBLOQ_MQTT_SUBTOPIC_TIMEOUT
+             }
         }
         return OBLOQ_SUCCE_OK
         //basic.showString("ok")
@@ -939,8 +1003,33 @@ namespace Obloq {
         if (!serialinit) { 
             Obloq_serialInit()
         }
-        obloqWriteString("|4|1|3|"+OBLOQ_IOT_TOPIC+"|"+mess+"|\r")
-    }  
+        obloqWriteString("|4|1|3|"+OBLOQ_IOT_TOPIC[0]+"|"+mess+"|\r")
+    }
+
+    /**
+     * Send a message.
+     * @param top set top, eg: top
+     * @param mess set mess, eg: mess
+    */
+    //% weight=190
+    //% blockId=Obloq_sendMessageMore
+    //% block="pubLish %mess | to %top"
+    //% top.fieldEditor="gridpicker" top.fieldOptions.columns=2
+    //% advanced=true
+    export function Obloq_sendMessageMore(mess: string, top: TOPIC): void { 
+        if (!initmqtt) { 
+            return
+        }
+        if (!serialinit) { 
+            Obloq_serialInit()
+        }
+        switch (top) { 
+            case TOPIC.TOPIC_1: obloqWriteString("|4|1|3|" + OBLOQ_IOT_TOPIC[1] + "|" + mess + "|\r"); break;
+            case TOPIC.TOPIC_2: obloqWriteString("|4|1|3|" + OBLOQ_IOT_TOPIC[2] + "|" + mess + "|\r"); break;
+            case TOPIC.TOPIC_3: obloqWriteString("|4|1|3|" + OBLOQ_IOT_TOPIC[3] + "|" + mess + "|\r"); break;
+            case TOPIC.TOPIC_4: obloqWriteString("|4|1|3|" + OBLOQ_IOT_TOPIC[4] + "|" + mess + "|\r"); break;
+        }
+    }
 
     /**
      * Subscribe to a Topic
@@ -948,17 +1037,25 @@ namespace Obloq {
     */
     //% weight=67
     //% blockId=Obloq_subTopic
-    //% block="subTopic"
     //% advanced=true
-    export function Obloq_subTopic(): void { 
+    function Obloq_subTopic(topic: string): void { 
         if (!serialinit) { 
             Obloq_serialInit()
         }
-        obloqWriteString("|4|1|2|"+OBLOQ_IOT_TOPIC+"|\r")
+        obloqWriteString("|4|1|2|" + topic + "|\r")
     }  
 
+    function obloq_mqttCallbackMore(top: TOPIC, a: Action): void{
+        switch (top) { 
+            case TOPIC.TOPIC_1: cb[1] = a; break;
+            case TOPIC.TOPIC_2: cb[2] = a; break;
+            case TOPIC.TOPIC_3: cb[3] = a; break;
+            case TOPIC.TOPIC_4: cb[4] = a; break;
+        }
+    }
+
     function obloq_mqttCallback(a: Action): void{
-        cb = a
+        cb[0] = a
     }
 
     /**
@@ -979,224 +1076,252 @@ namespace Obloq {
             cb(packet)
         });
     }
-    
+
+    /**
+     * This is an MQTT listener callback function, which is very important.
+     * The specific use method can refer to "example/ObloqMqtt.ts"
+    */
+    //% weight=180
+    //% blockGap=60
+    //% mutate=objectdestructuring
+    //% mutateText=Packeta
+    //% mutateDefaults="myparam:message"
+    //% blockId=obloq_mqttCallbackUserMore block="on obloq received %top |:"
+    //% top.fieldEditor="gridpicker" top.fieldOptions.columns=2
+    //% advanced=true
+    export function obloq_mqttCallbackUserMore(top: TOPIC, cb: (packet: Packeta) => void) {
+        obloq_mqttCallbackMore(top, () => {
+            const packet = new Packeta();
+            packet.mye = e
+            packet.myparam = param;
+            cb(packet)
+        }); 
+    }
+
+
     function obloqRecevice(): void {
-            let size = obloqRxBufferedSize()
-            //serial.writeNumber(size)
+        let size = obloqRxBufferedSize()
+        //serial.writeNumber(size)
         if (size > 5) { // serial.writeNumber(1);
-                let item = obloqreadString(size)
-                //if (size > 10) {serial.writeString(item) }
-                for (let i = 0; i < size; i++) {
-                    if (item.charAt(i) == '1') {
-                        if (item.charAt(i + 1) == '|') {
-                            if (item.charAt(i + 2) == '1') { //|1|1|
-                                e = "Pingok"
-                                param = ""
-                                return
-                            } else if (item.charAt(i + 2) == '2') { //|1|2|
-                                let z = 0
-                                let j = i + 4
-                                for (i = i + 4; i < size; i++) {
-                                    if (item.charAt(i) == '|') {
-                                        break;
-                                    } else {
-                                        z = z + 1
-                                    }
-                                }
-                                e = "getVersion"
-                                param = item.substr(j, z)
-                                return
-                            } else if (item.charAt(i + 2) == '3') { //|1|3|
-                                if(initmqtt){
-                                    e = "Heartbeat"
-                                    param = "OK"
-                                }
-                                return
-                            }
-                        }
-                    } else if (item.charAt(i) == '2') {
-                        if (item.charAt(i + 1) == '|') {
-                            if (item.charAt(i + 2) == '3') { //|2|3|
-                                let z = 0
-                                let j = i + 4
-                                for (i = i + 4; i < size; i++) {
-                                    if (item.charAt(i) == '|') {
-                                        break;
-                                    } else {
-                                        z = z + 1
-                                    }
-                                }
-                                e = "WifiConnected"
-                                param = item.substr(j, z)
-                                return
-                            } else if (item.charAt(i + 2) == '4') { //|2|4|
-                                e = "DisConnected"
-                                param = "fail"
-                                return
-                            } else if (item.charAt(i + 2) == '1') { //|2|1|
-                                e = "|2|1|"
-                                param = ""
-                                if (initmqtt) {
-                                    led.stopAnimation()
-                                    basic.clearScreen()
-                                    FIRST = true
-                                    initmqtt = false
-                                    diwifi = "PulishFailure"
-                                }    
-                                return
-                            }
-                        }
-                    } else if (item.charAt(i) == '3') {
-                        if (item.charAt(i + 1) == '|') {
-                            if (item.charAt(i + 2) == '2' && //|3|200|
-                                item.charAt(i + 3) == '0' &&
-                                item.charAt(i + 4) == '0' &&
-                                item.charAt(i + 5) == '|'
-                            ) {
-                                let z = 0
-                                let j = i + 6
-                                for (i = i + 6; i < size; i++) {
-                                    if (item.charAt(i) == '|') {
-                                        break;
-                                    } else {
-                                        z = z + 1
-                                    }
-                                }
-                                e = "200"
-                                param = item.substr(j, z)
-                                return
-                            } else if (item.charAt(i + 2) == 'e' && //|3|err|
-                                item.charAt(i + 3) == 'r' &&
-                                item.charAt(i + 4) == 'r' &&
-                                item.charAt(i + 5) == '|'
-                            ) {
-                                let z = 0
-                                let j = i + 6
-                                for (i = i + 6; i < size; i++) {
-                                    if (item.charAt(i) == '|') {
-                                        break;
-                                    } else {
-                                        z = z + 1
-                                    }
-                                }
-                                e = "err"
-                                param = item.substr(j, z)
-                                return
-                            }
-                        }
-                    } else if (item.charAt(i) == '4') { // serial.writeNumber(2);
-                        if (item.charAt(i + 1) == '|') {
-                            if (item.charAt(i + 2) == '1') {   //|4|1|1|1|
-                                if (item.charAt(i + 3) == '|' &&
-                                    item.charAt(i + 4) == '1' &&
-                                    item.charAt(i + 5) == '|' &&
-                                    item.charAt(i + 6) == '1' &&
-                                    item.charAt(i + 7) == '|'
-                                ) {
-                                    e = "MqttConneted"
-                                    param = ""
-                                    // serial.writeNumber(size);
-                                    return
-                                } else if (item.charAt(i + 3) == '|' &&
-                                    item.charAt(i + 4) == '2' && //|4|1|2|1|
-                                    item.charAt(i + 5) == '|' &&
-                                    item.charAt(i + 6) == '1' &&
-                                    item.charAt(i + 7) == '|'
-                                ) {
-                                    e = "SubOk"
-                                    param = ""
-                                    return
-                                } else if (item.charAt(i + 3) == '|' &&
-                                    item.charAt(i + 4) == '3' && //|4|1|3|1|
-                                    item.charAt(i + 5) == '|' &&
-                                    item.charAt(i + 6) == '1' &&
-                                    item.charAt(i + 7) == '|'
-                                ) {  //led.plot(0, 1)
-                                    e = "PulishOk"
-                                    param = ""
-                                    return
-                                } else if (item.charAt(i + 3) == '|' &&
-                                    item.charAt(i + 4) == '3' && //|4|1|3|2|
-                                    item.charAt(i + 5) == '|' &&
-                                    item.charAt(i + 6) == '2' &&
-                                    item.charAt(i + 7) == '|'
-                                ) {  //led.plot(0, 1)
-                                    led.stopAnimation()    
-                                    basic.clearScreen()    
-                                    e = "PulishFailure"
-                                    param = ""
-                                    FIRST = true
-                                    initmqtt = false
-                                    diwifi = "PulishFailure"
-                                    return
-                                } else if (item.charAt(i + 3) == '|' &&
-                                    item.charAt(i + 4) == '5' && //|4|1|5|
-                                    item.charAt(i + 5) == '|'
-                                ) {    //led.plot(0, 0)                    //serial.writeNumber(size)
-                                    let z = 0
-                                    let j = i + 6
-                                    for (i = i + 6; i < size; i++) {
-                                        if (item.charAt(i) == '|') {
-                                            break;
-                                        } else {
-                                            z = z + 1
-                                        }
-                                    }
-                                    e = item.substr(j, z)
-                                    z = 0
-                                    j = i + 1
-                                    for (i = i + 1; i < size; i++) {
-                                        if (item.charAt(i) == '|') {
-                                            break;
-                                        } else {
-                                            z = z + 1
-                                        }
-                                    }
-                                    param = item.substr(j, z)///?????????
-                                    obloqforevers(mycb)
-                                    break
-                                }
-                            } else if (item.charAt(i + 2) == '2') {
-                                if (item.charAt(i + 3) == '|' &&  //|4|2|3|
-                                    item.charAt(i + 4) == '3' &&
-                                    item.charAt(i + 5) == '|'
-                                ) {
-                                    e = "MqttConnectErr"
-                                    param = ""
-                                    return
-                                } else if (item.charAt(i + 3) == '|') { //|4|2|
-                                    let z = 0
-                                    let j = i + 4
-                                    for (i = i + 4; i < size; i++) {
-                                        if (item.charAt(i) == '|') {
-                                            break;
-                                        } else {
-                                            z = z + 1
-                                        }
-                                    }
-                                    e = "ConnectErr"
-                                    param = item.substr(j, z)
-                                    return
-                                }
-                            }
-                        }
-                    } else if (item.charAt(i) == 't') {
-                        if (item.charAt(i + 1) == 'i' &&
-                            item.charAt(i + 2) == 'm' &&
-                            item.charAt(i + 3) == 'e' &&
-                            item.charAt(i + 4) == 'o' &&
-                            item.charAt(i + 5) == 'u' &&
-                            item.charAt(i + 6) == 't'
-                        ) {
-                            e = "timeout"
+            let item = obloqreadString(size)
+            //if (size > 10) {serial.writeString(item) }
+            for (let i = 0; i < size; i++) {
+                if (item.charAt(i) == '1') {
+                    if (item.charAt(i + 1) == '|') {
+                        if (item.charAt(i + 2) == '1') { //|1|1|
+                            e = "Pingok"
                             param = ""
+                            return
+                        } else if (item.charAt(i + 2) == '2') { //|1|2|
+                            let z = 0
+                            let j = i + 4
+                            for (i = i + 4; i < size; i++) {
+                                if (item.charAt(i) == '|') {
+                                    break;
+                                } else {
+                                    z = z + 1
+                                }
+                            }
+                            e = "getVersion"
+                            param = item.substr(j, z)
+                            return
+                        } else if (item.charAt(i + 2) == '3') { //|1|3|
+                            if (initmqtt) {
+                                e = "Heartbeat"
+                                param = "OK"
+                            }
                             return
                         }
                     }
-                } 
-                //serial.writeNumber(n);
-                // serial.writeString("\r\n");
+                } else if (item.charAt(i) == '2') {
+                    if (item.charAt(i + 1) == '|') {
+                        if (item.charAt(i + 2) == '3') { //|2|3|
+                            let z = 0
+                            let j = i + 4
+                            for (i = i + 4; i < size; i++) {
+                                if (item.charAt(i) == '|') {
+                                    break;
+                                } else {
+                                    z = z + 1
+                                }
+                            }
+                            e = "WifiConnected"
+                            param = item.substr(j, z)
+                            return
+                        } else if (item.charAt(i + 2) == '4') { //|2|4|
+                            e = "DisConnected"
+                            param = "fail"
+                            return
+                        } else if (item.charAt(i + 2) == '1') { //|2|1|
+                            e = "|2|1|"
+                            param = ""
+                            if (initmqtt) {
+                                led.stopAnimation()
+                                basic.clearScreen()
+                                FIRST = true
+                                initmqtt = false
+                                diwifi = "PulishFailure"
+                            }
+                            return
+                        }
+                    }
+                } else if (item.charAt(i) == '3') {
+                    if (item.charAt(i + 1) == '|') {
+                        if (item.charAt(i + 2) == '2' && //|3|200|
+                            item.charAt(i + 3) == '0' &&
+                            item.charAt(i + 4) == '0' &&
+                            item.charAt(i + 5) == '|'
+                        ) {
+                            let z = 0
+                            let j = i + 6
+                            for (i = i + 6; i < size; i++) {
+                                if (item.charAt(i) == '|') {
+                                    break;
+                                } else {
+                                    z = z + 1
+                                }
+                            }
+                            e = "200"
+                            param = item.substr(j, z)
+                            return
+                        } else if (item.charAt(i + 2) == 'e' && //|3|err|
+                            item.charAt(i + 3) == 'r' &&
+                            item.charAt(i + 4) == 'r' &&
+                            item.charAt(i + 5) == '|'
+                        ) {
+                            let z = 0
+                            let j = i + 6
+                            for (i = i + 6; i < size; i++) {
+                                if (item.charAt(i) == '|') {
+                                    break;
+                                } else {
+                                    z = z + 1
+                                }
+                            }
+                            e = "err"
+                            param = item.substr(j, z)
+                            return
+                        }
+                    }
+                } else if (item.charAt(i) == '4') { // serial.writeNumber(2);
+                    if (item.charAt(i + 1) == '|') {
+                        if (item.charAt(i + 2) == '1') {   //|4|1|1|1|
+                            if (item.charAt(i + 3) == '|' &&
+                                item.charAt(i + 4) == '1' &&
+                                item.charAt(i + 5) == '|' &&
+                                item.charAt(i + 6) == '1' &&
+                                item.charAt(i + 7) == '|'
+                            ) {
+                                e = "MqttConneted"
+                                param = ""
+                                // serial.writeNumber(size);
+                                return
+                            } else if (item.charAt(i + 3) == '|' &&
+                                item.charAt(i + 4) == '2' && //|4|1|2|1|
+                                item.charAt(i + 5) == '|' &&
+                                item.charAt(i + 6) == '1' &&
+                                item.charAt(i + 7) == '|'
+                            ) {
+                                e = "SubOk"
+                                param = ""
+                                return
+                            } else if (item.charAt(i + 3) == '|' &&
+                                item.charAt(i + 4) == '3' && //|4|1|3|1|
+                                item.charAt(i + 5) == '|' &&
+                                item.charAt(i + 6) == '1' &&
+                                item.charAt(i + 7) == '|'
+                            ) {  //led.plot(0, 1)
+                                e = "PulishOk"
+                                param = ""
+                                return
+                            } else if (item.charAt(i + 3) == '|' &&
+                                item.charAt(i + 4) == '3' && //|4|1|3|2|
+                                item.charAt(i + 5) == '|' &&
+                                item.charAt(i + 6) == '2' &&
+                                item.charAt(i + 7) == '|'
+                            ) {  //led.plot(0, 1)
+                                led.stopAnimation()
+                                basic.clearScreen()
+                                e = "PulishFailure"
+                                param = ""
+                                FIRST = true
+                                initmqtt = false
+                                diwifi = "PulishFailure"
+                                return
+                            } else if (item.charAt(i + 3) == '|' &&
+                                item.charAt(i + 4) == '5' && //|4|1|5|
+                                item.charAt(i + 5) == '|'
+                            ) {    //led.plot(0, 0)                    //serial.writeNumber(size)
+                                let z = 0
+                                let j = i + 6
+                                for (i = i + 6; i < size; i++) {
+                                    if (item.charAt(i) == '|') {
+                                        break;
+                                    } else {
+                                        z = z + 1
+                                    }
+                                }
+                                e = item.substr(j, z)
+                                z = 0
+                                j = i + 1
+                                for (i = i + 1; i < size; i++) {
+                                    if (item.charAt(i) == '|') {
+                                        break;
+                                    } else {
+                                        z = z + 1
+                                    }
+                                }
+                                param = item.substr(j, z)///?????????
+                                switch (e) { 
+                                    case OBLOQ_IOT_TOPIC[0]: obloqforevers(mycb[0]); break;
+                                    case OBLOQ_IOT_TOPIC[1]: obloqforevers(mycb[1]); break;
+                                    case OBLOQ_IOT_TOPIC[2]: obloqforevers(mycb[2]); break;
+                                    case OBLOQ_IOT_TOPIC[3]: obloqforevers(mycb[3]); break;
+                                    case OBLOQ_IOT_TOPIC[4]: obloqforevers(mycb[4]); break;
+                                }
+                                break
+                            }
+                        } else if (item.charAt(i + 2) == '2') {
+                            if (item.charAt(i + 3) == '|' &&  //|4|2|3|
+                                item.charAt(i + 4) == '3' &&
+                                item.charAt(i + 5) == '|'
+                            ) {
+                                e = "MqttConnectErr"
+                                param = ""
+                                return
+                            } else if (item.charAt(i + 3) == '|') { //|4|2|
+                                let z = 0
+                                let j = i + 4
+                                for (i = i + 4; i < size; i++) {
+                                    if (item.charAt(i) == '|') {
+                                        break;
+                                    } else {
+                                        z = z + 1
+                                    }
+                                }
+                                e = "ConnectErr"
+                                param = item.substr(j, z)
+                                return
+                            }
+                        }
+                    }
+                } else if (item.charAt(i) == 't') {
+                    if (item.charAt(i + 1) == 'i' &&
+                        item.charAt(i + 2) == 'm' &&
+                        item.charAt(i + 3) == 'e' &&
+                        item.charAt(i + 4) == 'o' &&
+                        item.charAt(i + 5) == 'u' &&
+                        item.charAt(i + 6) == 't'
+                    ) {
+                        e = "timeout"
+                        param = ""
+                        return
+                    }
+                }
             }
+            //serial.writeNumber(n);
+            // serial.writeString("\r\n");
+        }
             //onEvent()
     }
 
