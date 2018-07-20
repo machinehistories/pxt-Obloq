@@ -1,6 +1,6 @@
 {
-	"SERVERS.SER_CHINA|block": "中国",
-	"SERVERS.SER_GLOBAL|block": "全球",
+	"SERVERS.China|block": "中国",
+	"SERVERS.Global|block": "全球",
 	"Obloq.Obloq_setup|block": "Obloq 初始设置 | Wi-Fi: | 名称: %SSID| 密码: %PASSWORD| 物联网服务: | Iot_id: %IOT_ID| Iot_pwd: %IOT_PWD| (默认 topic_0) Topic: %IOT_TOPIC| 引脚设置: | 接收数据(绿色导线): %receive| 发送数据(蓝色导线): %send",
 	"Obloq.Obloq_serialInit|block": "串口重定向到 TX %tx| RX %rx",
 	"Obloq.Obloq_startConnect|block": "启动连接 | 服务器: %SERVER",
