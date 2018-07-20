@@ -118,7 +118,7 @@ namespace Obloq {
     const OBLOQ_FALSE = false
 
     export class Packeta {
-        public obloqreadString(top: TOPIC): void{ }
+        public aabcd(top: TOPIC): void{ }
         /**
          * Obloq receives commands.
          */
@@ -1098,7 +1098,7 @@ namespace Obloq {
     //% blockGap=60
     //% mutate=objectdestructuring
     //% mutateText=Packeta
-    //% mutateDefaults="obloqreadString:obloq,myparam:message"
+    //% mutateDefaults="aabcd:bbbb,myparam:message"
     //% blockId=obloq_mqttCallbackUserMore block="aaa"
     //% top.fieldEditor="gridpicker" top.fieldOptions.columns=2
     //% advanced=true
