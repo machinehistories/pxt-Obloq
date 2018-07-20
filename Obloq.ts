@@ -118,10 +118,7 @@ namespace Obloq {
     const OBLOQ_FALSE = false
 
     export class Packeta {
-
-        public constructor(top: TOPIC) { 
-
-        }
+        public obloqreadString(top: TOPIC): void{ }
         /**
          * Obloq receives commands.
          */
@@ -1086,10 +1083,10 @@ namespace Obloq {
     //% blockId=obloq_mqttCallbackUser block="on obloq received"
     export function obloq_mqttCallbackUser(cb: (packet: Packeta) => void) {
         obloq_mqttCallback(() => {
-         /*   const packet = new Packeta();
+            const packet = new Packeta();
             packet.mye = e
             packet.myparam = param;
-            cb(packet)*/
+            cb(packet)
         });
     }
 //"Obloq.obloq_mqttCallbackUserMore|block": "在obloq收到消息时运行 %top |:",
@@ -1101,16 +1098,16 @@ namespace Obloq {
     //% blockGap=60
     //% mutate=objectdestructuring
     //% mutateText=Packeta
-    //% mutateDefaults="myparam:constructor,myparam:message"
-    //% blockId=obloq_mqttCallbackUserMore block="on obloq received %top |:"
+    //% mutateDefaults="obloqreadString:obloq,myparam:message"
+    //% blockId=obloq_mqttCallbackUserMore block="aaa"
     //% top.fieldEditor="gridpicker" top.fieldOptions.columns=2
     //% advanced=true
-    export function obloq_mqttCallbackUserMore(cb: (packet: Packeta) => void) {
+    export function obloq_mqttCallbackUserMore( cb: (packet: Packeta) => void) {
         obloq_mqttCallbackMore(TOPIC.TOPIC_1, () => {
-           /* const packet = new Packeta();
+            const packet = new Packeta();
             packet.mye = e
             packet.myparam = param;
-            cb(packet)*/
+            cb(packet)
         }); 
     }
 
