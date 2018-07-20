@@ -24,9 +24,9 @@ SerialPin.P1,
 SerialPin.P2
 )
 Obloq.Obloq_add_topic(TOPIC.TOPIC_1, "Bkt_-i6mm")
-Obloq.Obloq_add_topic(TOPIC.TOPIC_1, "ByG_bopQX")
-Obloq.Obloq_add_topic(TOPIC.TOPIC_1, "HJlO-iaQQ")
-Obloq.Obloq_add_topic(TOPIC.TOPIC_1, "SkTDbjp7Q")
+Obloq.Obloq_add_topic(TOPIC.TOPIC_2, "ByG_bopQX")
+Obloq.Obloq_add_topic(TOPIC.TOPIC_3, "HJlO-iaQQ")
+Obloq.Obloq_add_topic(TOPIC.TOPIC_4, "SkTDbjp7Q")
 Obloq.Obloq_startConnect(SERVERS.SER_CHINA)
 basic.forever(() => {
     Obloq.Obloq_sendMessage("0")
