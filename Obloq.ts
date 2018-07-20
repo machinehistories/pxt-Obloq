@@ -70,31 +70,14 @@ let event = false
 let mode = 0
 
 enum TOPIC { 
-    //% blockId="TOPIC_1" block="topic_1"
-    TOPIC_1 = 1,
-    //% blockId="TOPIC_2" block="topic_2"
-    TOPIC_2 = 2,
-    //% blockId="TOPIC_3" block="topic_3"
-    TOPIC_3 = 3,
-    //% blockId="TOPIC_4" block="topic_4"
-    TOPIC_4 = 4
+    topic_1 = 1,
+    topic_2 = 2,
+    topic_3 = 3,
+    topic_4 = 4
 }
 enum SERVERS { 
-    //% blockId="SER_CHINA" block="China"
-    SER_CHINA,
-    //% blockId="SER_GLOBAL" block="Global"
-    SER_GLOBAL
-}
-
-enum LIST { 
-    //% blockId="T1" block="1"
-    T1 = 1,
-    //% blockId="T2" block="2"
-    T2 = 2,
-    //% blockId="T3" block="3"
-    T3 = 3,
-    //% blockId="T4" block="4"
-    T4 = 4
+    China,
+    Global
 }
 
 /**
@@ -513,9 +496,9 @@ namespace Obloq {
         mode = OBLOQ_MODE_MQTT
 
         if (MQTT_DEFAULT) {
-            if (SERVER == SERVERS.SER_CHINA) {
+            if (SERVER == SERVERS.China) {
                 OBLOQ_MQTT_SERVER = EASY_IOT_SERVER_CHINA
-            } else if (SERVER == SERVERS.SER_GLOBAL) { 
+            } else if (SERVER == SERVERS.Global) { 
                 OBLOQ_MQTT_SERVER = EASY_IOT_SERVER_GLOBAL
             }   
             OBLOQ_MQTT_PORT = EASY_IOT_PORT
@@ -590,9 +573,9 @@ namespace Obloq {
         if (diwifi == "PulishFailure") { 
             if (mode == OBLOQ_MODE_MQTT) { 
                 if (OBLOQ_MQTT_SERVER = EASY_IOT_SERVER_CHINA) {
-                    Obloq_startConnect(SERVERS.SER_CHINA)
+                    Obloq_startConnect(SERVERS.China)
                 } else if (OBLOQ_MQTT_SERVER = EASY_IOT_SERVER_GLOBAL) {
-                    Obloq_startConnect(SERVERS.SER_GLOBAL)
+                    Obloq_startConnect(SERVERS.Global)
                 } else { 
                     //do nothing
                 }
@@ -1036,10 +1019,10 @@ namespace Obloq {
             Obloq_serialInit()
         }
         switch (top) { 
-            case TOPIC.TOPIC_1: obloqWriteString("|4|1|3|" + OBLOQ_IOT_TOPIC[1] + "|" + mess + "|\r"); break;
-            case TOPIC.TOPIC_2: obloqWriteString("|4|1|3|" + OBLOQ_IOT_TOPIC[2] + "|" + mess + "|\r"); break;
-            case TOPIC.TOPIC_3: obloqWriteString("|4|1|3|" + OBLOQ_IOT_TOPIC[3] + "|" + mess + "|\r"); break;
-            case TOPIC.TOPIC_4: obloqWriteString("|4|1|3|" + OBLOQ_IOT_TOPIC[4] + "|" + mess + "|\r"); break;
+            case TOPIC.topic_1: obloqWriteString("|4|1|3|" + OBLOQ_IOT_TOPIC[1] + "|" + mess + "|\r"); break;
+            case TOPIC.topic_2: obloqWriteString("|4|1|3|" + OBLOQ_IOT_TOPIC[2] + "|" + mess + "|\r"); break;
+            case TOPIC.topic_3: obloqWriteString("|4|1|3|" + OBLOQ_IOT_TOPIC[3] + "|" + mess + "|\r"); break;
+            case TOPIC.topic_4: obloqWriteString("|4|1|3|" + OBLOQ_IOT_TOPIC[4] + "|" + mess + "|\r"); break;
         }
     }
 
@@ -1059,10 +1042,10 @@ namespace Obloq {
 
     function obloq_mqttCallbackMore(top: TOPIC, a: Action): void{
         switch (top) { 
-            case TOPIC.TOPIC_1: cb[1] = a; break;
-            case TOPIC.TOPIC_2: cb[2] = a; break;
-            case TOPIC.TOPIC_3: cb[3] = a; break;
-            case TOPIC.TOPIC_4: cb[4] = a; break;
+            case TOPIC.topic_1: cb[1] = a; break;
+            case TOPIC.topic_2: cb[2] = a; break;
+            case TOPIC.topic_3: cb[3] = a; break;
+            case TOPIC.topic_4: cb[4] = a; break;
         }
     }
 

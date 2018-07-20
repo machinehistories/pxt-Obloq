@@ -10,7 +10,7 @@ Obloq.Obloq_setup(
 SerialPin.P1,
 SerialPin.P2
 )
-Obloq.Obloq_startConnect(SERVERS.SER_CHINA)
+Obloq.Obloq_startConnect(SERVERS.China)
 basic.forever(() => {
     Obloq.Obloq_sendMessage("hello")
     basic.pause(5000)
