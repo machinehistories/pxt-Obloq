@@ -70,10 +70,14 @@ let event = false
 let mode = 0
 
 enum TOPIC { 
-    TOPIC_1,
-    TOPIC_2,
-    TOPIC_3,
-    TOPIC_4
+    //% blockId="TOPIC_1" block="topic_1"
+    TOPIC_1 = 1,
+    //% blockId="TOPIC_2" block="topic_2"
+    TOPIC_2 = 2,
+    //% blockId="TOPIC_3" block="topic_3"
+    TOPIC_3 = 3,
+    //% blockId="TOPIC_4" block="topic_4"
+    TOPIC_4 = 4
 }
 enum SERVERS { 
     //% blockId="SER_CHINA" block="China"
@@ -281,25 +285,13 @@ namespace Obloq {
     //% send.fieldEditor="gridpicker" send.fieldOptions.columns=3
     //% SERVER.fieldEditor="gridpicker" SERVER.fieldOptions.columns=2
     //% blockId=Obloq_setup
-    //% block="Obloq setup | Servers: | choose: %SERVER | Wi-Fi: | Wi-Fi name : %SSID| Wi-Fi password: %PASSWORD| Iot service: | IOT_ID: %IOT_ID| IOT_PWD: %IOT_PWD| IOT_TOPIC: %IOT_TOPIC| Pin set: | Receiving data (green wire): %receive| Sending data (blue wire): %send"
-    export function Obloq_setup(/*server*/SERVER: SERVERS,
-                                /*wifi*/SSID: string, PASSWORD: string,
+    //% block="Obloq setup | Wi-Fi: | name : %SSID| password: %PASSWORD| IoT service: | Iot_id: %IOT_ID| Iot_pwd: %IOT_PWD| (default topic_0) Topic: %IOT_TOPIC| Pin set: | Receiving data (green wire): %receive| Sending data (blue wire): %send"
+    export function Obloq_setup(/*wifi*/SSID: string, PASSWORD: string,
                                 /*mqtt*/IOT_ID: string, IOT_PWD: string, IOT_TOPIC: string,
                                 /*serial*/receive: SerialPin, send: SerialPin):
     void { 
         OBLOQ_SSID = SSID
         OBLOQ_PASSWORD = PASSWORD
-        if (MQTT_DEFAULT) {
-            if (SERVER == SERVERS.SER_CHINA) {
-                OBLOQ_MQTT_SERVER = EASY_IOT_SERVER_CHINA
-            } else if (SERVER == SERVERS.SER_GLOBAL) { 
-                OBLOQ_MQTT_SERVER = EASY_IOT_SERVER_GLOBAL
-            }   
-            OBLOQ_MQTT_PORT = EASY_IOT_PORT
-        } else { 
-            OBLOQ_MQTT_SERVER = USER_IOT_SERVER
-            OBLOQ_MQTT_PORT = USER_IOT_PORT
-        }
         OBLOQ_IOT_PWD = IOT_PWD
         OBLOQ_IOT_ID = IOT_ID
         OBLOQ_IOT_TOPIC[0] = IOT_TOPIC
@@ -313,11 +305,11 @@ namespace Obloq {
     */
     //% weight=200
     //% blockId=Obloq_add_topic
-    //% block="Add topic list %list |%IOT_TOPIC"
-    //% list.fieldEditor="gridpicker" list.fieldOptions.columns=2
+    //% block="subscribe additional %top |%IOT_TOPIC"
+    //% top.fieldEditor="gridpicker" top.fieldOptions.columns=2
     //% advanced=true
-    export function Obloq_add_topic(list: LIST, IOT_TOPIC: string): void {
-        OBLOQ_IOT_TOPIC[list] = IOT_TOPIC
+    export function Obloq_add_topic(top: TOPIC, IOT_TOPIC: string): void {
+        OBLOQ_IOT_TOPIC[top] = IOT_TOPIC
     }   
 
     /**
@@ -516,9 +508,22 @@ namespace Obloq {
     */
     //% weight=100
     //% blockId=Obloq_startConnect
-    //% block="start connection"
-    export function Obloq_startConnect(): void { 
+    //% block="start connection | Servers: %SERVER"
+    export function Obloq_startConnect(SERVER: SERVERS): void { 
         mode = OBLOQ_MODE_MQTT
+
+        if (MQTT_DEFAULT) {
+            if (SERVER == SERVERS.SER_CHINA) {
+                OBLOQ_MQTT_SERVER = EASY_IOT_SERVER_CHINA
+            } else if (SERVER == SERVERS.SER_GLOBAL) { 
+                OBLOQ_MQTT_SERVER = EASY_IOT_SERVER_GLOBAL
+            }   
+            OBLOQ_MQTT_PORT = EASY_IOT_PORT
+        } else { 
+            OBLOQ_MQTT_SERVER = USER_IOT_SERVER
+            OBLOQ_MQTT_PORT = USER_IOT_PORT
+        }
+
         let ret = Obloq_connectWifi()
         if (DEBUG) { basic.showNumber(ret) }
         switch (ret) { 
@@ -584,7 +589,13 @@ namespace Obloq {
         basic.pause(150)
         if (diwifi == "PulishFailure") { 
             if (mode == OBLOQ_MODE_MQTT) { 
-                Obloq_startConnect()
+                if (OBLOQ_MQTT_SERVER = EASY_IOT_SERVER_CHINA) {
+                    Obloq_startConnect(SERVERS.SER_CHINA)
+                } else if (OBLOQ_MQTT_SERVER = EASY_IOT_SERVER_GLOBAL) {
+                    Obloq_startConnect(SERVERS.SER_GLOBAL)
+                } else { 
+                    //do nothing
+                }
             }
             if (initmqtt) { 
                 diwifi = ""
@@ -996,7 +1007,7 @@ namespace Obloq {
     */
     //% weight=68
     //% blockId=Obloq_sendMessage
-    //% block="pubLish | %mess"
+    //% block="pubLish | %mess |to topic_0"
     export function Obloq_sendMessage(mess: string): void { 
         if (!initmqtt) { 
             return
