@@ -271,7 +271,6 @@ namespace Obloq {
 
     /**
 	 * Two parallel stepper motors are executed simultaneously(DegreeDual).
-     * @param SERVER to SERVER ,eg: SERVERS.SER_CHINA
      * @param SSID to SSID ,eg: "yourSSID"
      * @param PASSWORD to PASSWORD ,eg: "yourPASSWORD"
      * @param IOT_ID to IOT_ID ,eg: "yourIotId"
@@ -283,9 +282,8 @@ namespace Obloq {
     //% weight=102
     //% receive.fieldEditor="gridpicker" receive.fieldOptions.columns=3
     //% send.fieldEditor="gridpicker" send.fieldOptions.columns=3
-    //% SERVER.fieldEditor="gridpicker" SERVER.fieldOptions.columns=2
     //% blockId=Obloq_setup
-    //% block="Obloq setup | Wi-Fi: | name : %SSID| password: %PASSWORD| IoT service: | Iot_id: %IOT_ID| Iot_pwd: %IOT_PWD| (default topic_0) Topic: %IOT_TOPIC| Pin set: | receiving data (green wire): %receive| sending data (blue wire): %send"
+    //% block="Obloq setup | Wi-Fi: | name: %SSID| password: %PASSWORD| IoT service: | Iot_id: %IOT_ID| Iot_pwd: %IOT_PWD| (default topic_0) Topic: %IOT_TOPIC| Pin set: | receiving data (green wire): %receive| sending data (blue wire): %send"
     export function Obloq_setup(/*wifi*/SSID: string, PASSWORD: string,
                                 /*mqtt*/IOT_ID: string, IOT_PWD: string, IOT_TOPIC: string,
                                 /*serial*/receive: SerialPin, send: SerialPin):
@@ -505,10 +503,12 @@ namespace Obloq {
     /**
      * connect Wifi.SSID(string):account; PWD(string):password;
      * time(ms): private long maxWait
+     * @param SERVER to SERVER ,eg: SERVERS.SER_CHINA
     */
     //% weight=100
     //% blockId=Obloq_startConnect
     //% block="start connection | Servers: %SERVER"
+    //% SERVER.fieldEditor="gridpicker" SERVER.fieldOptions.columns=2
     export function Obloq_startConnect(SERVER: SERVERS): void { 
         mode = OBLOQ_MODE_MQTT
 
