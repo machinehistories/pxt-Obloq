@@ -118,6 +118,10 @@ namespace Obloq {
     const OBLOQ_FALSE = false
 
     export class Packeta {
+
+        public constructor(top: TOPIC) { 
+
+        }
         /**
          * Obloq receives commands.
          */
@@ -1082,13 +1086,13 @@ namespace Obloq {
     //% blockId=obloq_mqttCallbackUser block="on obloq received"
     export function obloq_mqttCallbackUser(cb: (packet: Packeta) => void) {
         obloq_mqttCallback(() => {
-            const packet = new Packeta();
+         /*   const packet = new Packeta();
             packet.mye = e
             packet.myparam = param;
-            cb(packet)
+            cb(packet)*/
         });
     }
-
+//"Obloq.obloq_mqttCallbackUserMore|block": "在obloq收到消息时运行 %top |:",
     /**
      * This is an MQTT listener callback function, which is very important.
      * The specific use method can refer to "example/ObloqMqtt.ts"
@@ -1097,16 +1101,16 @@ namespace Obloq {
     //% blockGap=60
     //% mutate=objectdestructuring
     //% mutateText=Packeta
-    //% mutateDefaults="myparam:message"
-    //% blockId=obloq_mqttCallbackUserMore block="on |received from |%top"
+    //% mutateDefaults="myparam:constructor;myparam:message"
+    //% blockId=obloq_mqttCallbackUserMore block="on obloq received %top |:"
     //% top.fieldEditor="gridpicker" top.fieldOptions.columns=2
     //% advanced=true
-    export function obloq_mqttCallbackUserMore(cb: (packet: Packeta) => void, top: TOPIC) {
-        obloq_mqttCallbackMore(top, () => {
-            const packet = new Packeta();
+    export function obloq_mqttCallbackUserMore(cb: (packet: Packeta) => void) {
+        obloq_mqttCallbackMore(TOPIC.TOPIC_1, () => {
+           /* const packet = new Packeta();
             packet.mye = e
             packet.myparam = param;
-            cb(packet)
+            cb(packet)*/
         }); 
     }
 
