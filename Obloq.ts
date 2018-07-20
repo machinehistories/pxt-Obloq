@@ -1079,7 +1079,7 @@ namespace Obloq {
     //% mutate=objectdestructuring
     //% mutateText=Packeta
     //% mutateDefaults="myparam:message"
-    //% blockId=obloq_mqttCallbackUser block="on obloq received"
+    //% blockId=obloq_mqttCallbackUser block="on topic_0 received"
     export function obloq_mqttCallbackUser(cb: (packet: Packeta) => void) {
         obloq_mqttCallback(() => {
             const packet = new Packeta();
@@ -1097,11 +1097,11 @@ namespace Obloq {
     //% blockGap=60
     //% mutate=objectdestructuring
     //% mutateText=Packeta
-    //% mutateDefaults="myparam:message,"
-    //% blockId=obloq_mqttCallbackUserMore block="a | %top"
+    //% mutateDefaults="myparam:message"
+    //% blockId=obloq_mqttCallbackUserMore block="on %top |received"
     //% top.fieldEditor="gridpicker" top.fieldOptions.columns=2
     //% advanced=true
-    export function obloq_mqttCallbackUserMore(cb: (packet: Packeta) => void, top: TOPIC) {
+    export function obloq_mqttCallbackUserMore(top: TOPIC, cb: (packet: Packeta) => void) {
         obloq_mqttCallbackMore(top, () => {
             const packet = new Packeta();
             packet.mye = e
