@@ -118,7 +118,6 @@ namespace Obloq {
     const OBLOQ_FALSE = false
 
     export class Packeta {
-        public aabcd(top: TOPIC): void{ }
         /**
          * Obloq receives commands.
          */
@@ -1089,7 +1088,7 @@ namespace Obloq {
             cb(packet)
         });
     }
-//"Obloq.obloq_mqttCallbackUserMore|block": "在obloq收到消息时运行 %top |:",
+
     /**
      * This is an MQTT listener callback function, which is very important.
      * The specific use method can refer to "example/ObloqMqtt.ts"
@@ -1098,12 +1097,12 @@ namespace Obloq {
     //% blockGap=60
     //% mutate=objectdestructuring
     //% mutateText=Packeta
-    //% mutateDefaults="aabcd:bbbb,myparam:message"
-    //% blockId=obloq_mqttCallbackUserMore block="aaa"
+    //% mutateDefaults="myparam:message,"
+    //% blockId=obloq_mqttCallbackUserMore block="a | %top"
     //% top.fieldEditor="gridpicker" top.fieldOptions.columns=2
     //% advanced=true
-    export function obloq_mqttCallbackUserMore( cb: (packet: Packeta) => void) {
-        obloq_mqttCallbackMore(TOPIC.TOPIC_1, () => {
+    export function obloq_mqttCallbackUserMore(cb: (packet: Packeta) => void, top: TOPIC) {
+        obloq_mqttCallbackMore(top, () => {
             const packet = new Packeta();
             packet.mye = e
             packet.myparam = param;
