@@ -285,7 +285,7 @@ namespace Obloq {
     //% send.fieldEditor="gridpicker" send.fieldOptions.columns=3
     //% SERVER.fieldEditor="gridpicker" SERVER.fieldOptions.columns=2
     //% blockId=Obloq_setup
-    //% block="Obloq setup | Wi-Fi: | name : %SSID| password: %PASSWORD| IoT service: | Iot_id: %IOT_ID| Iot_pwd: %IOT_PWD| (default topic_0) Topic: %IOT_TOPIC| Pin set: | Receiving data (green wire): %receive| Sending data (blue wire): %send"
+    //% block="Obloq setup | Wi-Fi: | name : %SSID| password: %PASSWORD| IoT service: | Iot_id: %IOT_ID| Iot_pwd: %IOT_PWD| (default topic_0) Topic: %IOT_TOPIC| Pin set: | receiving data (green wire): %receive| sending data (blue wire): %send"
     export function Obloq_setup(/*wifi*/SSID: string, PASSWORD: string,
                                 /*mqtt*/IOT_ID: string, IOT_PWD: string, IOT_TOPIC: string,
                                 /*serial*/receive: SerialPin, send: SerialPin):
@@ -305,7 +305,7 @@ namespace Obloq {
     */
     //% weight=200
     //% blockId=Obloq_add_topic
-    //% block="subscribe additional %top |%IOT_TOPIC"
+    //% block="subscribe additional %top |: %IOT_TOPIC"
     //% top.fieldEditor="gridpicker" top.fieldOptions.columns=2
     //% advanced=true
     export function Obloq_add_topic(top: TOPIC, IOT_TOPIC: string): void {
@@ -1007,7 +1007,7 @@ namespace Obloq {
     */
     //% weight=68
     //% blockId=Obloq_sendMessage
-    //% block="pubLish | %mess |to topic_0"
+    //% block="pubLish %mess |to topic_0"
     export function Obloq_sendMessage(mess: string): void { 
         if (!initmqtt) { 
             return
@@ -1025,7 +1025,7 @@ namespace Obloq {
     */
     //% weight=190
     //% blockId=Obloq_sendMessageMore
-    //% block="pubLish %mess | to %top"
+    //% block="pubLish %mess |to %top"
     //% top.fieldEditor="gridpicker" top.fieldOptions.columns=2
     //% advanced=true
     export function Obloq_sendMessageMore(mess: string, top: TOPIC): void { 
@@ -1098,10 +1098,10 @@ namespace Obloq {
     //% mutate=objectdestructuring
     //% mutateText=Packeta
     //% mutateDefaults="myparam:message"
-    //% blockId=obloq_mqttCallbackUserMore block="on obloq received %top |:"
+    //% blockId=obloq_mqttCallbackUserMore block="on |received from |%top"
     //% top.fieldEditor="gridpicker" top.fieldOptions.columns=2
     //% advanced=true
-    export function obloq_mqttCallbackUserMore(top: TOPIC, cb: (packet: Packeta) => void) {
+    export function obloq_mqttCallbackUserMore(cb: (packet: Packeta) => void, top: TOPIC) {
         obloq_mqttCallbackMore(top, () => {
             const packet = new Packeta();
             packet.mye = e

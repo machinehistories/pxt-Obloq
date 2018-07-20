@@ -13,11 +13,11 @@
 	"Obloq.Obloq_ipconfig|block": "获取IP地址",
 	"Obloq.Obloq_reconnectMqtt|block": "重新连接MQTT",
 	"Obloq.Obloq_disconnectMqtt|block": "MQTT断开连接",
-	"Obloq.Obloq_sendMessage|block": "发送消息 | %mess |至 topic_0",
-	"Obloq.Obloq_sendMessageMore|block": "发送消息 %mess | 至 %top",
-	"Obloq.Obloq_add_topic|block": "新增订阅 %top |%IOT_TOPIC",
+	"Obloq.Obloq_sendMessage|block": "发送消息 %mess |至 topic_0",
+	"Obloq.Obloq_sendMessageMore|block": "发送消息 %mess |至 %top",
+	"Obloq.Obloq_add_topic|block": "新增订阅 %top |: %IOT_TOPIC",
 	"Obloq.obloq_mqttCallbackUser|block": "在obloq收到消息时运行",
-	"Obloq.obloq_mqttCallbackUserMore|block": "在obloq收到消息时运行 %top |:",
+	"Obloq.obloq_mqttCallbackUserMore|block": "当接收到 | 来自 |%top",
 	"Obloq.Obloq_pinSet|block": "引脚设置| 接收数据(绿色导线): %receive| 发送数据(蓝色导线): %send",
 	"Obloq.Obloq_connectWifiExport|block": "WIFI连接到| 密码 %SSID| PASSWORD %PASSWORD"
 }
