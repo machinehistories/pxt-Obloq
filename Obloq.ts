@@ -1101,7 +1101,7 @@ namespace Obloq {
     //% blockGap=60
     //% mutate=objectdestructuring
     //% mutateText=Packeta
-    //% mutateDefaults="myparam:constructor;myparam:message"
+    //% mutateDefaults="myparam:constructor,myparam:message"
     //% blockId=obloq_mqttCallbackUserMore block="on obloq received %top |:"
     //% top.fieldEditor="gridpicker" top.fieldOptions.columns=2
     //% advanced=true
