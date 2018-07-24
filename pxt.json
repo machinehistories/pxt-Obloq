@@ -14,7 +14,7 @@
         "_locales/zh/Obloq-strings.json"
     ],
     "testFiles": [
-        "mqtttest.ts",
+        "test.ts",
         "mqttMoretest.ts"
     ],
     "public": false
