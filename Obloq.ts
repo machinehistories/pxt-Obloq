@@ -76,7 +76,9 @@ enum TOPIC {
     topic_4 = 4
 }
 enum SERVERS { 
+    //% blockId=SERVERS_China
     China,
+    //% blockId=SERVERS_Global
     Global
 }
 
