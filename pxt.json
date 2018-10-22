@@ -11,11 +11,13 @@
         "README.md",
         "Obloq.ts",
         "Obloq.cpp",
-        "_locales/zh/Obloq-strings.json"
+        "_locales/zh-cn/Obloq-strings.json",
+        "_locales/zh-tw/Obloq-strings.json"
     ],
     "testFiles": [
         "test.ts",
-        "mqttMoretest.ts"
+        "mqttMoretest.ts",
+        "httpTest.ts"
     ],
     "public": false
 }
