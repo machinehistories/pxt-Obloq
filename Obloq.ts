@@ -545,11 +545,6 @@ namespace Obloq {
      * Disconnect the serial port.
     */
     /* 
-    //% weight=97
-    //% blockGap=50
-    //% blockId=Obloq_serial_quit
-    //% block="quit"
-    //% advanced=true
     export function Obloq_serial_quit(): void { 
         obloqWriteString("quit!\r")
     }*/
@@ -760,10 +755,6 @@ namespace Obloq {
      * @param time to timeout, eg: 10000
     */
     /* 
-    //% weight=99
-    //% blockId=Obloq_wifi_reconnect
-    //% block="reconnectWifi"
-    //% advanced=true
     export function Obloq_wifi_reconnect(): boolean {
         while (OBLOQ_WORKING_MODE_IS_STOP) { basic.pause(20) }
         let time = 10000
@@ -807,12 +798,6 @@ namespace Obloq {
      * @param send to send ,eg: SerialPin.P2
     */
     /* 
-    //% weight=101
-    //% receive.fieldEditor="gridpicker" receive.fieldOptions.columns=3
-    //% send.fieldEditor="gridpicker" send.fieldOptions.columns=3
-    //% blockId=Obloq_serial_pin_set
-    //% block="pin set| Receiving data (green wire): %receive| Sending data (blue wire): %send"
-    //% advanced=true
     export function Obloq_serial_pin_set(receive: SerialPin, send: SerialPin): void { 
         while (OBLOQ_WORKING_MODE_IS_STOP) { basic.pause(20) }
         OBLOQ_SERIAL_TX = send
@@ -1035,11 +1020,6 @@ namespace Obloq {
      * @param time set timeout, eg: 10000
     */
     /* 
-    //% weight=76
-    //% blockGap=50
-    //% blockId=Obloq_httpDelete
-    //% block="http delete | url %url| content %content| timeout %time"
-    //% advanced=true
     export function Obloq_httpDelete(url: string, content: string, time: number): string[] {
         if (time < 100) { 
             time = 100
@@ -1149,10 +1129,6 @@ namespace Obloq {
      * Reconnect the MQTT.
     */
     /* 
-    //% weight=65
-    //% blockId=Obloq_mqtt_reconnect
-    //% block="mqtt reconnect"
-    //% advanced=true
     export function Obloq_mqtt_reconnect(): boolean {
         while (OBLOQ_WORKING_MODE_IS_STOP) { basic.pause(20) }
         let time = 10000
@@ -1192,10 +1168,6 @@ namespace Obloq {
      * Disconnect the MQTT connection.
     */
     /* 
-    //% weight=66
-    //% blockId=Obloq_mqtt_disconnect
-    //% block="mqtt disconnect"
-    //% advanced=true
     export function Obloq_mqtt_disconnect(): boolean { 
         while (OBLOQ_WORKING_MODE_IS_STOP) { basic.pause(20) }
         let time = 10000
