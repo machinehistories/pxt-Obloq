@@ -19,6 +19,5 @@
         "mqttMoretest.ts",
         "httpTest.ts"
     ],
-    "public": true,
-    "installedVersion": "github:DFRobot/pxt-Obloq#v1.0.0"
+    "public": true
 }
