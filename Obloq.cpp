@@ -69,11 +69,11 @@ namespace Obloq {
     }
 
     //%
-    void obloqWriteString(StringData *text) {
+    void obloqWriteString(String text) {
       if (!text) {
           return;
       }
-      uBit.serial.send(ManagedString(text));
+      uBit.serial.send(text);
     }
 
     //%
