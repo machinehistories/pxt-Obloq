@@ -14,7 +14,7 @@ namespace Obloq {
         return ManagedString(uBit.serial.read(n, MicroBitSerialMode::ASYNC)).leakData();
     }
 
-    //%
+    //% 
     void obloqSetTxBufferSize(int size){
         if(size > 100) {
             size = 100;
