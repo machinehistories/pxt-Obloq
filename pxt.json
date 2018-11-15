@@ -1,6 +1,6 @@
 {
     "name": "Obloq",
-    "version": "1.0.3",
+    "version": "1.0.0",
     "description": "Add Wi-Fi connectivity to micro:bit and start your IoT project in 5 minutes!",
     "license": "MIT",
     "dependencies": {
@@ -19,6 +19,5 @@
         "mqttMoretest.ts",
         "httpTest.ts"
     ],
-    "public": true,
-    "installedVersion": "workspace:dee399dd-48f4-4833-bae7-879f736bfe46"
+    "public": true
 }
