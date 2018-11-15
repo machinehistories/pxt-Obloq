@@ -1691,8 +1691,6 @@ namespace Obloq {
                 }
             }
         }
-        //serial.writeNumber(n);
-        //serial.writeString("\r\n");
     }
 
     function onEvent() {
